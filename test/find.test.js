@@ -17,7 +17,7 @@ describe('findParent()', async () => {
 		const parent = await prisma.node.findParent({of: homeNode})
 		expect(parent).toStrictEqual(rootNode)
 	})
-    
+
 	/* Root node */
 	it('rootNode\'s parent using `where` arg', async () => {
 		const parent = await prisma.node.findParent({of: rootNode})
@@ -27,7 +27,7 @@ describe('findParent()', async () => {
 		const parent = await prisma.node.findParent({where: { id: 1 }})
 		expect(parent).toBe(null)
 	})
-    
+
 	/* None existent node */
 	it('none existant node using `where` arg', async () => {
 		const parent = await prisma.node.findParent({where: {id: 99999 }})

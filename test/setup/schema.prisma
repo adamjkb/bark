@@ -1,17 +1,19 @@
 generator client {
-  provider        = "prisma-client-js"
-  binaryTargets   = ["native"]
-  previewFeatures = ["clientExtensions"]
+    provider        = "prisma-client-js"
+    binaryTargets   = ["native"]
+    previewFeatures = ["clientExtensions"]
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./test.db"
+    provider = "sqlite"
+    url      = "file:./test.db"
 }
 
 model node {
-  id       Int    @id @default(autoincrement())
-  path     String @unique // @db.VarChar(255)
-  depth    Int
-  numchild Int @default(0)
+    id       Int    @id @default(autoincrement())
+    path     String @unique // @db.VarChar(255)
+    depth    Int
+    numchild Int    @default(0)
+	// Not required but makes it easier to test
+    name     String
 }
