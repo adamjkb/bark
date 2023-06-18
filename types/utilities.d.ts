@@ -1,0 +1,1 @@
+export type movePositions = 'first-child' | 'last-child' | 'first-sibling' | 'left' | 'right' | 'last-sibling'

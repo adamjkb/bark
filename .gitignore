@@ -1,0 +1,8 @@
+.DS_Store
+node_modules
+/.vscode
+.env
+.env.*
+!.env.example
+/test/setup/migrations
+/test/setup/test.db
