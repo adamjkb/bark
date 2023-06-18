@@ -5,6 +5,12 @@
     "author": {
         "name": "Adam Jakab"
     },
+	"keywords": [
+		"prisma",
+		"prisma-client",
+		"prisma-extension",
+		"materialized-path"
+	],
     "exports": [
         "./src/index.js"
     ],
