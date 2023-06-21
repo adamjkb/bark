@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { default_order_by, max_segment, min_segment } from '../consts.js'
 
 /**
- * @param {import('../../types/find.js').findChildrenArgs} args
+ * @param {import('$types/find.js').findChildrenArgs} args
  */
 export default async function ({ of, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)

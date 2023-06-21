@@ -3,7 +3,7 @@ import { default_order_by, max_segment, min_segment } from '../consts.js'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('../../types/find.js').findSiblingsArgs} args
+ * @param {import('$types/find.js').findSiblingsArgs} args
  */
 export default async function ({ of, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)

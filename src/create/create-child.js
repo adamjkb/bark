@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { int2str } from '../utils.js'
 
 /**
- * @param {import('../../types/create.js').createChildArgs} args
+ * @param {import('$types/create.js').createChildArgs} args
  */
 export default async function ({ of, where, data }) {
 	const model = Prisma.getExtensionContext(this)
