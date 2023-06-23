@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { increment_path, int2str, last_position_in_path, path_from_depth, str2int } from '../utils'
+import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils'
 
 /**
  * @param {import('$types/operations').moveArgs} args
@@ -8,16 +8,20 @@ export default async function ({ node, where, position, reference }) {
 	const model = Prisma.getExtensionContext(this)
 	// <sorry>
 	/**
-	 *
+	 *r
 	 * @param {Object} opts
 	 * @param {string} opts.old_path
 	 * @param {string} opts.new_path
 	 * @param {number} opts.new_depth
 	 */
 	async function update_thingies({ old_path, new_path, new_depth }) {
-		/** @type {Promise<any>[]} */
+		/** @type {Promise<import('@prisma/client').Prisma.PrismaPromise<any>> | any[]}*/
 		const queue = []
 
+		// TODO: Ideally this would make use of transactions
+		// Issue is that Promise.all-ing a queue will lock SQLite but $transactions won't
+		// As a work-around we can set connection_limit=1
+		// https://github.com/prisma/prisma/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A+Timed+out+during+query+execution%22
 		queue.push(model.update({
 			where: { path: old_path },
 			data: {
@@ -175,9 +179,12 @@ export default async function ({ node, where, position, reference }) {
 			(position === 'right' && rn_node.id === rn_last_sibling.id)) {
 			// Easy mode!
 			const new_path = increment_path(rn_last_sibling.path)
-
-			// await push_new_path_updates(of, new_path)
-			await update_thingies({ old_path: original_node.path, new_path, new_depth })
+			console.log('1 ---- easy mode')
+			await update_thingies({
+				old_path: original_node.path,
+				new_path,
+				new_depth
+			})
 		} else {
 			/**
 			 * Let the FUN begin
@@ -190,20 +197,20 @@ export default async function ({ node, where, position, reference }) {
 						path: true,
 						numchild: true,
 						id: true,
+						name: true
 					}
 				})
 
-				const target_path_int = str2int(rn_node.path)
 				const base_path_int = last_position_in_path({ path: rn_node.path })
 
 				switch (position) {
 				case 'left':
 					new_pos = base_path_int
-					siblings = siblings.filter(s => str2int(s.path) > target_path_int)
+					siblings = siblings.filter(s => s.path >= rn_node.path)
 					break
 				case 'right':
 					new_pos = base_path_int + 1
-					siblings = siblings.filter(s => str2int(s.path) >= target_path_int)
+					siblings = siblings.filter(s =>  s.path > rn_node.path)
 					break
 				case 'first-sibling':
 					// siblings are already correct
@@ -229,8 +236,11 @@ export default async function ({ node, where, position, reference }) {
 					const base_path_int = last_position_in_path({ path: rn_last_sibling.path })
 					temp_new_path = path_from_depth({ path: rn_node.path, depth: rn_node.depth - 1 }) + int2str(base_path_int + 2)
 
-					// TODO: T
-					// await push_new_path_updates(of, temp_new_path)
+					console.debug('2 ---- hit temp new path')
+					await update_thingies({
+						old_path: original_node.path,
+						new_path: temp_new_path, new_depth
+					})
 				}
 			}
 
@@ -258,8 +268,12 @@ export default async function ({ node, where, position, reference }) {
 				// moving the siblings(and their branches) at the right of the
 				// related position one step to the right
 				const node_new_path = increment_path(node.path)
-				// TODO: T
-				// await push_new_path_updates(node, node_new_path)
+				console.log('3 ---- moving siblings')
+				await update_thingies({
+					old_path: node.path,
+					new_depth: node.depth,
+					new_path: node_new_path
+				})
 
 				// if movebranch w/e
 				if (original_node.path.startsWith(node.path)) {
@@ -267,26 +281,26 @@ export default async function ({ node, where, position, reference }) {
 					// increased the path of the entire branch
 					original_node.path = node_new_path + original_node.path.slice(node_new_path.length)
 				}
-				// TODO: See if is necessary
-				// if (rn_node.path.startsWith(node.path)) {
-				// and if we moved the target, update the object
-				// django made for us, since the update won't do it
-				// maybe useful in loops
-				// QUESTION: Do we need it then?
-				// rn_node.path = node_new_path + target.path.slice(node_new_path.length)
-				// }
 			}
 
 			// if movebranch w/e
 			// node to move
 			if (temp_new_path) {
-				// TODO: Update thingy
-				// await push_new_path_updates({ ...of, path: temp_new_path }, new_path)
+				console.log('5 ---- move back from temp_new_path')
 				// temp_new_path -> new_path
+				// await push_new_path_updates({ ...of, path: temp_new_path }, new_path)
+				await update_thingies({
+					old_path: temp_new_path,
+					new_depth,
+					new_path,
+				})
 			} else {
-				// TODO: Update thingy
-				// old_path -> new_path
-				// await push_new_path_updates({ ...of, path: old_path }, new_path)
+				console.log('6 ---- move og to new_depth if no temp_new_path')
+				await update_thingies({
+					old_path: original_node.path,
+					new_depth,
+					new_path,
+				})
 			}
 
 
