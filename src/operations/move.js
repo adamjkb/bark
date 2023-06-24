@@ -304,8 +304,29 @@ export default async function ({ node, where, position, reference }) {
 			}
 
 
-			// TODO: sanity_updates_after_move aka updating parent numchilds
+			// Updating parent numchilds when original_node is changing depth
+			const original_parent_path = path_from_depth({ path: original_node.path, depth: original_node.depth - 1 })
+			const new_parent_path = path_from_depth({ path: original_node.path, depth: new_depth - 1 })
+			if (
+				(!original_parent_path && new_parent_path) ||
+				(original_parent_path && !new_parent_path) ||
+				(original_parent_path !== new_parent_path)
+			) {
+				console.log('7 ---- Updating parent numchild')
+				if (original_parent_path) {
+					await model.update({
+						where: { path: original_parent_path },
+						data: { numchild: { decrement: 1 } }
+					})
+				}
 
+				if (new_parent_path) {
+					await model.update({
+						where: { path: new_parent_path },
+						data: { numchild: { increment: 1 } }
+					})
+				}
+			}
 		}
 	} else {
 		throw 'Not found desired `node`'
