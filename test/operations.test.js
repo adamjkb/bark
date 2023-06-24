@@ -8,9 +8,11 @@ const get_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 3 } }
 const get_b_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 4 } })
 const get_c_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 5 } })
 const get_a_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 6 } })
+const get_a_b_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 7 } })
 const get_a_c_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 8 } })
 const get_a_d_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 9 } })
 const get_a_e_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 10 } })
+const get_b_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 11 } })
 
 const resetDb = async () => await seedOrResetDB()
 
@@ -84,6 +86,38 @@ describe('Operation: move(), Position: right', async () => {
 		expect(result_child).toMatchObject({ path: '0001000100030001' })
 	})
 
+
+	afterEach(resetDb)
+})
+
+
+
+describe('Operation: move(), Position: left', async () => {
+	it('left — same level, no descendants', async () => {
+		const node = await get_a_c_node()
+		const reference_node = await get_a_b_node()
+
+		await prisma.node.move({ node: node, position: 'left', reference: { node: reference_node } })
+
+		const result = await get_a_c_node()
+		expect(result).toMatchObject({ path: '0001000100010002', depth: node.depth, numchild: node.numchild })
+		const result_rn = await get_a_b_node()
+		expect(result_rn).toMatchObject({ path: '0001000100010003', depth: reference_node.depth, numchild: reference_node.numchild })
+	})
+
+	it('left — same level, descendants', async () => {
+		const node = await get_b_node()
+		const reference_node = await get_a_node()
+
+		await prisma.node.move({ node: node, position: 'left', reference: { node: reference_node } })
+
+		const result = await get_b_node()
+		expect(result).toMatchObject({ path: '000100010001', depth: node.depth, numchild: node.numchild })
+		const result_rn = await get_a_node()
+		expect(result_rn).toMatchObject({ path: '000100010002', depth: reference_node.depth, numchild: reference_node.numchild })
+		const result_child = await get_b_a_node()
+		expect(result_child).toMatchObject({ path: '0001000100010001' })
+	})
 
 	afterEach(resetDb)
 })
