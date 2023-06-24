@@ -119,6 +119,17 @@ describe('Operation: move(), Position: left', async () => {
 		expect(result_child).toMatchObject({ path: '0001000100010001' })
 	})
 
+
+	it('left — same level, descendants', async () => {
+		const node = await get_c_node()
+		const reference_node = await get_b_node()
+
+		await prisma.node.move({ node: node, position: 'left', reference: { node: reference_node } })
+
+		const result = await get_c_node()
+		expect(result).toMatchObject({ path: '000100010002', depth: node.depth, numchild: node.numchild })
+	})
+
 	afterEach(resetDb)
 })
 
@@ -145,8 +156,7 @@ describe('Operation: move(), Position: first-sibling', async () => {
 		const result = await get_b_node()
 		expect(result).toMatchObject({ path: '000100010001', depth: node.depth, numchild: node.numchild })
 		const result_rn = await get_c_node()
-		// TODO: To confirm if this shouldn't be 0003 instead.
-		expect(result_rn).toMatchObject({ path: '000100010004', depth: reference_node.depth, numchild: reference_node.numchild })
+		expect(result_rn).toMatchObject({ path: '000100010003', depth: reference_node.depth, numchild: reference_node.numchild })
 		const result_child = await get_b_a_node()
 		expect(result_child).toMatchObject({ path: '0001000100010001' })
 	})
@@ -154,12 +164,85 @@ describe('Operation: move(), Position: first-sibling', async () => {
 	afterEach(resetDb)
 })
 
+// Position: last-child
+describe('Operation: move(), Position: last-child', async () => {
+	it('last-child — no depth move, no descendants', async () => {
+		const node = await get_b_a_node()
+		const reference_node = await get_a_node()
+
+		await prisma.node.move({ node: node, position: 'last-child', reference: { node: reference_node } })
+
+		const result = await get_b_a_node()
+		expect(result).toMatchObject({ path: '0001000100010006', depth: node.depth, numchild: node.numchild })
+	})
+
+	it('last-child — depth move, descendants', async () => {
+		const node = await get_b_node()
+		const reference_node = await get_a_node()
+
+		await prisma.node.move({ node: node, position: 'last-child', reference: { node: reference_node } })
+
+		const result = await get_b_node()
+		expect(result).toMatchObject({ path: '0001000100010006', depth: node.depth + 1, numchild: node.numchild })
+		const result_child = await get_b_a_node()
+		expect(result_child).toMatchObject({ path: '00010001000100060001', depth: node.depth + 2 })
+
+	})
+
+	afterEach(resetDb)
+})
+
+// Position: first-child
+describe('Operation: move(), Position: first-child', async () => {
+	it('first-child — no depth move, no descendants', async () => {
+		const node = await get_a_b_node()
+		const reference_node = await get_b_node()
+
+		await prisma.node.move({ node: node, position: 'first-child', reference: { node: reference_node } })
+
+		const result = await get_a_b_node()
+		expect(result).toMatchObject({ path: '0001000100020001', depth: node.depth, numchild: node.numchild })
+	})
+
+	it('first-child — depth move, descendants', async () => {
+		const node = await get_a_node()
+		const reference_node = await get_b_node()
+
+		await prisma.node.move({ node: node, position: 'first-child', reference: { node: reference_node } })
+
+		const result = await get_a_node()
+		expect(result).toMatchObject({ path: '0001000100020001', depth: node.depth + 1, numchild: node.numchild })
+		const result_child = await get_a_a_node()
+		expect(result_child).toMatchObject({ path: '00010001000200010001', depth: node.depth + 2 })
+
+	})
+
+	afterEach(resetDb)
+})
+
 // Errors
 describe('Operation: move(), Errors', async () => {
-	it.todo('Cannot move `node` to its descendant')
-	it.todo('Nothing to move')
-	it.todo('Not found desired node')
+	it('errors — move to its descendant', async () => {
+		const node = await get_a_node()
+		const reference_node = await get_a_b_node()
+		const fn = prisma.node.move({ node: node, position: 'left', reference: { node: reference_node } })
+		await expect(fn).rejects.toThrowError(/descendant/)
+	})
+	it('errors — nothing to move', async () => {
+		const node = await get_a_node()
+		const reference_node = await get_a_node()
+		const fn = prisma.node.move({ node: node, position: 'first-sibling', reference: { node: reference_node } })
+		await expect(fn).rejects.toThrowError(/Nothing to move/)
+	})
+
+	it('errors — Not found desired node', async () => {
+		const reference_node = await get_a_node()
+		const fn = prisma.node.move({ where: { id: 14 }, position: 'first-sibling', reference: { node: reference_node } })
+		await expect(fn).rejects.toThrowError(/Not found desired `node/)
+	})
+
 	it.todo('Not found desired reference node')
+
 
 	afterEach(resetDb)
 })

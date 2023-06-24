@@ -78,7 +78,10 @@ export default async function ({ node, where, position, reference }) {
 		}
 	}
 	if (original_node && rn_node) {
-		const shared_rn_query_args = {
+		/**
+		 * Dynamically gets the arguments for rn_node. rn_node might be updated.
+		 */
+		const get_shared_rn_query_args = () => ({
 			of: rn_node,
 			select: {
 				id: true,
@@ -87,36 +90,13 @@ export default async function ({ node, where, position, reference }) {
 				depth: true
 			},
 			take: 1
-		}
-
-		/**
-		 * Query nodes we might use through out this journey
-		 */
-		const rn_last_sibling = await model.findSiblings({
-			...shared_rn_query_args,
-			orderBy: {
-				path: 'desc'
-			}
-		}).then(s => s?.[0])
-		const rn_first_sibling = await model.findSiblings({
-			...shared_rn_query_args,
-			orderBy: {
-				path: 'asc'
-			}
-		}).then(s => s?.[0])
-		const rn_last_child = await model.findChildren({
-			...shared_rn_query_args,
-			orderBy: {
-				path: 'desc'
-			}
-		}).then(s => s?.[0])
-
+		})
 
 		/**
 		 * Variables
 		 */
 
-		let new_depth = original_node.depth
+		let new_depth = rn_node.depth
 		let new_pos = null
 		let siblings = []
 
@@ -135,7 +115,14 @@ export default async function ({ node, where, position, reference }) {
 				position = 'first-sibling'
 				siblings = null
 			} else {
+				const rn_last_child = await model.findChildren({
+					...get_shared_rn_query_args(),
+					orderBy: {
+						path: 'desc'
+					}
+				}).then(s => s?.[0])
 				rn_node = rn_last_child
+
 				switch (position) {
 				case 'first-child':
 					position = 'first-sibling'
@@ -148,9 +135,25 @@ export default async function ({ node, where, position, reference }) {
 		}
 
 		// test if target is not descendant of
-		if (original_node.path.startsWith(rn_node.path) && original_node.depth > rn_node.depth) {
+		if (rn_node.path.startsWith(original_node.path) && rn_node.depth > original_node.depth) {
 			throw 'Can\'t move `node` to its descendant'
 		}
+
+		/**
+		 * Query nodes we might use through out this journey
+		 */
+		const rn_last_sibling = await model.findSiblings({
+			...get_shared_rn_query_args(),
+			orderBy: {
+				path: 'desc'
+			}
+		}).then(s => s?.[0])
+		const rn_first_sibling = await model.findSiblings({
+			...get_shared_rn_query_args(),
+			orderBy: {
+				path: 'asc'
+			}
+		}).then(s => s?.[0])
 
 		// test if we actually need to move anything
 		if (original_node.path === rn_node.path) {
@@ -170,7 +173,6 @@ export default async function ({ node, where, position, reference }) {
 			}
 		}
 
-
 		/**
 		 * Start ordering
 		 */
@@ -179,7 +181,6 @@ export default async function ({ node, where, position, reference }) {
 			(position === 'right' && rn_node.id === rn_last_sibling.id)) {
 			// Easy mode!
 			const new_path = increment_path(rn_last_sibling.path)
-			console.log('1 ---- easy mode')
 			await update_thingies({
 				old_path: original_node.path,
 				new_path,
@@ -200,6 +201,14 @@ export default async function ({ node, where, position, reference }) {
 						name: true
 					}
 				})
+				// NOTE: This is different from treebeard...
+				// ...yet to found a case where its needed
+				// logically, we never need to touch the og node during siblings
+				// operations because it'll be updated anyway. but when it's included
+				// and temp_new_path is used we get into a condition where og node's
+				// path doesn't exist temporarily
+				// Time will tell...
+				siblings = siblings.filter(s => s.path !== original_node.path)
 
 				const base_path_int = last_position_in_path({ path: rn_node.path })
 
@@ -219,8 +228,7 @@ export default async function ({ node, where, position, reference }) {
 				}
 			}
 
-			const new_path = path_from_depth({ path: rn_node.path, depth: rn_node.depth - 1 }) + int2str(new_pos)
-
+			const new_path = path_from_depth({ path: rn_node.path, depth: new_depth - 1 }) + int2str(new_pos)
 
 			// If the move is amongst siblings and is to the left and there
 			// are siblings to the right of its new position then to be on
@@ -230,16 +238,16 @@ export default async function ({ node, where, position, reference }) {
 			if (original_node.path.length === new_path.length) {
 
 				const parent_old_path = path_from_depth({ path: original_node.path, depth: original_node.depth - 1 })
-				const parent_new_path = path_from_depth({ path: new_path, depth: new_depth })
+				const parent_new_path = path_from_depth({ path: new_path, depth: new_depth - 1 })
 
 				if (parent_old_path === parent_new_path && siblings?.length > 0 && new_path < original_node.path) {
 					const base_path_int = last_position_in_path({ path: rn_last_sibling.path })
 					temp_new_path = path_from_depth({ path: rn_node.path, depth: rn_node.depth - 1 }) + int2str(base_path_int + 2)
 
-					console.debug('2 ---- hit temp new path')
 					await update_thingies({
 						old_path: original_node.path,
-						new_path: temp_new_path, new_depth
+						new_path: temp_new_path,
+						new_depth
 					})
 				}
 			}
@@ -260,7 +268,7 @@ export default async function ({ node, where, position, reference }) {
 				// the next "priorpath"
 				prior_path = increment_path(node.path)
 			}
-			// NOTE: Why?
+			// Order of operation matters because we want to compress them
 			move_siblings.reverse()
 
 
@@ -268,11 +276,10 @@ export default async function ({ node, where, position, reference }) {
 				// moving the siblings(and their branches) at the right of the
 				// related position one step to the right
 				const node_new_path = increment_path(node.path)
-				console.log('3 ---- moving siblings')
 				await update_thingies({
 					old_path: node.path,
+					new_path: node_new_path,
 					new_depth: node.depth,
-					new_path: node_new_path
 				})
 
 				// if movebranch w/e
@@ -283,10 +290,10 @@ export default async function ({ node, where, position, reference }) {
 				}
 			}
 
+
 			// if movebranch w/e
 			// node to move
 			if (temp_new_path) {
-				console.log('5 ---- move back from temp_new_path')
 				// temp_new_path -> new_path
 				// await push_new_path_updates({ ...of, path: temp_new_path }, new_path)
 				await update_thingies({
@@ -295,7 +302,6 @@ export default async function ({ node, where, position, reference }) {
 					new_path,
 				})
 			} else {
-				console.log('6 ---- move og to new_depth if no temp_new_path')
 				await update_thingies({
 					old_path: original_node.path,
 					new_depth,
@@ -306,13 +312,12 @@ export default async function ({ node, where, position, reference }) {
 
 			// Updating parent numchilds when original_node is changing depth
 			const original_parent_path = path_from_depth({ path: original_node.path, depth: original_node.depth - 1 })
-			const new_parent_path = path_from_depth({ path: original_node.path, depth: new_depth - 1 })
+			const new_parent_path = path_from_depth({ path: new_path, depth: new_depth - 1 })
 			if (
 				(!original_parent_path && new_parent_path) ||
 				(original_parent_path && !new_parent_path) ||
 				(original_parent_path !== new_parent_path)
 			) {
-				console.log('7 ---- Updating parent numchild')
 				if (original_parent_path) {
 					await model.update({
 						where: { path: original_parent_path },
