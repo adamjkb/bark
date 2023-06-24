@@ -20,23 +20,20 @@ export const seedOrResetDB = async () => {
 			{'id': 13,	'name': 'B-C', 		'path':'0001000100020003',	'depth': 4,		'numchild': 0 },
 		]
 
+
+		// Delete all records if they exist because `path` unique constraint
+		if (await prisma.node.count()) {
+			await prisma.node.deleteMany({})
+		}
+
 		for (const v of seed_data) {
-			await prisma.node.upsert({
-				create: {
+			await prisma.node.create({
+				data: {
 					id: v.id,
 					path: v.path,
 					depth: v.depth,
 					numchild: v.numchild,
 					name: v.name
-				},
-				update: {
-					path: v.path,
-					depth: v.depth,
-					numchild: v.numchild,
-					name: v.name
-				},
-				where: {
-					id: v.id
 				}
 			})
 		}
