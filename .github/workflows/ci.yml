@@ -52,10 +52,6 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test
-      - name: Archive test results
-        if: failure()
-        shell: bash
-        run: find packages -type d -name test-results -not -empty | tar -czf test-results.tar.gz --files-from=-
       - name: Upload test results
         if: failure()
         uses: actions/upload-artifact@v3
