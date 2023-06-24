@@ -32,7 +32,7 @@ A materialized path extension for Prisma — `prisma-extension-bark`
 - [ ]  is_root
 - [ ]  is_leaf
 
-- [ ]  move
+- [x]  move
 
 - [ ]  get_first_root_node
 - [ ]  get_last_root_node

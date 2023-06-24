@@ -6,77 +6,34 @@ import { increment_path, int2str, last_position_in_path, path_from_depth } from 
  */
 export default async function ({ node, where, position, reference }) {
 	const model = Prisma.getExtensionContext(this)
-	// <sorry>
-	/**
-	 *r
-	 * @param {Object} opts
-	 * @param {string} opts.old_path
-	 * @param {string} opts.new_path
-	 * @param {number} opts.new_depth
-	 */
-	async function update_thingies({ old_path, new_path, new_depth }) {
-		/** @type {Promise<import('@prisma/client').Prisma.PrismaPromise<any>> | any[]}*/
-		const queue = []
-
-		// TODO: Ideally this would make use of transactions
-		// Issue is that Promise.all-ing a queue will lock SQLite but $transactions won't
-		// As a work-around we can set connection_limit=1
-		// https://github.com/prisma/prisma/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A+Timed+out+during+query+execution%22
-		queue.push(model.update({
-			where: { path: old_path },
-			data: {
-				path: new_path,
-				depth: new_depth
-			}
-		}))
-
-		const moveable_node = await model.findFirstOrThrow({
-			where: { path: old_path },
-			select: {
-				path: true,
-				depth: true,
-				numchild: true,
-				id: true,
-			}
-		})
-
-		if (moveable_node.numchild !== 0) {
-			const descendants = await model.findDescendants({ of: moveable_node, select: { id: true, path: true, depth: true }})
-
-
-			for (const descendant of descendants) {
-				const new_descendant_path = descendant.path.replace(old_path, new_path)
-
-				const new_descendant_depth = moveable_node.depth !== new_depth ? descendant.depth + new_depth - moveable_node.depth : null
-
-				queue.push(model.update({
-					where: {
-						id: descendant.id
-					},
-					data: {
-						path: new_descendant_path,
-						...(new_descendant_depth ? {depth: new_descendant_depth} : {})
-					}
-				}))
-			}
-		}
-
-		await Promise.all(queue)
-	}
-	// </sorry>
 
 	let original_node = node
-	// TODO: Add query logic
 	let rn_node = reference.node
 
 	if (node) {
 		original_node = node
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await model.findUniqueOrThrow({ where }).catch(err => {
+			err.message = 'Argument `where`: ' + err.message
+			throw err
+		})
 		if (target) {
 			original_node = target
 		}
 	}
+
+	if (reference.node) {
+		rn_node = reference.node
+	} else if (reference.where) {
+		const rn_target = await model.findUniqueOrThrow({ where: reference.where }).catch(err => {
+			err.message = 'Argument `reference.where`: ' + err.message
+			throw err
+		})
+		if (rn_target) {
+			rn_node = rn_target
+		}
+	}
+
 	if (original_node && rn_node) {
 		/**
 		 * Dynamically gets the arguments for rn_node. rn_node might be updated.
@@ -181,7 +138,7 @@ export default async function ({ node, where, position, reference }) {
 			(position === 'right' && rn_node.id === rn_last_sibling.id)) {
 			// Easy mode!
 			const new_path = increment_path(rn_last_sibling.path)
-			await update_thingies({
+			await update_node_and_descendants({
 				old_path: original_node.path,
 				new_path,
 				new_depth
@@ -197,8 +154,7 @@ export default async function ({ node, where, position, reference }) {
 					select: {
 						path: true,
 						numchild: true,
-						id: true,
-						name: true
+						id: true
 					}
 				})
 				// NOTE: This is different from treebeard...
@@ -244,7 +200,7 @@ export default async function ({ node, where, position, reference }) {
 					const base_path_int = last_position_in_path({ path: rn_last_sibling.path })
 					temp_new_path = path_from_depth({ path: rn_node.path, depth: rn_node.depth - 1 }) + int2str(base_path_int + 2)
 
-					await update_thingies({
+					await update_node_and_descendants({
 						old_path: original_node.path,
 						new_path: temp_new_path,
 						new_depth
@@ -276,7 +232,7 @@ export default async function ({ node, where, position, reference }) {
 				// moving the siblings(and their branches) at the right of the
 				// related position one step to the right
 				const node_new_path = increment_path(node.path)
-				await update_thingies({
+				await update_node_and_descendants({
 					old_path: node.path,
 					new_path: node_new_path,
 					new_depth: node.depth,
@@ -296,13 +252,13 @@ export default async function ({ node, where, position, reference }) {
 			if (temp_new_path) {
 				// temp_new_path -> new_path
 				// await push_new_path_updates({ ...of, path: temp_new_path }, new_path)
-				await update_thingies({
+				await update_node_and_descendants({
 					old_path: temp_new_path,
 					new_depth,
 					new_path,
 				})
 			} else {
-				await update_thingies({
+				await update_node_and_descendants({
 					old_path: original_node.path,
 					new_depth,
 					new_path,
@@ -333,7 +289,64 @@ export default async function ({ node, where, position, reference }) {
 				}
 			}
 		}
-	} else {
-		throw 'Not found desired `node`'
 	}
+
+
+	/**
+	 * Update node and descendants
+	 * @param {Object} opts
+	 * @param {string} opts.old_path
+	 * @param {string} opts.new_path
+	 * @param {number} opts.new_depth
+	 */
+	async function update_node_and_descendants({ old_path, new_path, new_depth }) {
+		/** @type {Promise<import('@prisma/client').Prisma.PrismaPromise<any>> | any[]}*/
+		const queue = []
+
+		// TODO: Ideally this would make use of transactions
+		// Issue is that Promise.all-ing a queue will lock SQLite but $transactions won't
+		// As a work-around we can set connection_limit=1
+		// https://github.com/prisma/prisma/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A+Timed+out+during+query+execution%22
+		queue.push(model.update({
+			where: { path: old_path },
+			data: {
+				path: new_path,
+				depth: new_depth
+			}
+		}))
+
+		const moveable_node = await model.findFirstOrThrow({
+			where: { path: old_path },
+			select: {
+				path: true,
+				depth: true,
+				numchild: true,
+				id: true,
+			}
+		})
+
+		if (moveable_node.numchild !== 0) {
+			const descendants = await model.findDescendants({ of: moveable_node, select: { id: true, path: true, depth: true } })
+
+
+			for (const descendant of descendants) {
+				const new_descendant_path = descendant.path.replace(old_path, new_path)
+
+				const new_descendant_depth = moveable_node.depth !== new_depth ? descendant.depth + new_depth - moveable_node.depth : null
+
+				queue.push(model.update({
+					where: {
+						id: descendant.id
+					},
+					data: {
+						path: new_descendant_path,
+						...(new_descendant_depth ? { depth: new_descendant_depth } : {})
+					}
+				}))
+			}
+		}
+
+		await Promise.all(queue)
+	}
+
 }

@@ -237,12 +237,15 @@ describe('Operation: move(), Errors', async () => {
 
 	it('errors — Not found desired node', async () => {
 		const reference_node = await get_a_node()
-		const fn = prisma.node.move({ where: { id: 14 }, position: 'first-sibling', reference: { node: reference_node } })
-		await expect(fn).rejects.toThrowError(/Not found desired `node/)
+		const fn = prisma.node.move({ where: { id: 9999 }, position: 'first-sibling', reference: { node: reference_node } })
+		await expect(fn).rejects.toThrowError(/No(.*)found$/)
 	})
 
-	it.todo('Not found desired reference node')
-
+	it('errors — Not found desired reference node', async () => {
+		const node = await get_a_node()
+		const fn = prisma.node.move({ node, position: 'first-sibling', reference: { where: { id: 9999 } } })
+		await expect(fn).rejects.toThrowError(/No(.*)found$/)
+	})
 
 	afterEach(resetDb)
 })
