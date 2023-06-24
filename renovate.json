@@ -1,0 +1,25 @@
+{
+	"extends": [
+		"github>whitesource/merge-confidence:beta",
+		"config:base",
+		":preserveSemverRanges",
+		"group:allNonMajor",
+		":semanticCommitTypeAll(chore)"
+	],
+	"pin": {
+		"enabled": false
+	},
+	"ignoreDeps": [
+		"@types/node",
+		"typescript"
+	],
+	"packageRules": [
+		{
+			"groupName": "Prisma",
+			"packagePatterns": [
+				"@prisma",
+				"prisma"
+			]
+		}
+	]
+}
