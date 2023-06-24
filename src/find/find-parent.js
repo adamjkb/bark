@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('../../types/find.js').findParentArgs} args
+ * @param {import('$types/find.js').findParentArgs} args
  */
 export default async function ({ of, where, select }) {
 	const model = Prisma.getExtensionContext(this)

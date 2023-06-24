@@ -1,23 +1,22 @@
-import type { page, Prisma } from "@prisma/client";
+import type { node, Prisma } from "@prisma/client";
 import type { XOR } from "./helpers";
 
 export type findParentArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindUniqueArgs, 'where'>;
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindUniqueArgs, 'where'>;
 
 export type findSiblingsArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindManyArgs, 'where'>;
-    
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindManyArgs, 'where'>;
+
 export type findChildrenArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path' | 'numchild'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindManyArgs, 'where'>;
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path' | 'numchild'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindManyArgs, 'where'>;
 
 export type findDescendantsArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path' | 'numchild' | 'id'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindManyArgs, 'where'>;
-    
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path' | 'numchild' | 'id'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindManyArgs, 'where'>;
+
 export type findAncestorsArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindManyArgs, 'where'>;
-    
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindManyArgs, 'where'>;

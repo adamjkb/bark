@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
 
 /**
- * @param {import('../../types/find.js').findAncestorsArgs} args
+ * @param {import('$types/find.js').findAncestorsArgs} args
  */
 export default async function ({ of, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)

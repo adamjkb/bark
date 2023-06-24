@@ -21,11 +21,11 @@
         "lint": "eslint --ignore-path .gitignore ."
     },
     "dependencies": {
-        "@prisma/client": "^4.15.0"
+        "@prisma/client": "^4.16.1"
     },
     "devDependencies": {
         "eslint": "^8.43.0",
-        "prisma": "^4.15.0",
+        "prisma": "^4.16.1",
         "vitest": "^0.32.2"
     },
     "prisma": {

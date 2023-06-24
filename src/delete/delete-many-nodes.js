@@ -3,7 +3,7 @@ import { path_from_depth } from '../utils.js'
 import { STEP_LENGTH } from '../consts.js'
 
 /**
- * @param {import('../../types/delete.js').deleteManyNodesArgs} args
+ * @param {import('$types/delete.js').deleteManyNodesArgs} args
  */
 export default async function ({ where }) {
 	const model = Prisma.getExtensionContext(this)

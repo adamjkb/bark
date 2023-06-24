@@ -1,12 +1,12 @@
 generator client {
     provider        = "prisma-client-js"
     binaryTargets   = ["native"]
-    previewFeatures = ["clientExtensions"]
 }
 
 datasource db {
     provider = "sqlite"
-    url      = "file:./test.db"
+    url      = "file:./test.db?connection_limit=1"
+
 }
 
 model node {

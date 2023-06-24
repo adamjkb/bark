@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 import { increment_path, path_from_depth } from '../utils.js'
 
 /**
- * @param {import('../../types/create.js').createSiblingArgs} args
+ * @param {import('$types/create.js').createSiblingArgs} args
  */
 export default async function ({ of, where, data }) {
 	const model = Prisma.getExtensionContext(this)

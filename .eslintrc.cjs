@@ -12,7 +12,6 @@ module.exports = {
 		semi: ['warn', 'never'],
 		'no-case-declarations': 0,
 		'no-undef': 'error',
-		'no-use-before-define': 'error',
 		'no-unused-vars': [
 			'warn',
 			{
