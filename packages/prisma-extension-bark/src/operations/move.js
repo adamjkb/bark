@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils'
+import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
  * @param {import('$types/operations').moveArgs} args
