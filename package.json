@@ -1,39 +1,24 @@
 {
-    "name": "prisma-extension-bark",
-    "version": "0.1.0-next.0",
-	"license": "UNLICENSED",
+    "name": "bark-monorepo",
+    "version": "0.0.1",
+    "private": true,
     "author": {
         "name": "Adam Jakab"
     },
-	"keywords": [
-		"prisma",
-		"prisma-client",
-		"prisma-extension",
-		"materialized-path"
-	],
-    "exports": [
-        "./src/index.js"
-    ],
     "type": "module",
     "scripts": {
-        "test": "vitest",
-        "lint:fix": "eslint --ignore-path .gitignore . --fix",
-        "lint": "eslint --ignore-path .gitignore ."
+        "test": "pnpm test -r --filter=./packages/*",
+        "release": "changeset publish",
+        "lint": "pnpm -r lint && eslint --cache --cache-location node_modules/.eslintcache 'packages /**/*.js'",
+        "lint:fix": "eslint --ignore-path .gitignore --fix --cache --cache-location node_modules/.eslintcache 'packages /**/*.js'"
     },
-    "peerDependencies": {
-        "@prisma/client": "^4.16.1",
-		"prisma": "^4.16.1"
+    "engines": {
+        "node": ">=16",
+        "pnpm": ">=8"
     },
+    "packageManager": "pnpm@8.6.3",
     "devDependencies": {
-        "eslint": "^8.43.0",
-        "vitest": "^0.32.2"
-    },
-    "prisma": {
-        "seed": "node ./test/setup/seed.js"
-    },
-	"engines": {
-		"node": ">=16",
-		"pnpm": ">=8"
-	},
-	"packageManager": "pnpm@8.6.3"
+        "@changesets/cli": "^2.26.1",
+        "@svitejs/changesets-changelog-github-compact": "^1.1.0"
+    }
 }

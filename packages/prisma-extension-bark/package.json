@@ -1,0 +1,34 @@
+{
+    "name": "prisma-extension-bark",
+    "version": "0.0.1",
+    "license": "UNLICENSED",
+    "author": {
+        "name": "Adam Jakab"
+    },
+    "keywords": [
+        "prisma",
+        "prisma-client",
+        "prisma-extension",
+        "materialized-path"
+    ],
+    "exports": [
+        "./src/index.js"
+    ],
+    "type": "module",
+    "scripts": {
+        "test": "vitest",
+        "lint:fix": "eslint --ignore-path .gitignore . --fix",
+        "lint": "eslint --ignore-path .gitignore ."
+    },
+    "peerDependencies": {
+        "@prisma/client": "^4.16.1",
+        "prisma": "^4.16.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.43.0",
+        "vitest": "^0.32.2"
+    },
+    "prisma": {
+        "seed": "node ./test/setup/seed.js"
+    }
+}

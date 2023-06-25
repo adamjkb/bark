@@ -1,8 +1,9 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
 		"paths": {
 			"$types/*": [
-				"./types/*"
+				"types/*"
 			]
 		},
 		"moduleResolution": "node",
