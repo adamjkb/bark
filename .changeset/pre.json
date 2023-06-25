@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "prisma-extension-bark": "0.0.1-next.0"
+  },
+  "changesets": [
+    "brave-hats-cross"
+  ]
+}
