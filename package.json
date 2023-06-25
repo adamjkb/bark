@@ -12,7 +12,8 @@
         "lint": "pnpm -r lint && eslint --cache --cache-location node_modules/.eslintcache 'packages/**/*.js'",
         "lint:fix": "eslint --ignore-path .gitignore --fix --cache --cache-location node_modules/.eslintcache 'packages/**/*.js'",
 		"changeset:version": "changeset version && pnpm -r generate:version && git add --all",
-		"changeset:publish": "changeset publish"
+		"changeset:publish": "changeset publish",
+		"docs:serve": "pnpm dlx docsify-cli serve ./docs"
     },
     "engines": {
         "node": ">=16",
