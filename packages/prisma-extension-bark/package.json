@@ -1,0 +1,41 @@
+{
+    "name": "prisma-extension-bark",
+    "version": "0.0.1-next.0",
+	"description": "A materialized path extension for Prisma",
+    "license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/adamjkb/bark",
+		"directory": "packages/prisma-extension-bark"
+	},
+    "author": {
+        "name": "Adam Jakab",
+		"url": "https://adamjkb.com"
+    },
+    "keywords": [
+        "prisma",
+        "prisma-client",
+        "prisma-extension",
+        "materialized-path"
+    ],
+    "exports": [
+        "./src/index.js"
+    ],
+    "type": "module",
+    "scripts": {
+        "test": "vitest",
+        "lint:fix": "eslint --ignore-path .gitignore . --fix",
+        "lint": "eslint --ignore-path .gitignore ."
+    },
+    "peerDependencies": {
+        "@prisma/client": "^4.16.1",
+        "prisma": "^4.16.1"
+    },
+    "devDependencies": {
+        "eslint": "^8.43.0",
+        "vitest": "^0.32.2"
+    },
+    "prisma": {
+        "seed": "node ./test/setup/seed.js"
+    }
+}

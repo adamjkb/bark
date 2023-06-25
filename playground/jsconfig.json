@@ -1,10 +1,6 @@
 {
 	"compilerOptions": {
-		"paths": {
-			"$types/*": [
-				"./types/*"
-			]
-		},
+		"baseUrl": ".",
 		"moduleResolution": "node",
 		"module": "esnext",
 		"target": "esnext",
