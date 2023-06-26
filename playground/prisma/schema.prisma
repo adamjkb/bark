@@ -16,4 +16,6 @@ model node {
     numchild Int    @default(0)
 	// Not required but makes it easier to test
     name     String
+
+	@@index([path])
 }
