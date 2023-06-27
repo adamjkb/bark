@@ -11,7 +11,14 @@ export type findSiblingsArgs = XOR<
 
 export type findChildrenArgs = XOR<
     { of: Partial<node> & Required<Pick<node, 'depth' | 'path' | 'numchild'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
-    & Omit<Prisma.nodeFindManyArgs, 'where'>;
+		& Omit<Prisma.nodeFindManyArgs, 'where'>;
+
+type findTreeOfAndWhereArgs = Omit<Prisma.nodeFindManyArgs, 'where'>;
+
+type findTreeParentOfAndWhereArgs = XOR<
+    { of: Partial<node> & Required<Pick<node, 'depth' | 'path' | 'numchild'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>;
+
+export type findTreeArgs = findTreeOfAndWhereArgs & { parent?: findTreeParentOfAndWhereArgs }
 
 export type findDescendantsArgs = XOR<
     { of: Partial<node> & Required<Pick<node, 'depth' | 'path' | 'numchild' | 'id'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
