@@ -1,8 +1,8 @@
 # Client API reference
 
-## Create&#x20;
+## Create
 
-### `createRoot`
+### `createRoot` [WIP]
 
 ### `createChild`
 
@@ -11,6 +11,8 @@
 
 
 ## Find
+
+### `findTree`
 
 ### `findAncestors`
 
@@ -24,10 +26,10 @@
 
 
 
+
 ## Operation
 
 ### `move`
-
 
 
 ## Helpers
