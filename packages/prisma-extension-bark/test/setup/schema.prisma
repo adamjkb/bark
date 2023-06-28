@@ -15,5 +15,5 @@ model node {
     depth    Int
     numchild Int    @default(0)
 	// Not required but makes it easier to test
-    name     String
+    name     String?
 }
