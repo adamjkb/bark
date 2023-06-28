@@ -1,31 +1,27 @@
-import { PrismaClient } from '@prisma/client'
-import { bark } from '../src'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { seedOrResetDB } from './setup/seed'
-
-const prisma = new PrismaClient().$extends(bark)
-const get_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 3 } })
+import { seedOrResetDB } from './utilities/seed'
+import { get_a_node, get_home_node, get_root_node, prisma } from './utilities/prisma.js'
 
 describe('findParent()', async () => {
-	const rootNode = await prisma.node.findUnique({ where: { id: 1 } })
-	const homeNode = await prisma.node.findUnique({ where: { id: 2 } })
+	const root_node = await get_root_node()
+	const home_node = await get_home_node()
 
 	/* Home nodes */
-	it('homeNode\'s parent using `where` arg', async () => {
+	it('home_node\'s parent using `where` arg', async () => {
 		const parent = await prisma.node.findParent({where: { id: 2 }})
-		expect(parent).toStrictEqual(rootNode)
+		expect(parent).toStrictEqual(root_node)
 	})
-	it('homeNode\'s parent using `of` arg', async () => {
-		const parent = await prisma.node.findParent({of: homeNode})
-		expect(parent).toStrictEqual(rootNode)
+	it('home_node\'s parent using `of` arg', async () => {
+		const parent = await prisma.node.findParent({of: home_node})
+		expect(parent).toStrictEqual(root_node)
 	})
 
 	/* Root node */
-	it('rootNode\'s parent using `where` arg', async () => {
-		const parent = await prisma.node.findParent({of: rootNode})
+	it('root_node\'s parent using `where` arg', async () => {
+		const parent = await prisma.node.findParent({of: root_node})
 		expect(parent).toBe(null)
 	})
-	it('rootNode\'s parent using `of` arg', async () => {
+	it('root_node\'s parent using `of` arg', async () => {
 		const parent = await prisma.node.findParent({where: { id: 1 }})
 		expect(parent).toBe(null)
 	})

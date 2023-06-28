@@ -1,20 +1,20 @@
 import { PrismaClient } from '@prisma/client'
 import { bark } from '../src'
 import { afterEach, describe, expect, it } from 'vitest'
-import { seedOrResetDB } from './setup/seed'
+import { seedOrResetDB } from './utilities/seed'
+import {
+	get_a_a_node,
+	get_a_b_node,
+	get_a_c_node,
+	get_a_d_node,
+	get_a_e_node,
+	get_a_node,
+	get_b_a_node,
+	get_b_node,
+	get_c_node
+} from './utilities/prisma'
 
 const prisma = new PrismaClient().$extends(bark)
-const get_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 3 } })
-const get_b_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 4 } })
-const get_c_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 5 } })
-const get_a_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 6 } })
-const get_a_b_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 7 } })
-const get_a_c_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 8 } })
-const get_a_d_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 9 } })
-const get_a_e_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 10 } })
-const get_b_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 11 } })
-
-const resetDb = async () => await seedOrResetDB()
 
 // Position: last-sibling
 describe('Operation: move(), Position: last-sibling', async () => {
@@ -39,7 +39,7 @@ describe('Operation: move(), Position: last-sibling', async () => {
 		expect(result_child).toMatchObject({ path: '0001000100040001' })
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 // Position: right
@@ -87,7 +87,7 @@ describe('Operation: move(), Position: right', async () => {
 	})
 
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 
@@ -130,7 +130,7 @@ describe('Operation: move(), Position: left', async () => {
 		expect(result).toMatchObject({ path: '000100010002', depth: node.depth, numchild: node.numchild })
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 // Position: first-sibling
@@ -161,7 +161,7 @@ describe('Operation: move(), Position: first-sibling', async () => {
 		expect(result_child).toMatchObject({ path: '0001000100010001' })
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 // Position: last-child
@@ -189,7 +189,7 @@ describe('Operation: move(), Position: last-child', async () => {
 
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 // Position: first-child
@@ -217,7 +217,7 @@ describe('Operation: move(), Position: first-child', async () => {
 
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })
 
 // Errors
@@ -247,5 +247,5 @@ describe('Operation: move(), Errors', async () => {
 		await expect(fn).rejects.toThrowError(/No(.*)found$/)
 	})
 
-	afterEach(resetDb)
+	afterEach(seedOrResetDB)
 })

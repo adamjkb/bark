@@ -8,3 +8,5 @@ export type createSiblingArgs = XOR<
 export type createChildArgs = XOR<
     { of: Partial<page> & Required<Pick<page, 'depth' | 'path' | 'numchild'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
     & { data: Omit<Prisma.pageUncheckedCreateInput, 'path'|'depth'|'numchild'> };
+
+export type createRootArgs = Omit<Prisma.nodeCreateArgs, 'data'> & { data: Omit<Prisma.pageUncheckedCreateInput, 'path'|'depth'|'numchild'> };
