@@ -2,7 +2,7 @@
 
 ## Create
 
-### `createRoot` [WIP]
+### `createRoot`
 
 ### `createChild`
 
@@ -23,6 +23,8 @@
 ### `findParent`
 
 ### `findSiblings`
+
+### `findLastRoot`
 
 
 
