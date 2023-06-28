@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { bark } from '../src'
-import { describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { seedOrResetDB } from './setup/seed'
 
 const prisma = new PrismaClient().$extends(bark)
 const get_a_node = prisma.node.findUniqueOrThrow.bind(null, { where: { id: 3 } })
@@ -58,4 +59,30 @@ describe('findTree()', async () => {
 		expect(result?.at?.(0)?.path).toBe('0001000100010005')
 		expect(result?.at?.(-1)?.path).toBe('000100010001')
 	})
+})
+
+describe('findLastRoot()', async () => {
+	it('root node w/o args', async () => {
+		const result = await prisma.node.findLastRoot()
+		expect(result).toMatchObject({path: '0002', depth: 1, numchild: 0, name: 'Root 2'})
+	})
+
+	it('root node w/ args', async () => {
+		const result = await prisma.node.findLastRoot({ select: { path: true } })
+		expect(result).toStrictEqual({ path: '0002' })
+	})
+
+	beforeAll(async () => {
+		// Setup more root nodes
+		await prisma.node.create({
+			data: {
+				path: '0002',
+				depth: 1,
+				numchild: 0,
+				name: 'Root 2'
+			}
+		})
+	})
+
+	afterAll(seedOrResetDB)
 })
