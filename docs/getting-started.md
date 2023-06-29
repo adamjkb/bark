@@ -2,15 +2,15 @@
 
 ## 1. Install extension package
 
-```
+```bash
 npm i prisma-extension-bark
 ```
 
 ## 2. Implement the required field on your model
 
-Create a `node` model with the minimum required field and the field you would like to have on this model. For more information on this model refer to [Model Reference](/docs/model-reference.md) documentation.
+Create a `node` model with the minimum required field and the field you would like to have on this model. For more information on this model refer to [Model Reference](model-reference.md) documentation.
 
-```
+```prisma
 model node {
     // Extension's internal fields
     id       Int    @id @default(autoincrement())
@@ -21,7 +21,7 @@ model node {
 	// Your fields go here...
     name     String
 
-	@@index([path])
+    @@index([path])
 }
 ```
 
@@ -29,7 +29,7 @@ model node {
 
 For more information on this Prisma CLI command [see Prisma documentation](https://www.prisma.io/docs/reference/api-reference/command-reference#migrate-dev).
 
-```
+```bash
 npx prisma migrate dev
 ```
 
