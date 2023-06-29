@@ -36,6 +36,6 @@
         "vitest": "^0.32.2"
     },
     "prisma": {
-        "seed": "node ./test/setup/seed.js"
+        "seed": "node ./test/utilities/seed.js"
     }
 }

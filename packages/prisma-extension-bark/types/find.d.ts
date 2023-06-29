@@ -27,3 +27,5 @@ export type findDescendantsArgs = XOR<
 export type findAncestorsArgs = XOR<
     { of: Partial<node> & Required<Pick<node, 'depth' | 'path'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
     & Omit<Prisma.nodeFindManyArgs, 'where'>;
+
+export type findLastRootNodeArgs =  Omit<Prisma.nodeFindFirstArgs, 'where'>;
