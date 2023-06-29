@@ -28,7 +28,7 @@ A unique string that stores the materialized path of each node. The string is co
 
 It is recommended to define an index in the schema for `path` since almost all methods rely on ordering by path in some ways.
 
-Database type can optionally be mapped to a more performant type where it's allowed, such as `@db.VarChar(255)` in the case of PostgreSQL or MySQL. 
+Database type can optionally be mapped to a more performant [native type](https://www.prisma.io/docs/concepts/components/prisma-schema/data-model#native-types-mapping) where it's allowed, such as [`@db.VarChar(255)`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#postgresql) in the case of PostgreSQL or MySQL. 
 
 #### `depth`
 
