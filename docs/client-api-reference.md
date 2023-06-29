@@ -27,17 +27,17 @@
 ### `findLastRoot`
 
 
-
-
 ## Operation
 
 ### `move`
 
+### `fixTree` [TBD]
+
 
 ## Helpers
 
-### `isChildOf` \[TBD]
+### `isChildOf` [TBD]
 
-### `isSiblingOf` \[TBD]
+### `isSiblingOf` [TBD]
 
-### `isRoot` \[TBD]
+### `isRoot` [TBD]
