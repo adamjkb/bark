@@ -10,7 +10,7 @@ Bark doesn't override any of the existing [Prisma model queries](https://www.pri
 
 | Argument  | Required                              | Description                                                                                                                                                                                        |
 | --------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `data`    | [_**Yes\***_](#user-content-fn-1)[^1] | Object that will be used to create new record in database.                                                                                                                                         |
+| `data`    | [_**Yes\***_](#foot-note-1)[^1] | Object that will be used to create new record in database.                                                                                                                                         |
 | `select`  | No                                    | [Specifies which properties to include](\[/concepts/components/prisma-client/select-fields]\(https:/www.prisma.io/docs/concepts/components/prisma-client/select-fields\)/) on the returned object. |
 | `include` | No                                    | [Specifies which relations should be eagerly loaded](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries) on the returned object.                                        |
 
