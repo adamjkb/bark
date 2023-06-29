@@ -1,4 +1,4 @@
-# Client API reference
+# Client Extension API reference
 
 ## Create
 
@@ -26,6 +26,9 @@
 
 ### `findLastRoot`
 
+## Delete
+
+### `delete`
 
 ## Operation
 

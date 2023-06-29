@@ -59,4 +59,4 @@ const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
 ```
 
-Have a look at our [Client API documentation](/docs/client-api-reference.md) to discover what else you can do. 
+Have a look at our [Client Extension API documentation](/docs/client-extension-api-reference.md) to discover what else you can do with Bark. 
