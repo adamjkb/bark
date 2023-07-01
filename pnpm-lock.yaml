@@ -35,13 +35,13 @@ importers:
     devDependencies:
       '@prisma/client':
         specifier: ^4.16.1
-        version: 4.16.1(prisma@4.16.1)
+        version: 4.16.2(prisma@4.16.2)
       eslint:
         specifier: ^8.43.0
-        version: 8.43.0
+        version: 8.44.0
       prisma:
         specifier: ^4.16.1
-        version: 4.16.1
+        version: 4.16.2
       prisma-extension-bark:
         specifier: workspace:*
         version: link:../packages/prisma-extension-bark
@@ -586,11 +586,9 @@ packages:
     dependencies:
       '@prisma/engines-version': 4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81
       prisma: 4.16.2
-    dev: false
 
   /@prisma/engines-version@4.16.1-1.4bc8b6e1b66cb932731fb1bdbbc550d1e010de81:
     resolution: {integrity: sha512-q617EUWfRIDTriWADZ4YiWRZXCa/WuhNgLTVd+HqWLffjMSPzyM5uOWoauX91wvQClSKZU4pzI4JJLQ9Kl62Qg==}
-    dev: false
 
   /@prisma/engines@4.16.2:
     resolution: {integrity: sha512-vx1nxVvN4QeT/cepQce68deh/Turxy5Mr+4L4zClFuK1GlxN3+ivxfuv+ej/gvidWn1cE1uAhW7ALLNlYbRUAw==}
@@ -2290,7 +2288,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.16.2
-    dev: false
 
   /pseudomap@1.0.2:
     resolution: {integrity: sha512-b/YwNhb8lk1Zz2+bXXpS/LK9OisiZZ1SNsSLxN1x2OXVEhW2Ckr/7mWE5vrC1ZTiJlD9g19jWszTmJsB+oEpFQ==}
