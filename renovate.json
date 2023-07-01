@@ -16,7 +16,7 @@
 	"packageRules": [
 		{
 			"groupName": "Prisma",
-			"packagePatterns": [
+			"matchPackagePatterns": [
 				"@prisma",
 				"prisma"
 			]
