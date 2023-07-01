@@ -7,10 +7,10 @@ import { default_order_by } from '../consts.js'
 export default async function ({ orderBy = default_order_by, parent: parentArg, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
-	let parent = parentArg?.of
+	let parent = parentArg?.node
 
-	if (parentArg?.of) {
-		parent = parentArg.of
+	if (parentArg?.node) {
+		parent = parentArg.node
 	} else if (parentArg?.where) {
 		const target = await model.findUniqueOrThrow({
 			where: parentArg.where,

@@ -4,7 +4,7 @@ import { path_from_depth } from '../utils.js'
 /**
  * @param {import('$types/delete.js').deleteNodeArgs} args
  */
-export default async function ({ of, where }) {
+export default async function ({ node, where }) {
 	const model = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
@@ -12,9 +12,9 @@ export default async function ({ of, where }) {
 	/** @type {number} */
 	let depth
 
-	if (of) {
-		path = of.path
-		depth = of.depth
+	if (node) {
+		path = node.path
+		depth = node.depth
 	} else if (where) {
 		const target = await model.findUnique({
 			where,

@@ -4,7 +4,7 @@ import { default_order_by, max_segment, min_segment } from '../consts.js'
 /**
  * @param {import('$types/find.js').findChildrenArgs} args
  */
-export default async function ({ of, where, orderBy = default_order_by, ...args }) {
+export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
@@ -15,10 +15,10 @@ export default async function ({ of, where, orderBy = default_order_by, ...args 
 	let numchild
 
 	// Get required arguments from instance
-	if (of) {
-		path = of.path
-		depth = of.depth
-		numchild = of.numchild
+	if (node) {
+		path = node.path
+		depth = node.depth
+		numchild = node.numchild
 	} else if (where) {
 		const target = await model.findUnique({ where })
 		if (target) {
