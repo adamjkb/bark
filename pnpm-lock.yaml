@@ -18,10 +18,10 @@ importers:
   packages/prisma-extension-bark:
     dependencies:
       '@prisma/client':
-        specifier: ^4.16.1
+        specifier: ^4.16.2
         version: 4.16.2(prisma@4.16.2)
       prisma:
-        specifier: ^4.16.1
+        specifier: ^4.16.2
         version: 4.16.2
     devDependencies:
       eslint:
