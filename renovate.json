@@ -12,14 +12,5 @@
 	"ignoreDeps": [
 		"@types/node",
 		"typescript"
-	],
-	"packageRules": [
-		{
-			"groupName": "Prisma",
-			"matchPackagePatterns": [
-				"@prisma",
-				"prisma"
-			]
-		}
 	]
 }
