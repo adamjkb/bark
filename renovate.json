@@ -6,11 +6,21 @@
 		"group:allNonMajor",
 		":semanticCommitTypeAll(chore)"
 	],
+	"bumpVersion": "patch",
 	"pin": {
 		"enabled": false
 	},
 	"ignoreDeps": [
 		"@types/node",
 		"typescript"
+	],
+	"packageRules": [
+		{
+			"groupName": "Prisma",
+			"matchPackagePatterns": [
+				"@prisma",
+				"prisma"
+			]
+		}
 	]
 }
