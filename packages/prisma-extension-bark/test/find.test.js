@@ -12,13 +12,13 @@ describe('findParent()', async () => {
 		expect(parent).toStrictEqual(root_node)
 	})
 	it('home_node\'s parent using `of` arg', async () => {
-		const parent = await prisma.node.findParent({of: home_node})
+		const parent = await prisma.node.findParent({node: home_node})
 		expect(parent).toStrictEqual(root_node)
 	})
 
 	/* Root node */
 	it('root_node\'s parent using `where` arg', async () => {
-		const parent = await prisma.node.findParent({of: root_node})
+		const parent = await prisma.node.findParent({node: root_node})
 		expect(parent).toBe(null)
 	})
 	it('root_node\'s parent using `of` arg', async () => {
@@ -44,7 +44,7 @@ describe('findTree()', async () => {
 		const parent = await get_a_node()
 		const result = await prisma.node.findTree({
 			parent: {
-				of: parent
+				node: parent
 			},
 			select: { path: true },
 			orderBy: {

@@ -39,7 +39,7 @@ export default async function ({ node, where, position, reference }) {
 		 * Dynamically gets the arguments for rn_node. rn_node might be updated.
 		 */
 		const get_shared_rn_query_args = () => ({
-			of: rn_node,
+			node: rn_node,
 			select: {
 				id: true,
 				path: true,
@@ -150,7 +150,7 @@ export default async function ({ node, where, position, reference }) {
 
 			if (!new_pos) {
 				siblings = await model.findSiblings({
-					of: rn_node,
+					node: rn_node,
 					select: {
 						path: true,
 						numchild: true,
@@ -208,7 +208,7 @@ export default async function ({ node, where, position, reference }) {
 				}
 			}
 
-			// Optimisation to only move siblings which need moving
+			// Optimization to only move siblings which need moving
 			//(i.e.if we've got holes, allow them to compress)
 			let move_siblings = []
 			let prior_path = new_path
@@ -326,7 +326,7 @@ export default async function ({ node, where, position, reference }) {
 		})
 
 		if (moveable_node.numchild !== 0) {
-			const descendants = await model.findDescendants({ of: moveable_node, select: { id: true, path: true, depth: true } })
+			const descendants = await model.findDescendants({ node: moveable_node, select: { id: true, path: true, depth: true } })
 
 
 			for (const descendant of descendants) {
