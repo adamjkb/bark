@@ -21,7 +21,7 @@ model node {
 
 If you are using a `prisma` version older than `4.16.0` make sure you add `clientExtensions` flag to your client [`previewFeatures`](https://www.prisma.io/docs/concepts/components/preview-features/client-preview-features#enabling-a-prisma-client-preview-feature).
 
-#### `path`
+### `path`
 
 type: `String` flags: `@unique`
 
@@ -31,7 +31,7 @@ It is recommended to define an index in the schema for `path` since almost all m
 
 Database type can optionally be mapped to a more performant [native type](https://www.prisma.io/docs/concepts/components/prisma-schema/data-model#native-types-mapping) where it's allowed, such as [`@db.VarChar(255)`](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#postgresql) in the case of PostgreSQL or MySQL.
 
-#### `depth`
+### `depth`
 
 type: `Int`
 
@@ -39,7 +39,7 @@ Integer that stores the depth of the node in the tree. Its main function is to s
 
 _Adapted from_ [_`django-treebeard`_](https://django-treebeard.readthedocs.io)
 
-#### `numchild`
+### `numchild`
 
 type: `Int` flags: `@default(0)`
 
