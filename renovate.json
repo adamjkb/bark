@@ -6,6 +6,7 @@
 		"group:allNonMajor",
 		":semanticCommitTypeAll(chore)"
 	],
+	"bumpVersion": "patch",
 	"pin": {
 		"enabled": false
 	},
@@ -16,7 +17,7 @@
 	"packageRules": [
 		{
 			"groupName": "Prisma",
-			"packagePatterns": [
+			"matchPackagePatterns": [
 				"@prisma",
 				"prisma"
 			]
