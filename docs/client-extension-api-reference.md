@@ -64,7 +64,7 @@ Creates a new sibling to the defined node in either `where` or `node` arguments.
 | Argument  | Required                        | Description                                                                                                                                                                                        |
 | --------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                                                                                                                                    |
-| `where`    | Yes unless `node` | Query to find an exisiting node to be used as a reference.                                                                                                                                                          |
+| `where`    | Yes unless `node` | Query to find an existing node to be used as a reference.                                                                                                                                                          |
 | `data`    | [_**Yes\***_](#foot-note-1)[^1] | Object that will be used to create new record in database.                                                                                                                                         |
 | `select`  | No                              | [Specifies which properties to include](\[/concepts/components/prisma-client/select-fields]\(https:/www.prisma.io/docs/concepts/components/prisma-client/select-fields\)/) on the returned object. |
 | `include` | No                              | [Specifies which relations should be eagerly loaded](https://www.prisma.io/docs/concepts/components/prisma-client/relation-queries) on the returned object.                                        |
@@ -88,6 +88,29 @@ const newChildNode = await xprisma.node.createSibling({
 ## Find
 
 ### `findTree`
+Returns all nodes in tree, including the parent if provided. By default the tree is ordered by `path` in ascending order.
+
+| Argument       | Required | Description                                                                                                                      |
+| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `parent.node`  | No       | An existing node used as a reference where the incoming entry should be created.                                                 |
+| `parent.where` | No       | Query to find an existing node to be used as a reference.                                                                        |
+| `orderBy`      | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`  |
+| `...args`      | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` |
+
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const tree = await xprisma.node.findTree({
+	parent: { where: { path: '00010001' } },
+	select: { path: true }
+})
+// [{ path: '00010001' }, { path: '000100010001' }, ...]
+```
+
+</details>
 
 ### `findAncestors`
 
@@ -95,11 +118,47 @@ const newChildNode = await xprisma.node.createSibling({
 
 ### `findParent`
 
+Return the parent node of the defined node in either `where` or `node` arguments. If the `findParent` called on a root node it will return `null`.
+
+| Argument       | Required | Description                                                                                                                      |
+| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                                                                                                                                    |
+| `where`    | Yes unless `node` | Query to find an existing node to be used as a reference.                                                                     |
+| `...args`      | No       | Same as [`findUnique`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findfirst) options excluding `where`. |
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const parent = await prisma.node.findParent({where: { path: '00010002' }, select: { path: true, name: true }})
+// { path: '0001', name: 'Root A' }
+```
+
+</details>
+
 ### `findChildren`
 
 ### `findSiblings`
 
 ### `findLastRoot`
+
+Returns the last root node. If no root node exist it returns null.
+
+| Argument       | Required | Description                                                                                                                      |
+| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `...args`      | No       | Same as [`findFirst`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findfirst) options excluding `where` and `orderBy`. |
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const lastRootNode = await xprisma.node.findLastRoot({ select: { name: true } })
+// { name: 'Root C' }
+```
+
+</details>
 
 ## Delete
 

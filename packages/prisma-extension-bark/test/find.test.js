@@ -28,8 +28,8 @@ describe('findParent()', async () => {
 
 	/* None existent node */
 	it('none existent node using `where` arg', async () => {
-		const parent = await prisma.node.findParent({where: {id: 99999 }})
-		expect(parent).toBe(undefined)
+		const fn = prisma.node.findParent({where: {id: 99999 }})
+		expect(fn).rejects.toThrowError(/No(.*)found$/)
 	})
 })
 
