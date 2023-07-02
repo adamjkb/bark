@@ -1,3 +1,9 @@
+---
+description: >-
+  List of all available methods on an Bark extended Prisma client.
+---
+
+
 # Client Extension API reference
 
 ## Good to know
