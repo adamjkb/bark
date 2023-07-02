@@ -311,15 +311,46 @@ const deletedNodesCount = await xprisma.node.deleteManyNodes({
 ## Operation
 
 ### `move`
+Move the node of the defined node in either `where` or `node` arguments relative to the `reference`'s node and the `position` argument. Throws if the targeted node is trying to be moved to own of its descendants, if the node is already in the requested position, or if either the target or the referenced node is not found. Returns `undefined`
+
+| Argument          | Required                     | Description                                                                                            |
+| ----------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `node`            | Yes unless `where`           | An existing node used as a reference where the incoming entry should be move.                          |
+| `where`           | Yes unless `node`            | Query to find an existing node to be used as a reference.                                              |
+| `position`        | Yes                          | One of the following: `first-child`, `last-child`, `first-sibling`, `left`, `right`, or `last-sibling` |
+| `reference.node`  | Yes unless `reference.where` | An existing node used as a reference point to move.                                                    |
+| `reference.where` | Yes unless `reference.node`  | Query to find an existing node to be used as a reference.                                              |
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const nodeBefore = await xprisma.node.findUnique({where: { id: 9 }})
+// { path: '00010001', ... }
+await xprisma.node.move({ 
+	node: nodeBefore,
+	position: 'first-child',
+	reference: {
+		where: {
+			path: '00010002'
+		}
+	}
+})
+const nodeAfter = await xprisma.node.findUnique({where: { id: 9 }})
+// { path: '000100020001', ... }
+```
+
+</details>
 
 ### `fixTree` \[TBD]
 
-## Helpers
+_Not currently implemented. [See issue on GitHub](https://github.com/adamjkb/bark/issues/26) to make your voice heard, or have a go at it._
 
-### `isChildOf` \[TBD]
 
-### `isSiblingOf` \[TBD]
+## Helpers \[TBD]
 
-### `isRoot` \[TBD]
+_These would serve as a syntactic sugar to help make repetitive task easier. An example function be `isDescendantOf`, a function that would compare a node to another return true if it's, well, a descendant of it. Let us know what helpers function you'd find useful on the dedicated [GitHub issue](https://github.com/adamjkb/bark/issues/27)._
+
 
 [^1]: _Not required unless data model contains required fields with out a default value_

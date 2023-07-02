@@ -125,7 +125,6 @@ export default async function ({ node, where, position, reference }) {
 					rn_node.path === rn_first_sibling.path
 				)
 			) {
-				// TODO: Change to return
 				throw 'Nothing to move'
 			}
 		}
