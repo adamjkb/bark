@@ -16,7 +16,7 @@ export default async function ({ node, where }) {
 		path = node.path
 		depth = node.depth
 	} else if (where) {
-		const target = await model.findUnique({
+		const target = await model.findUniqueOrThrow({
 			where,
 			select: {
 				path: true,
@@ -30,8 +30,8 @@ export default async function ({ node, where }) {
 	}
 
 
-	// update parent numchild
-	if (depth <= 1) {
+	// update parent numchild if not a root node
+	if (depth > 1) {
 		const parent_path = path_from_depth({ path: path, depth: depth - 1 })
 		await model.update({
 			where: {

@@ -190,7 +190,7 @@ const parent = await prisma.node.findParent({where: { path: '00010002' }, select
 
 ### `findChildren`
 
-Returns all direct children nodes of the defined node in either `where` or `node` arguments. When no children were found it will return null. By default the tree is ordered by `path` in ascending order.
+Returns all direct children nodes of the defined node in either `where` or `node` arguments. When no children were found it will return `null`. By default the tree is ordered by `path` in ascending order.
 
 | Argument  | Required           | Description                                                                                                                                        |
 | --------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -243,7 +243,7 @@ const siblings = await xprisma.node.findSiblings({
 
 ### `findLastRoot`
 
-Returns the last root node. If no root node exist it returns null.
+Returns the last root node. If no root node exist it returns `null`.
 
 | Argument       | Required | Description                                                                                                                      |
 | -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -264,7 +264,49 @@ const lastRootNode = await xprisma.node.findLastRoot({ select: { name: true } })
 
 ### `deleteNode`
 
+Deletes the node and all its descendants. Returns the count of deleted nodes just like [`deleteMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#deletemany) would.
+
+| Argument | Required           | Description                                                                      |
+| -------- | ------------------ | -------------------------------------------------------------------------------- |
+| `node`   | Yes unless `where` | An existing node used as a reference where the incoming entry should be created. |
+| `where`  | Yes unless `node`  | Query to find an existing node to be used as a reference.                        |
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const deletedNodesCount = await xprisma.node.deleteNode({ where: { path: '00010001' })
+// { count: 6 }
+```
+
+</details>
+
+
 ### `deleteManyNodes`
+
+Deletes all matching nodes found by the `where` filter and their descendants using the least number of operations. Returns the count of deleted nodes just like [`deleteMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#deletemany) would. If no nodes were deleted it will return `null`.
+
+| Argument | Required | Description                                                                                                     |
+| -------- | -------- | --------------------------------------------------------------------------------------------------------------- |
+| `where`  | Yes      | Same as [`findMany.where`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) |
+
+<details>
+
+<summary>Example</summary>
+
+```js
+const deletedNodesCount = await xprisma.node.deleteManyNodes({ 
+	where: { 
+		id: {
+			in: [9, 3, 10]
+		}
+	}
+})
+// { count: 12 }
+```
+
+</details>
 
 ## Operation
 
