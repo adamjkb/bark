@@ -66,7 +66,7 @@ export default async function ({ where }) {
 	}
 
 	// Delete paths
-	return Promise.all(Array.from(removable_nodes.keys()).map(path => {
+	const deleteCounts = await Promise.all(Array.from(removable_nodes.keys()).map(path => {
 		return model.deleteMany({
 			where: {
 				path: {
@@ -76,4 +76,5 @@ export default async function ({ where }) {
 		})
 	}))
 
+	return deleteCounts?.reduce?.((pV, cV) => ({count: pV.count + cV.count}), {count: 0})
 }

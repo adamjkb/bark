@@ -5,7 +5,7 @@ import { path_from_depth } from '../utils.js'
 /**
  * @param {import('$types/find.js').findSiblingsArgs} args
  */
-export default async function ({ of, where, orderBy = default_order_by, ...args }) {
+export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
@@ -14,9 +14,9 @@ export default async function ({ of, where, orderBy = default_order_by, ...args 
 	let depth
 
 	// Get required arguments from instance
-	if (of) {
-		path = of.path
-		depth = of.depth
+	if (node) {
+		path = node.path
+		depth = node.depth
 	} else if (where) {
 		const target = await model.findUnique({ where })
 		if (target) {

@@ -4,7 +4,7 @@ import { increment_path, path_from_depth } from '../utils.js'
 /**
  * @param {import('$types/create.js').createSiblingArgs} args
  */
-export default async function ({ of, where, data }) {
+export default async function ({ node, where, data, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
@@ -13,11 +13,11 @@ export default async function ({ of, where, data }) {
 	let depth
 
 	// Get required arguments from instance
-	if (of) {
-		path = of.path
-		depth = of.depth
+	if (node) {
+		path = node.path
+		depth = node.depth
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await model.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -25,7 +25,7 @@ export default async function ({ of, where, data }) {
 	}
 
 	const last_sibling = await model.findSiblings({
-		of: { path, depth },
+		node: { path, depth },
 		select: {
 			path: true,
 			depth: true
@@ -49,7 +49,8 @@ export default async function ({ of, where, data }) {
 				path: new_path,
 				depth: last_sibling.depth,
 				numchild: 0
-			}
+			},
+			...args
 		}),
 		// update parent numchild
 		model.update({

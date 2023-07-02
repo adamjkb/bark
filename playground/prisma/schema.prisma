@@ -1,19 +1,20 @@
 generator client {
-    provider        = "prisma-client-js"
-    binaryTargets   = ["native"]
+    provider      = "prisma-client-js"
+    binaryTargets = ["native"]
 }
 
 datasource db {
     provider = "sqlite"
     url      = "file:./playground.db?connection_limit=1"
-
 }
 
 model node {
-    id       Int    @id @default(autoincrement())
-    path     String @unique // @db.VarChar(255)
+    id       Int     @id @default(autoincrement())
+    path     String  @unique // @db.VarChar(255)
     depth    Int
-    numchild Int    @default(0)
-	// Not required but makes it easier to test
+    numchild Int     @default(0)
+    // Not required but makes it easier to test
     name     String?
+
+    @@index([path])
 }

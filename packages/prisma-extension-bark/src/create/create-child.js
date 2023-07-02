@@ -4,7 +4,7 @@ import { int2str } from '../utils.js'
 /**
  * @param {import('$types/create.js').createChildArgs} args
  */
-export default async function ({ of, where, data }) {
+export default async function ({ node, where, data, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
@@ -15,12 +15,12 @@ export default async function ({ of, where, data }) {
 	let numchild
 
 	// Get required arguments from instance
-	if (of) {
-		path = of.path
-		depth = of.depth
-		numchild = of.numchild
+	if (node) {
+		path = node.path
+		depth = node.depth
+		numchild = node.numchild
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await model.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -31,7 +31,7 @@ export default async function ({ of, where, data }) {
 	// if already has kids
 	if (numchild !== 0) {
 		const child = await model.findChildren({
-			of: {path, depth, numchild},
+			node: {path, depth, numchild},
 			select: {
 				path: true,
 				depth: true
@@ -40,8 +40,9 @@ export default async function ({ of, where, data }) {
 		}).then(([c]) => c)
 
 		return model.createSibling({
-			of: child,
-			data
+			node: child,
+			data,
+			...args
 		})
 	} else {
 		// node hasn't had any kid, so adding first one
@@ -56,7 +57,8 @@ export default async function ({ of, where, data }) {
 					path: new_path,
 					depth: depth + 1,
 					numchild: 0
-				}
+				},
+				...args
 			}),
 			// update parent numchild
 			model.update({

@@ -1,10 +1,8 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma, node } from "@prisma/client";
 import { XOR } from "./helpers";
 
-type deleteFlags = 'skipMPLogic'
-
 export type deleteNodeArgs = XOR<
-    { of: Partial<page> & Required<Pick<page, 'depth' | 'path'>> }, Pick<Prisma.pageFindUniqueArgs, 'where'>>
-    & Omit<Prisma.pageFindUniqueArgs, 'where'>;
+    { node: Partial<node> & Required<Pick<node, 'depth' | 'path'>> }, Pick<Prisma.nodeFindUniqueArgs, 'where'>>
+    & Omit<Prisma.nodeFindUniqueArgs, 'where'>;
 
-export type deleteManyNodesArgs = Prisma.pageDeleteManyArgs
+export type deleteManyNodesArgs = Prisma.nodeDeleteManyArgs
