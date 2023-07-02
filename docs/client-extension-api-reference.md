@@ -21,7 +21,7 @@ Creates a root node if one doesn't exist already or adds a sibling to an already
 <summary>Example</summary>
 
 ```js
-const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root' } })
+const root = await xprisma.node.createRoot({ data: { name: 'My new root' } })
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
 ```
 
@@ -44,8 +44,8 @@ Creates a new child to the defined node in either `where` or `node` arguments. R
 <summary>Example</summary>
 
 ```js
-const futureParentNode = await xprisma.node.findUnique({ where: { id: 1 }})
-const newChildNode = await xprisma.node.createChild({
+const futureParent = await xprisma.node.findUnique({ where: { id: 1 }})
+const child = await xprisma.node.createChild({
 	node: futureParentNode,
 	data: { name: 'New born' }, 
 	select: { name: true } 
@@ -72,9 +72,9 @@ Creates a new sibling to the defined node in either `where` or `node` arguments.
 <summary>Example</summary>
 
 ```js
-const siblingNode = await xprisma.node.findUnique({ where: { id: 1 }})
-const newChildNode = await xprisma.node.createSibling({
-	node: siblingNode,
+const aSibling = await xprisma.node.findUnique({ where: { id: 1 }})
+const newSibling = await xprisma.node.createSibling({
+	node: root,
 	data: { name: 'New sibling' }, 
 	select: { name: true } 
 })
@@ -113,12 +113,12 @@ const tree = await xprisma.node.findTree({
 ### `findAncestors`
 Returns all ancestors, from the root node to the parent, of the defined node in either `where` or `node` arguments. If the `findAncestors` called on a root node it will return `null`. By default the tree is ordered by `path` in ascending order.
 
-| Argument  | Required | Description                                                                                                                                       |
-| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`    | No       | An existing node used as a reference where the incoming entry should be created.                                                                  |
-| `where`   | No       | Query to find an existing node to be used as a reference.                                                                                         |
-| `orderBy` | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                                   |
-| `...args` | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
+| Argument  | Required           | Description                                                                                                                                        |
+| --------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                   |
+| `where`   | Yes unless `node`  | Query to find an existing node to be used as a reference.                                                                                          |
+| `orderBy` | No                 | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                                    |
+| `...args` | No                 | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
 
 
 <details>
@@ -138,12 +138,12 @@ const ancestors = await xprisma.node.findAncestors({
 ### `findDescendants`
 Returns all descendants, excluding itself, of the defined node in either `where` or `node` arguments. If the `findDescendants` called on a leaf node it will return `null`. By default the tree is ordered by `path` in ascending order.
 
-| Argument  | Required | Description                                                                                                                                       |
-| --------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `node`    | No       | An existing node used as a reference where the incoming entry should be created.                                                                  |
-| `where`   | No       | Query to find an existing node to be used as a reference.                                                                                         |
-| `orderBy` | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                                   |
-| `...args` | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
+| Argument  | Required           | Description                                                                                                                                        |
+| --------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                   |
+| `where`   | Yes unless `node`  | Query to find an existing node to be used as a reference.                                                                                          |
+| `orderBy` | No                 | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                                    |
+| `...args` | No                 | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
 
 
 <details>
@@ -186,12 +186,12 @@ const parent = await prisma.node.findParent({where: { path: '00010002' }, select
 
 Returns all direct children nodes of the defined node in either `where` or `node` arguments. When no children were found it will return null. By default the tree is ordered by `path` in ascending order.
 
-| Argument       | Required | Description                                                                                                                      |
-| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `node`  | No       | An existing node used as a reference where the incoming entry should be created.                                                 |
-| `where` | No       | Query to find an existing node to be used as a reference.                                                                        |
-| `orderBy`      | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`  |
-| `...args`      | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
+| Argument  | Required           | Description                                                                                                                                        |
+| --------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                   |
+| `where`   | Yes unless `node`  | Query to find an existing node to be used as a reference.                                                                                          |
+| `orderBy` | No                 | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                                    |
+| `...args` | No                 | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` and `orderBy`. |
 
 
 <details>
@@ -199,7 +199,7 @@ Returns all direct children nodes of the defined node in either `where` or `node
 <summary>Example</summary>
 
 ```js
-const childrenNodes = await xprisma.node.findChildren({
+const children = await xprisma.node.findChildren({
 	where: { path: '00010001' },
 	select: { path: true }
 })
@@ -213,12 +213,12 @@ const childrenNodes = await xprisma.node.findChildren({
 
 Returns all sibling nodes, including itself, of the defined node in either `where` or `node` arguments. By default the tree is ordered by `path` in ascending order.
 
-| Argument       | Required | Description                                                                                                                      |
-| -------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `node`  | No       | An existing node used as a reference where the incoming entry should be created.                                                 |
-| `where` | No       | Query to find an existing node to be used as a reference.                                                                        |
-| `orderBy`      | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`  |
-| `...args`      | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` |
+| Argument  | Required           | Description                                                                                                                         |
+| --------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `node`    | Yes unless `where` | An existing node used as a reference where the incoming entry should be created.                                                    |
+| `where`   | Yes unless `node`  | Query to find an existing node to be used as a reference.                                                                           |
+| `orderBy` | No                 | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                     |
+| `...args` | No                 | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` |
 
 
 <details>
@@ -226,7 +226,7 @@ Returns all sibling nodes, including itself, of the defined node in either `wher
 <summary>Example</summary>
 
 ```js
-const childrenNodes = await xprisma.node.findSiblings({
+const siblings = await xprisma.node.findSiblings({
 	where: { path: '00010001' },
 	select: { path: true }
 })
