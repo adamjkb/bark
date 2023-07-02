@@ -19,7 +19,7 @@ model node {
 }
 ```
 
-If you are using a `prisma` version older than `4.16.0` make sure you add `clientExtensions` flag to your client [`previewFeatures`](https://www.prisma.io/docs/concepts/components/preview-features/client-preview-features#enabling-a-prisma-client-preview-feature).
+If your Prisma version below `4.16.0` consider upgrade to this version. While Prisma Extensions became available with version `4.7.0` , Bark only officially supports above version `4.16.0`, the version extension became [Generally Available.](https://github.com/prisma/prisma/releases/tag/4.16.0)
 
 ### `path`
 
@@ -37,7 +37,7 @@ type: `Int`
 
 Integer that stores the depth of the node in the tree. Its main function is to speeds up the database queries by filtering down possible nodes to a given depth. However this comes at the cost of higher complexity when nodes are created or moved around.
 
-_Adapted from_ [_`django-treebeard`_](https://django-treebeard.readthedocs.io)
+_Adapted from_ [_`django-treebeard`_](/docs/acknowledgement.md)
 
 ### `numchild`
 
@@ -45,4 +45,4 @@ type: `Int` flags: `@default(0)`
 
 An integer that stores the number of children of a given node. Just like [`depth`](model-reference.md#depth), its main function to speed up queries by storing this value ahead of time so we don't have to run redundant queries if we know it will yield no result. For example [`findChildren`](client-api-reference.md#find-children) will return nothing without running any database queries when the `numchild` is 0.
 
-_Adapted from_ [_`django-treebeard`_](https://django-treebeard.readthedocs.io)
+_Adapted from_ [_`django-treebeard`_](/docs/acknowledgement.md)
