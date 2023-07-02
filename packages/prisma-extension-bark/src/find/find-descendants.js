@@ -38,12 +38,6 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		return null
 	}
 
-	if (depth <= 1) {
-		// return the entire tree
-		return model.findMany()
-	}
-
-
 	return model.findMany({
 		where: {
 			id: {
