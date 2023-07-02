@@ -4,7 +4,7 @@ import { increment_path, int2str } from '../utils.js'
 /**
  * @param {import('$types/create.js').createRootArgs} args
  */
-export default async function ({ data, ...restArgs }) {
+export default async function ({ data, ...args }) {
 	const model = Prisma.getExtensionContext(this)
 
 	const last_root = await model.findLastRoot({ select: {
@@ -25,6 +25,6 @@ export default async function ({ data, ...restArgs }) {
 			depth: 1,
 			numchild: 0,
 		},
-		...restArgs
+		...args
 	})
 }
