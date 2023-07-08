@@ -1,5 +1,3 @@
-import { PrismaClient } from '@prisma/client'
-import { bark } from '../src'
 import { afterEach, describe, expect, it } from 'vitest'
 import { seedOrResetDB } from './utilities/seed'
 import {
@@ -11,10 +9,9 @@ import {
 	get_a_node,
 	get_b_a_node,
 	get_b_node,
-	get_c_node
+	get_c_node,
+	prisma
 } from './utilities/prisma'
-
-const prisma = new PrismaClient().$extends(bark)
 
 // Position: last-sibling
 describe('Operation: move(), Position: last-sibling', async () => {

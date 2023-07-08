@@ -5,20 +5,25 @@ import * as create from './create/index.js'
 import * as deletes from './delete/index.js'
 import * as operations from './operations/index.js'
 
-export const bark = Prisma.defineExtension((client) => {
-
-	// async findOrCreate({ args, query, operation }) {
-	// 	return (await client.$transaction([query(args)]))[0]
-	// },
+/**
+ * Initialize Bark as Prisma Extension
+ *
+ * @template {import('../types/extension.d.ts').BarkInitArgs} T
+ *
+ * @param {T} args
+ * @returns {import('../types/extension.d.ts').BarkInitReturn<T>}
+ */
+export const bark = (args) => Prisma.defineExtension((client) => {
 	return client.$extends({
 		name: 'prisma-extension-bark',
-		model: {
-			node: {
+		model: args.modelNames.reduce((pV, modelName) => ({
+			...pV,
+			[modelName]: {
 				...find,
 				...create,
 				...deletes,
 				...operations
 			}
-		},
+		}), {}),
 	})
 })
