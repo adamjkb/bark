@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "**/*.js"],
+  "include": ["**/*.ts", "**/*.js"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "noEmit": true,

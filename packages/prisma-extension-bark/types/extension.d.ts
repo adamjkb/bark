@@ -1,12 +1,9 @@
-import { Prisma, PrismaClient } from "@prisma/client"
-
-import { DefaultArgs, DynamicClientExtensionThis } from "@prisma/client/runtime"
+import { DefaultArgs } from "@prisma/client/runtime"
 import { findAncestorsArgs, findChildrenArgs, findDescendantsArgs, findLastRootNodeArgs, findParentArgs, findSiblingsArgs, findTreeArgs } from "./find";
 import { createChildArgs, createRootArgs, createSiblingArgs } from "./create";
 import { deleteManyNodesArgs, deleteNodeArgs } from "./delete";
 import { moveArgs } from "./operations";
-import { ObjectFromList } from "./helpers";
-import { PrismaModelFunctionArgs, PrismaModelProps } from "./prisma";
+import { PrismaModelProps } from "./prisma";
 
 
 // Bark Methods start
@@ -44,19 +41,6 @@ export type BarkMethods<T extends PrismaModelProps> =
 	BarkCreateMethods<T> &
 	BarkDeleteMethods<T> &
 	BarkOperationsMethods<T>;
-
-
-
-
-/** Test object */
-const obj: ObjectFromList<['node', 'x'], BarkMethods> = {
-	'node': {
-		findAncestors: ({where}) => { },
-	},
-	'x': {
-		findAncestors: () => { }
-	}
-}
 
 
 export type BarkInitArgs = {
