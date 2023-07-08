@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { bark } from 'src/index.js'
+import { bark } from '../../src/index.js'
 
 export const prisma = new PrismaClient().$extends(bark({modelNames: ['node'] }))
 

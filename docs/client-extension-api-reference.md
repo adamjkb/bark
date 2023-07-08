@@ -8,6 +8,19 @@ description: List of all available methods on an Bark extended Prisma client.
 
 Bark doesn't override any of the existing [Prisma model queries](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-queries) but it is strongly recommended to create / delete new nodes using the extensions API otherwise the tree structure might not work and require a lot of manual intervention to untangle it. For similar reasons it's best not to directly update `path`, `numchild`, and `depth` properties.
 
+## Extend a Prisma Client
+
+To extend a Prisma Client all you have to is to import Bark and call it with the Bark-compatible models passed into the `modelNames` property. 
+
+```js
+import { PrismaClient } from '@prisma/client'
+import { bark } from 'prisma-extension-bark'
+
+const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
+```
+
+_Please note that due to an outstanding issue type-safety is flaky. [Contribute to the issue on GitHub](https://github.com/adamjkb/bark/issues/19). [Prisma issue on GitHub](https://github.com/prisma/prisma/issues/20128)._
+
 ## Create
 
 ### `createRoot`

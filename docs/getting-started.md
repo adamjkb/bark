@@ -7,7 +7,8 @@ If you would like just have a quick peak at a working project how a look at our 
 Install the following node modules dependencies. [See Prisma quick start guide.](https://www.prisma.io/docs/getting-started/quickstart) If you already have a Prisma project you can go ahead and simply install `prisma-extension-bark` only and skip to the next step.
 
 ```bash
-npm i prisma @prisma/client prisma-extension-bark
+npm i @prisma/client prisma-extension-bark 
+npm i -D prisma
 ```
 
 Run Prisma initialization command. (This will create new a folder named `prisma` with a `prisma.schema` file.)
@@ -53,7 +54,7 @@ Nearly there! Create a new .js/.ts file and extend your Prisma client.  [Learn a
 import { PrismaClient } from '@prisma/client'
 import { bark } from 'prisma-extension-bark'
 
-const xprisma = new PrismaClient().$extends(bark)
+const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
 
 const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root' } })
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
