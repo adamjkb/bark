@@ -27,11 +27,11 @@
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
         "lint": "eslint --ignore-path .gitignore ."
     },
-    "peerDependencies": {
-        "@prisma/client": "^4.16.2",
-        "prisma": "^4.16.2"
-    },
+	"dependencies": {
+		"@prisma/client": "^4.16.2"
+	},
     "devDependencies": {
+		"prisma": "^4.16.2",
         "eslint": "^8.44.0",
         "vitest": "^0.32.2"
     },

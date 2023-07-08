@@ -1,16 +1,16 @@
 {
     "name": "playground",
     "version": "0.0.0",
-	"private": true,
+    "private": true,
     "type": "module",
     "scripts": {
         "start": "node --watch ./index.js"
     },
     "devDependencies": {
-        "eslint": "^8.43.0",
-        "@prisma/client": "^4.16.1",
-		"prisma": "^4.16.1",
-		"prisma-extension-bark": "workspace:*"
+        "@prisma/client": "^4.16.2",
+        "eslint": "^8.44.0",
+        "prisma": "^4.16.2",
+        "prisma-extension-bark": "workspace:*"
     },
     "prisma": {
         "seed": "node ./prisma/seed.js"

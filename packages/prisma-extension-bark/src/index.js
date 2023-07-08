@@ -6,10 +6,6 @@ import * as deletes from './delete/index.js'
 import * as operations from './operations/index.js'
 
 export const bark = Prisma.defineExtension((client) => {
-
-	// async findOrCreate({ args, query, operation }) {
-	// 	return (await client.$transaction([query(args)]))[0]
-	// },
 	return client.$extends({
 		name: 'prisma-extension-bark',
 		model: {

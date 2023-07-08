@@ -34,13 +34,13 @@ importers:
   playground:
     devDependencies:
       '@prisma/client':
-        specifier: ^4.16.1
+        specifier: ^4.16.2
         version: 4.16.2(prisma@4.16.2)
       eslint:
-        specifier: ^8.43.0
+        specifier: ^8.44.0
         version: 8.44.0
       prisma:
-        specifier: ^4.16.1
+        specifier: ^4.16.2
         version: 4.16.2
       prisma-extension-bark:
         specifier: workspace:*
