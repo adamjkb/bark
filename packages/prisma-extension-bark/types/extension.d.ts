@@ -1,9 +1,10 @@
-import { DefaultArgs } from "@prisma/client/runtime"
+import { DefaultArgs, DynamicClientExtensionThis } from "@prisma/client/runtime"
 import { findAncestorsArgs, findChildrenArgs, findDescendantsArgs, findLastRootNodeArgs, findParentArgs, findSiblingsArgs, findTreeArgs } from "./find";
 import { createChildArgs, createRootArgs, createSiblingArgs } from "./create";
 import { deleteManyNodesArgs, deleteNodeArgs } from "./delete";
 import { moveArgs } from "./operations";
 import { PrismaModelProps } from "./prisma";
+import { Prisma } from "@prisma/client";
 
 
 // Bark Methods start
@@ -56,12 +57,12 @@ type MapInputToBarkMethods<T extends ReadonlyArray<PrismaModelProps>> = {
 	readonly [K in (T extends ReadonlyArray<infer U> ? U : never)]: BarkMethods<K>
 };
 
-export type BarkInitReturn<A extends BarkInitArgs = BarkInitArgs> = {
+export type BarkInitReturn<A extends BarkInitArgs = BarkInitArgs> = (client: any) => {
 	$extends: {
 		extArgs: DefaultArgs & {
-			model: MapInputToBarkMethods<A['modelNames']>
+			model: MapInputToBarkMethods<A['modelNames']>;
 		};
 	};
 }
 
-export type BarkInitFn<A extends BarkInitArgs = BarkInitArgs> = (args: A) => BarkInitReturn<A>
+export type BarkInitFn<A extends BarkInitArgs = BarkInitArgs> = (args: A) => BarkInitReturn<A>;

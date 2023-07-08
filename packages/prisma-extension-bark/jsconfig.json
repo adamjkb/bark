@@ -2,7 +2,7 @@
   "include": ["**/*.ts", "**/*.js"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "noEmit": true,
+	"noEmit": true,
     "lib": ["ES2019"],
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -12,7 +12,10 @@
     "target": "ES2019",
     "strict": true,
     "allowJs": true,
+    "checkJs": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "noImplicitAny": true
   }
 }
