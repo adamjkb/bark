@@ -65,35 +65,3 @@ export type BarkInitReturn<A extends BarkInitArgs = BarkInitArgs> = {
 }
 
 export type BarkInitFn<A extends BarkInitArgs = BarkInitArgs> = (args: A) => BarkInitReturn<A>
-
-const fo: BarkInitFn = (args) => {
-	return {
-		$extends: {
-			extArgs: {
-				model: {
-					node: {
-						async findChildren(arg) {
-							arg.node?.depth
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-
-
-/**
- * @template {string} [T='node']
- *
- * @param {T} bar
- * @returns {T extends string ? string[] : number[]}
- */
-// function foo(bar) {
-// 	if (typeof bar === "string") {
-// 		return ["a", "b"];
-// 	} else {
-// 		return [1, 2];
-// 	}
-// }

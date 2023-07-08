@@ -5,16 +5,22 @@ import * as create from './create/index.js'
 import * as deletes from './delete/index.js'
 import * as operations from './operations/index.js'
 
-export const bark = Prisma.defineExtension((client) => {
+
+/**
+ * @param {import('../types/extension.js').BarkInitArgs} args
+ * @returns {import('../types/extension.js').BarkInitReturn<import('../types/extension.js').BarkInitArgs>}
+ */
+export const bark = (args) => Prisma.defineExtension((client) => {
 	return client.$extends({
 		name: 'prisma-extension-bark',
-		model: {
-			node: {
+		model: args.modelNames.reduce((pV, modelName) => ({
+			...pV,
+			[modelName]: {
 				...find,
 				...create,
 				...deletes,
 				...operations
 			}
-		},
+		}), {}),
 	})
 })
