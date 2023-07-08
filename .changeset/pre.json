@@ -2,9 +2,10 @@
   "mode": "pre",
   "tag": "next",
   "initialVersions": {
-    "prisma-extension-bark": "0.0.1-next.0"
+    "prisma-extension-bark": "0.0.1-next.0",
+    "playground": "0.0.0"
   },
   "changesets": [
-    "brave-hats-cross"
+    "shy-students-roll"
   ]
 }
