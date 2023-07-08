@@ -20,13 +20,13 @@ importers:
       '@prisma/client':
         specifier: ^4.16.2
         version: 4.16.2(prisma@4.16.2)
-      prisma:
-        specifier: ^4.16.2
-        version: 4.16.2
     devDependencies:
       eslint:
         specifier: ^8.44.0
         version: 8.44.0
+      prisma:
+        specifier: ^4.16.2
+        version: 4.16.2
       vitest:
         specifier: ^0.32.2
         version: 0.32.2
