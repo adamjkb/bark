@@ -6,6 +6,7 @@
     "playground": "0.0.0"
   },
   "changesets": [
+    "itchy-cobras-grin",
     "shy-students-roll"
   ]
 }
