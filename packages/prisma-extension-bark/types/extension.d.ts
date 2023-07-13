@@ -3,7 +3,7 @@ import { findAncestorsArgs, findChildrenArgs, findDescendantsArgs, findLastRootN
 import { createChildArgs, createRootArgs, createSiblingArgs } from "./create";
 import { deleteManyNodesArgs, deleteNodeArgs } from "./delete";
 import { moveArgs } from "./operations";
-import { PrismaModelProps } from "./prisma";
+import { PrismaModelBuiltinFunctionKeys, PrismaModelFunction, PrismaModelFunctionArgs, PrismaModelFunctionResult, PrismaModelProps } from "./prisma";
 import { Prisma } from "@prisma/client";
 
 
@@ -66,3 +66,15 @@ export type BarkInitReturn<A extends BarkInitArgs = BarkInitArgs> = (client: any
 }
 
 export type BarkInitFn<A extends BarkInitArgs = BarkInitArgs> = (args: A) => BarkInitReturn<A>;
+
+
+/**
+ * Bark extension context
+ * The builtin functions are specific to the test environment (SQLite)
+ * which is technically the smallest subset of available functions
+ * the `getExtensionContext` method exposes other ones too + "fields"
+ * @deprecated INTERNAL USE ONLY
+ */
+export type BarkExtensionContext<T extends PrismaModelProps> = BarkMethods<T> & {
+	[F in PrismaModelBuiltinFunctionKeys<T>]: (args: PrismaModelFunctionArgs<T, F>) => Prisma.PrismaPromise<PrismaModelFunctionResult<T, F>>
+}
