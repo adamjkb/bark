@@ -2,10 +2,13 @@ import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
 
 /**
- * @param {import('$types/find.js').findDescendantsArgs} args
+ * @template {import('$types/prisma').PrismaModelProps} A
+ *
+ * @this {import('$types/extension').BarkExtensionContext<A>}
+ * @param {import('$types/find').findDescendantsArgs<A>} args
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -23,7 +26,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		numchild = node.numchild
 		id = node.id
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await ctx.findUnique({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -38,7 +41,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		return null
 	}
 
-	return model.findMany({
+	return ctx.findMany({
 		where: {
 			id: {
 				not: id

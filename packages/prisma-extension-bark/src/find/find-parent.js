@@ -2,10 +2,13 @@ import { Prisma } from '@prisma/client'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/find.js').findParentArgs} args
+ * @template {import('$types/prisma').PrismaModelProps} A
+ *
+ * @this {import('$types/extension').BarkExtensionContext<A>}
+ * @param {import('$types/find').findParentArgs<A>} args
  */
 export default async function ({ node, where, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -16,7 +19,7 @@ export default async function ({ node, where, ...args }) {
 		path = node.path
 		depth = node.depth
 	} else if (where) {
-		const target = await model.findUniqueOrThrow({
+		const target = await ctx.findUniqueOrThrow({
 			where,
 			select: {
 				path: true,
@@ -33,7 +36,7 @@ export default async function ({ node, where, ...args }) {
 		}
 
 		const parent_path = path_from_depth({ path, depth: depth - 1 })
-		return model.findUnique({
+		return ctx.findUnique({
 			where: {
 				path: parent_path
 			},
