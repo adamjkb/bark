@@ -6,7 +6,7 @@ import { Prisma, PrismaClient } from "@prisma/client"
 export type PrismaModelProps = Prisma.TypeMap['meta']['modelProps'];
 
 // Types to dynamically acquire method `args` and `result` types through type mapping.
-type PrismaModelTypeMap<TModelName extends PrismaModelProps> = Pick<Prisma.TypeMap['model'], TModelName>;
+export type PrismaModelTypeMap<TModelName extends PrismaModelProps> = Pick<Prisma.TypeMap['model'], TModelName>;
 type PrismaModelFunction<TModelName extends PrismaModelProps, FnName extends Prisma.PrismaAction> = PrismaModelTypeMap<TModelName>[TModelName]['operations'][FnName];
 /**
  * Arguments of a base Prisma Client method (e.g. `prisma.node.findFirst`)

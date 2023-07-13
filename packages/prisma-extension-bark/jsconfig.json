@@ -2,14 +2,20 @@
   "include": ["**/*.ts", "**/*.js"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+	"baseUrl": "./",
+	"paths": {
+		"$types/*": [
+			"types/*"
+		]
+	},
 	"noEmit": true,
-    "lib": ["ES2019"],
+    "lib": ["ESNext"],
     "isolatedModules": true,
     "esModuleInterop": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "target": "ES2019",
+    "target": "ESNext",
     "strict": true,
     "allowJs": true,
     "checkJs": true,

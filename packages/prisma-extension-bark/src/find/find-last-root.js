@@ -1,9 +1,14 @@
 import { Prisma } from '@prisma/client'
 
 /**
- * @param {import('$types/find.js').findLastRootNodeArgs} args
+ * @template T
+ * @template {import('$types/prisma').PrismaModelProps} A
+ *
+ * @this {T}
+ * @param {import('$types/find').findLastRootNodeArgs<A>} args
  */
 export default async function ({ ...args } = {}) {
+	/** @type {any} */
 	const model = Prisma.getExtensionContext(this)
 
 	return model.findFirst({

@@ -36,4 +36,4 @@ export type findAncestorsArgs<TModelName extends PMP> = XOR<
 		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
 	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
-export type findLastRootNodeArgs<TModelName extends PMP> = Omit<PMFArgs<TModelName, 'findFirst'>, 'where'>;
+export type findLastRootNodeArgs<TModelName extends PMP> = Partial<Omit<PMFArgs<TModelName, 'findFirst'>, 'where'>>;
