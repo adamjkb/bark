@@ -1,9 +1,12 @@
 import type { XOR } from "./helpers";
 import {
 	PrismaModelFunctionArgs as PMFArgs,
+	PrismaModelFunctionResult as PMFResult,
 	PrismaModelProps as PMP,
 	RequirePrismaModelTypeInput as RequirePMTInput
 } from "./prisma";
+
+import type { Prisma } from '@prisma/client'
 
 export type findParentArgs<TModelName extends PMP> = XOR<
 		{ node: RequirePMTInput<TModelName, 'depth' | 'path'> },
@@ -36,4 +39,9 @@ export type findAncestorsArgs<TModelName extends PMP> = XOR<
 		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
 	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
+
+// findLastRoot
+
 export type findLastRootNodeArgs<TModelName extends PMP> = Partial<Omit<PMFArgs<TModelName, 'findFirst'>, 'where'>>;
+
+export type findLastRootNodeResult<TModelName extends PMP> = Promise<PMFResult<TModelName, 'findFirst'>>
