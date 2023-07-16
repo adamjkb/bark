@@ -22,10 +22,19 @@
         "prisma-extension",
         "materialized-path"
     ],
-    "exports": [
-        "./src/index.js"
-    ],
-    "type": "module",
+	"type": "module",
+	"files": [
+		"src",
+		"types"
+	],
+	"types": "./types/index.d.ts",
+    "exports": {
+		".": {
+			"types": "./types/index.d.ts",
+			"import": "./src/index.js"
+		},
+		"./package.json": "./package.json"
+	},
     "scripts": {
         "test": "vitest",
         "lint:fix": "eslint --ignore-path .gitignore . --fix",

@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client'
  *
  * @this {T}
  * @param {import('$types/find').findLastRootNodeArgs<T, A>} args
- * @returns {import('$types/find').findLastRootNodeResult<T, A>}
+ * @returns {Promise<import('$types/find').findLastRootNodeResult<T, A>>}
  */
 export default async function (args) {
 	const ctx = Prisma.getExtensionContext(this)

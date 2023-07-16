@@ -41,10 +41,10 @@ export type findAncestorsArgs<T, A> = XOR<
 		Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
 	> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
 
-export type findAncestorsResult<T, A> = Promise<Prisma.Result<T, A, 'findMany'> | null>;
+export type findAncestorsResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 
 
 // findLastRoot
 export type findLastRootNodeArgs<T, A> = Prisma.Exact<A, Omit<Prisma.Args<T, 'findFirst'>, 'where'>> | void;
 
-export type findLastRootNodeResult<T, A> = Promise<Prisma.Result<T, A, 'findFirst'>>;
+export type findLastRootNodeResult<T, A> = Prisma.Result<T, A, 'findFirst'>
