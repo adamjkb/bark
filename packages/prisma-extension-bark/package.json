@@ -37,6 +37,7 @@
 	},
     "scripts": {
         "test": "vitest",
+		"prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
         "lint": "eslint --ignore-path .gitignore ."
     },
