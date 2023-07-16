@@ -52,9 +52,9 @@ Nearly there! Create a new .js/.ts file and extend your Prisma client.  [Learn a
 ```js
 // index.js
 import { PrismaClient } from '@prisma/client'
-import { bark } from 'prisma-extension-bark'
+import { withBark } from 'prisma-extension-bark'
 
-const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
+const xprisma = new PrismaClient().$extends(withBark({ modelNames: ['node'] }))
 
 const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root' } })
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
