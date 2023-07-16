@@ -3,6 +3,7 @@ import type { Types } from "@prisma/client/runtime/library.js";
 import { PrismaModelProps } from "./prisma";
 import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult, findTreeArgs, findTreeResult } from "./find";
 import { createChildArgs, createRootArgs, createSiblingArgs, createSiblingResult } from "./create";
+import { deleteManyNodesArgs, deleteManyNodesResult, deleteNodeArgs, deleteNodeResult } from "./delete";
 
 type BarkInitArgs = {
 	/**
@@ -25,6 +26,8 @@ export declare function bark<I extends BarkInitArgs>(args: I): (client: any) => 
 		createChild<T, A>(this: T, args: createChildArgs<T, A>): Prisma.PrismaPromise<createChildResult<T, A>>;
 		createSibling<T, A>(this: T, args: createSiblingArgs<T, A>): Prisma.PrismaPromise<createSiblingResult<T, A>>;
 		createRoot<T, A>(this: T, args: createRootArgs<T, A>): Prisma.PrismaPromise<createRootResult<T, A>>;
+		deleteNode<T, A>(this: T, args: deleteNodeArgs<T, A>): Prisma.PrismaPromise<deleteNodeResult<T, A>>;
+		deleteManyNodes<T, A>(this: T, args: deleteManyNodesArgs<T, A>): Prisma.PrismaPromise<deleteManyNodesResult<T, A>>;
 
 		// TEMPLATE:
 		// <T, A>(this: T, args: Args<T, A>): Prisma.PrismaPromise< Result<T, A>>

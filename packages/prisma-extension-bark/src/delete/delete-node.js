@@ -2,7 +2,12 @@ import { Prisma } from '@prisma/client'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/delete.js').deleteNodeArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/delete').deleteNodeArgs<T, A>} args
+ * @returns {Promise<import('$types/delete').deleteNodeResult<T, A>>}
  */
 export default async function ({ node, where }) {
 	const ctx = Prisma.getExtensionContext(this)
