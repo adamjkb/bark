@@ -8,9 +8,7 @@ import * as operations from './operations/index.js'
 /**
  * Initialize Bark as Prisma Extension
  *
- * @template {import('../types/extension.d.ts').BarkInitArgs} T
- *
- * @param {T} args
+ * @type {import('$types/index').bark}
  */
 export const bark = (args) => Prisma.defineExtension((client) => {
 	const extensionMethods = {

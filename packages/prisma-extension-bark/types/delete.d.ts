@@ -1,10 +1,6 @@
-import {
-	PrismaModelFunctionArgs as PMFArgs,
-	PrismaModelProps as PMP,
-	RequirePrismaModelTypeInput as RequirePMTInput
-} from "./prisma";
 import { XOR } from "./helpers";
 import type { Prisma } from '@prisma/client'
+import { RequiredKeysInInputNode } from "./prisma";
 
 
 // deleteNode

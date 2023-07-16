@@ -2,7 +2,12 @@ import { Prisma } from '@prisma/client'
 import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/operations').moveArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/operations').moveArgs<T, A>} args
+ * @returns {Promise<import('$types/operations').moveResult>}
  */
 export default async function ({ node, where, position, reference }) {
 	const ctx = Prisma.getExtensionContext(this)
