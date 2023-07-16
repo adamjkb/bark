@@ -19,8 +19,6 @@ import { bark } from 'prisma-extension-bark'
 const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
 ```
 
-_Please note that due to an outstanding issue type-safety is flaky. [Contribute to the issue on GitHub](https://github.com/adamjkb/bark/issues/19). [Prisma issue on GitHub](https://github.com/prisma/prisma/issues/20128)._
-
 ## Create
 
 ### `createRoot`
