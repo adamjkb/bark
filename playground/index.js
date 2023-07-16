@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
-import { bark } from 'prisma-extension-bark'
+import { withBark } from 'prisma-extension-bark'
 
-const prisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
+const prisma = new PrismaClient().$extends(withBark({ modelNames: ['node'] }))
 
 const x = await prisma.node.findLastRoot({select: { path: true }})
 const aNodeChildren = await prisma.node.findChildren({ where: { id: 3 } })

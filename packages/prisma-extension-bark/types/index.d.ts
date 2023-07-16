@@ -42,6 +42,6 @@ export type BarkOperationsMethods = {
 
 export type BarkMethods = BarkFindMethods & BarkCreateMethods & BarkDeleteMethods & BarkOperationsMethods
 
-export declare function bark<I extends BarkInitArgs>(args: I): (client: any) => PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
+export declare function withBark<I extends BarkInitArgs>(args: I): (client: any) => PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
 	readonly [K in (I['modelNames'] extends ReadonlyArray<infer U> ? U : never)]: BarkMethods
 }, {}, {}> & Types.Extensions.InternalArgs<{}, {}, {}, {}> & Types.Extensions.DefaultArgs>;

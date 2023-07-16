@@ -14,9 +14,9 @@ To extend a Prisma Client all you have to is to import Bark and call it with the
 
 ```js
 import { PrismaClient } from '@prisma/client'
-import { bark } from 'prisma-extension-bark'
+import { withBark } from 'prisma-extension-bark'
 
-const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
+const xprisma = new PrismaClient().$extends(withBark({ modelNames: ['node'] }))
 ```
 
 ## Create
