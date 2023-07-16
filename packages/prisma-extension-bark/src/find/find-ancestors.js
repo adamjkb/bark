@@ -6,8 +6,8 @@ import { default_order_by } from '../consts.js'
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/find').findAncestorsArgs<T,A>} args
- * @returns {Promise<import('$types/find').findAncestorsResult<T,A>>}
+ * @param {import('$types/find').findAncestorsArgs<T, A>} args
+ * @returns {Promise<import('$types/find').findAncestorsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const model = Prisma.getExtensionContext(this)

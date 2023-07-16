@@ -2,10 +2,12 @@ import { Prisma } from '@prisma/client'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @template {import('$types/prisma').PrismaModelProps} A
+ * @template T - Model
+ * @template A - Args
  *
- * @this {import('$types/extension').BarkExtensionContext<A>}
- * @param {import('$types/find').findParentArgs<A>} args
+ * @this {T}
+ * @param {import('$types/find').findParentArgs<T, A>} args
+ * @returns {Promise<import('$types/find').findParentResult<T, A>>}
  */
 export default async function ({ node, where, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)

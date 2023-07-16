@@ -3,10 +3,15 @@ import { default_order_by, max_segment, min_segment } from '../consts.js'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/find.js').findSiblingsArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/find').findSiblingsArgs<T, A>} args
+ * @returns {Promise<import('$types/find').findSiblingsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -18,7 +23,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		path = node.path
 		depth = node.depth
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await ctx.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -27,7 +32,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 
 	if (depth === 1) {
 		// get the whole depth
-		return model.findMany({
+		return ctx.findMany({
 			where: { depth },
 			orderBy,
 			...args
@@ -40,7 +45,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		const gt_path = parent_path + min_segment
 		const lte_path = parent_path + max_segment
 
-		return model.findMany({
+		return ctx.findMany({
 			where: {
 				depth,
 				path: {

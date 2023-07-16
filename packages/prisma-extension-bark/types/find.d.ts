@@ -3,43 +3,56 @@ import {
 	PrismaModelFunctionArgs as PMFArgs,
 	PrismaModelFunctionResult as PMFResult,
 	PrismaModelProps as PMP,
-	RequirePrismaModelTypeInput as RequirePMTInput
+	RequirePrismaModelTypeInput as RequirePMTInput,
+	RequiredKeysInInputNode
 } from "./prisma";
 
 import type { Prisma } from '@prisma/client'
 
-export type findParentArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName, 'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findUnique'>, 'where'>;
+// findParent
+export type findParentArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>;
+export type findParentResult<T, A> = Prisma.Result<T, A, 'findUnique'> | null | undefined;
+
+// findSiblings
+export type findSiblingsArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findSiblingsResult<T, A> = Prisma.Result<T, A, 'findMany'> | undefined;
 
 
-export type findSiblingsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
+// findChildren
+export type findChildrenArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findChildrenResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 
-export type findChildrenArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path' | 'numchild'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
+// findTree
+type findTreeParentOfAndWhereArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+>
+export type findTreeArgs<T, A> = Omit<Prisma.Args<T, 'findMany'>, 'where'> & { parent?: findTreeParentOfAndWhereArgs<T,A>}
+export type findTreeResult<T, A> = Prisma.Result<T, A, 'findMany'>;
 
-type findTreeParentOfAndWhereArgs<TModelName extends PMP> = XOR<
-	{ node: RequirePMTInput<TModelName, 'depth' | 'path' | 'numchild'> }, Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>>;
+// findDescendants
+export type findDescendantsArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode< T, A,'depth' | 'path' | 'numchild' | 'id'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findDescendantsResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 
-export type findTreeArgs<TModelName extends PMP> = Omit<PMFArgs<TModelName, 'findMany'>, 'where'> & { parent?: findTreeParentOfAndWhereArgs<TModelName> };
-
-export type findDescendantsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path' | 'numchild' | 'id'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
 
 // findAncestors
 export type findAncestorsArgs<T, A> = XOR<
-	{ node: RequireKeys<Prisma.Result<T, A, 'findFirst'>, 'depth' | 'path'>},
-		Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
-	> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>},
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
 
 export type findAncestorsResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 

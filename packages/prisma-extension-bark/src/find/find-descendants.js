@@ -2,10 +2,12 @@ import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
 
 /**
- * @template {import('$types/prisma').PrismaModelProps} A
+ * @template T - Model
+ * @template A - Args
  *
- * @this {import('$types/extension').BarkExtensionContext<A>}
- * @param {import('$types/find').findDescendantsArgs<A>} args
+ * @this {T}
+ * @param {import('$types/find').findDescendantsArgs<T,A>} args
+ * @returns {Promise<import('$types/find').findDescendantsResult<T,A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
@@ -26,7 +28,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		numchild = node.numchild
 		id = node.id
 	} else if (where) {
-		const target = await ctx.findUnique({ where })
+		const target = await ctx.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth

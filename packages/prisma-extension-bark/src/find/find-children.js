@@ -2,10 +2,15 @@ import { Prisma } from '@prisma/client'
 import { default_order_by, max_segment, min_segment } from '../consts.js'
 
 /**
- * @param {import('$types/find.js').findChildrenArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/find').findChildrenArgs<T, A>} args
+ * @returns {Promise<import('$types/find').findChildrenResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -20,7 +25,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		depth = node.depth
 		numchild = node.numchild
 	} else if (where) {
-		const target = await model.findUnique({ where })
+		const target = await ctx.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -38,7 +43,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 	const lte_path = path + max_segment
 
 
-	return model.findMany({
+	return ctx.findMany({
 		where: {
 			depth: depth + 1,
 			path: {

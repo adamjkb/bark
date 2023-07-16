@@ -2,7 +2,12 @@ import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
 
 /**
- * @param {import('$types/find.js').findTreeArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/find').findTreeArgs<T, A>} args
+ * @returns {Promise<import('$types/find').findTreeResult<T, A>>}
  */
 export default async function ({ orderBy = default_order_by, parent: parentArg, ...args }) {
 	const model = Prisma.getExtensionContext(this)
