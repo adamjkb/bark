@@ -2,19 +2,35 @@ import type { XOR } from "./helpers";
 import {
 	PrismaModelFunctionArgs as PMFArgs,
 	PrismaModelProps as PMP,
-	RequirePrismaModelTypeInput as RequirePMTInput
+	RequirePrismaModelTypeInput as RequirePMTInput,
+	RequiredKeysInInputNode
 } from "./prisma";
 
-export type createSiblingArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName, 'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	>
-    & { data: Omit<PMFArgs<TModelName, 'create'>['data'], 'path'|'depth'|'numchild'> };
+import type { Prisma } from '@prisma/client'
 
-export type createChildArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName, 'depth' | 'path'| 'numchild'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	>
-	& { data: Omit<PMFArgs<TModelName, 'create'>['data'], 'path' | 'depth' | 'numchild'> };
 
-export type createRootArgs<TModelName extends PMP> = Omit<PMFArgs<TModelName, 'create'>, 'data'> & { data: Omit<PMFArgs<TModelName, 'create'>['data'], 'path' | 'depth' | 'numchild'> };
+// createSibling
+export type createSiblingArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & {
+	data: Omit<Prisma.Args<T, 'create'>['data'], 'path' | 'depth' | 'numchild'>
+} & Omit<Prisma.Args<T, 'create'>, 'data'>;
+export type createSiblingResult<T, A> = Prisma.Result<T, A, 'create'>;
+
+
+// createChild
+export type createChildArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & {
+	data: Omit<Prisma.Args<T, 'create'>['data'], 'path' | 'depth' | 'numchild'>
+} & Omit<Prisma.Args<T, 'create'>, 'data'>;
+export type createChildResult<T, A> = Prisma.Result<T, A, 'create'>;
+
+
+// createRoot
+export type createRootArgs<T, A> = {
+	data?: Omit<Prisma.Args<T, 'create'>['data'], 'path' | 'depth' | 'numchild'>
+} & Omit<Prisma.Args<T, 'create'>, 'data'>;
+export type createRootResult<T, A> = Prisma.Result<T, A, 'create'>;

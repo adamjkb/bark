@@ -10,14 +10,14 @@ import { default_order_by } from '../consts.js'
  * @returns {Promise<import('$types/find').findTreeResult<T, A>>}
  */
 export default async function ({ orderBy = default_order_by, parent: parentArg, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	let parent = parentArg?.node
 
 	if (parentArg?.node) {
 		parent = parentArg.node
 	} else if (parentArg?.where) {
-		const target = await model.findUniqueOrThrow({
+		const target = await ctx.findUniqueOrThrow({
 			where: parentArg.where,
 			select: { path: true, numchild: true, depth: true, id: true }
 		}).catch(err => {
@@ -33,7 +33,7 @@ export default async function ({ orderBy = default_order_by, parent: parentArg, 
 
 	if (!parent) {
 		// return the entire model
-		return model.findMany({
+		return ctx.findMany({
 			orderBy,
 			...args
 		})
@@ -41,14 +41,14 @@ export default async function ({ orderBy = default_order_by, parent: parentArg, 
 
 	// forever alone / is leaf
 	if (parent.numchild === 0) {
-		return model.findMany({
+		return ctx.findMany({
 			where: { id: parent.id },
 			orderBy,
 			...args
 		})
 	}
 
-	return model.findMany({
+	return ctx.findMany({
 		where: {
 			path: {
 				startsWith: parent.path

@@ -2,12 +2,17 @@ import { Prisma } from '@prisma/client'
 import { increment_path, int2str } from '../utils.js'
 
 /**
- * @param {import('$types/create.js').createRootArgs} args
+ * @template T - ctx
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/create').createRootArgs<T, A>} args
+ * @returns {Promise<import('$types/create').createRootResult<T, A>>}
  */
 export default async function ({ data, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
-	const last_root = await model.findLastRoot({ select: {
+	const last_root = await ctx.findLastRoot({ select: {
 		path: true
 	} })
 
@@ -18,7 +23,7 @@ export default async function ({ data, ...args }) {
 		new_path = int2str(1)
 	}
 
-	return model.create({
+	return ctx.create({
 		data: {
 			...data,
 			path: new_path,

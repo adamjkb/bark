@@ -40,8 +40,8 @@
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
         "lint": "eslint --ignore-path .gitignore ."
     },
-    "dependencies": {
-        "@prisma/client": "^5.0.0"
+    "peerDependencies": {
+        "@prisma/client": ">=5.0.0"
     },
     "devDependencies": {
         "eslint": "^8.44.0",

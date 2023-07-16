@@ -2,10 +2,15 @@ import { Prisma } from '@prisma/client'
 import { int2str } from '../utils.js'
 
 /**
- * @param {import('$types/create.js').createChildArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/create').createChildArgs<T, A>} args
+ * @returns {Promise<import('$types/create').createChildResult<T, A>>}
  */
 export default async function ({ node, where, data, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -20,7 +25,7 @@ export default async function ({ node, where, data, ...args }) {
 		depth = node.depth
 		numchild = node.numchild
 	} else if (where) {
-		const target = await model.findUniqueOrThrow({ where })
+		const target = await ctx.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -30,7 +35,7 @@ export default async function ({ node, where, data, ...args }) {
 
 	// if already has kids
 	if (numchild !== 0) {
-		const child = await model.findChildren({
+		const child = await ctx.findChildren({
 			node: {path, depth, numchild},
 			select: {
 				path: true,
@@ -39,7 +44,7 @@ export default async function ({ node, where, data, ...args }) {
 			take: 1
 		}).then(([c]) => c)
 
-		return model.createSibling({
+		return ctx.createSibling({
 			node: child,
 			data,
 			...args
@@ -51,7 +56,7 @@ export default async function ({ node, where, data, ...args }) {
 
 		// FIXME: Suboptimal since transactions are not supported inside model extensions.
 		const [newborn] = await Promise.all([
-			model.create({
+			ctx.create({
 				data: {
 					...data,
 					path: new_path,
@@ -61,7 +66,7 @@ export default async function ({ node, where, data, ...args }) {
 				...args
 			}),
 			// update parent numchild
-			model.update({
+			ctx.update({
 				where: {
 					path: path
 				},

@@ -10,7 +10,7 @@ import { default_order_by } from '../consts.js'
  * @returns {Promise<import('$types/find').findAncestorsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -22,7 +22,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		path = node.path
 		depth = node.depth
 	} else if (where) {
-		const target = await model.findUniqueOrThrow({ where })
+		const target = await ctx.findUniqueOrThrow({ where })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -49,7 +49,7 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 		}, [])
 
 
-	return model.findMany({
+	return ctx.findMany({
 		where: {
 			path: {
 				in: ancestors_paths

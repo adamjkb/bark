@@ -2,6 +2,7 @@ import PrismaDefault, { type Prisma } from "@prisma/client/scripts/default-index
 import type { Types } from "@prisma/client/runtime/library.js";
 import { PrismaModelProps } from "./prisma";
 import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult, findTreeArgs, findTreeResult } from "./find";
+import { createChildArgs, createRootArgs, createSiblingArgs, createSiblingResult } from "./create";
 
 type BarkInitArgs = {
 	/**
@@ -21,6 +22,9 @@ export declare function bark<I extends BarkInitArgs>(args: I): (client: any) => 
 		findChildren<T, A>(this: T, args: findChildrenArgs<T, A>): Prisma.PrismaPromise<findChildrenResult<T, A>>;
 		findSiblings<T, A>(this: T, args: findSiblingsArgs<T, A>): Prisma.PrismaPromise<findSiblingsResult<T, A>>;
 		findParent<T, A>(this: T, args: findParentArgs<T, A>): Prisma.PrismaPromise<findParentResult<T, A>>;
+		createChild<T, A>(this: T, args: createChildArgs<T, A>): Prisma.PrismaPromise<createChildResult<T, A>>;
+		createSibling<T, A>(this: T, args: createSiblingArgs<T, A>): Prisma.PrismaPromise<createSiblingResult<T, A>>;
+		createRoot<T, A>(this: T, args: createRootArgs<T, A>): Prisma.PrismaPromise<createRootResult<T, A>>;
 
 		// TEMPLATE:
 		// <T, A>(this: T, args: Args<T, A>): Prisma.PrismaPromise< Result<T, A>>

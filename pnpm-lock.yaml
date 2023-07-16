@@ -18,7 +18,7 @@ importers:
   packages/prisma-extension-bark:
     dependencies:
       '@prisma/client':
-        specifier: ^5.0.0
+        specifier: '>=5.0.0'
         version: 5.0.0(prisma@5.0.0)
     devDependencies:
       eslint:
