@@ -6,7 +6,9 @@
     "playground": "0.0.0"
   },
   "changesets": [
+    "big-wombats-lick",
     "itchy-cobras-grin",
-    "shy-students-roll"
+    "shy-students-roll",
+    "silent-ducks-mix"
   ]
 }
