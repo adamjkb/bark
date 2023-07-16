@@ -3,12 +3,17 @@ import { path_from_depth } from '../utils.js'
 import { STEP_LENGTH } from '../consts.js'
 
 /**
- * @param {import('$types/delete.js').deleteManyNodesArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/delete').deleteManyNodesArgs<T, A>} args
+ * @returns {Promise<import('$types/delete').deleteManyNodesResult<T, A>>}
  */
 export default async function ({ where }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
-	const targets = await model.findMany({
+	const targets = await ctx.findMany({
 		where,
 		select: {
 			path: true,
@@ -53,7 +58,7 @@ export default async function ({ where }) {
 
 	// update parent numchild
 	for (const [parent_path, decrement_amount] of updatable_parent_nodes) {
-		await model.update({
+		await ctx.update({
 			where: {
 				path: parent_path
 			},
@@ -67,7 +72,7 @@ export default async function ({ where }) {
 
 	// Delete paths
 	const deleteCounts = await Promise.all(Array.from(removable_nodes.keys()).map(path => {
-		return model.deleteMany({
+		return ctx.deleteMany({
 			where: {
 				path: {
 					startsWith: path

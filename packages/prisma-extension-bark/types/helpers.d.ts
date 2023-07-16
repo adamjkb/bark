@@ -4,3 +4,5 @@ export type XOR<T, U> = (T | U) extends object ? (Without<T, U> & U) | (Without<
 export type ObjectFromList<T extends ReadonlyArray<string>, P extends any> = {
 	readonly [K in (T extends ReadonlyArray<infer U> ? U : never)]: P
 };
+
+export type RequireKeys<T, K> = Partial<T> & Required<Pick<T, K>>;

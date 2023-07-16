@@ -42,7 +42,7 @@ describe('deleteManyNodes()', async () => {
 				}
 			}
 		})
-		expect(result.count).toBe(6)
+		expect(result?.count).toBe(6)
 
 		const home_node_after = await get_home_node()
 		expect(home_node_after?.numchild).toBe(1)
@@ -57,7 +57,7 @@ describe('deleteManyNodes()', async () => {
 				id: b_node.id
 			}
 		})
-		expect(result.count).toBe(4)
+		expect(result?.count).toBe(4)
 
 		const home_node_after = await get_home_node()
 		expect(home_node_after?.numchild).toBe(2)
@@ -78,7 +78,7 @@ describe('deleteManyNodes()', async () => {
 				id: { in: [9999, 1] }
 			}
 		})
-		expect(result.count).toBe(13)
+		expect(result?.count).toBe(13)
 	})
 	afterEach(seedOrResetDB)
 })

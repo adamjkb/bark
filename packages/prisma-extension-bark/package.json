@@ -22,20 +22,30 @@
         "prisma-extension",
         "materialized-path"
     ],
-    "exports": [
-        "./src/index.js"
-    ],
     "type": "module",
+    "files": [
+        "src",
+        "types"
+    ],
+    "types": "./types/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./types/index.d.ts",
+            "import": "./src/index.js"
+        },
+        "./package.json": "./package.json"
+    },
     "scripts": {
         "test": "vitest",
+        "prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
         "lint": "eslint --ignore-path .gitignore ."
     },
-    "dependencies": {
-        "@prisma/client": "^5.0.0"
+    "peerDependencies": {
+        "@prisma/client": ">=5.0.0"
     },
     "devDependencies": {
-        "eslint": "^8.44.0",
+        "eslint": "^8.45.0",
         "prisma": "^5.0.0",
         "typescript": "^5.1.6",
         "vitest": "^0.33.0"

@@ -2,10 +2,15 @@ import { Prisma } from '@prisma/client'
 import { path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/delete.js').deleteNodeArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/delete').deleteNodeArgs<T, A>} args
+ * @returns {Promise<import('$types/delete').deleteNodeResult<T, A>>}
  */
 export default async function ({ node, where }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
 	let path
@@ -16,7 +21,7 @@ export default async function ({ node, where }) {
 		path = node.path
 		depth = node.depth
 	} else if (where) {
-		const target = await model.findUniqueOrThrow({
+		const target = await ctx.findUniqueOrThrow({
 			where,
 			select: {
 				path: true,
@@ -33,7 +38,7 @@ export default async function ({ node, where }) {
 	// update parent numchild if not a root node
 	if (depth > 1) {
 		const parent_path = path_from_depth({ path: path, depth: depth - 1 })
-		await model.update({
+		await ctx.update({
 			where: {
 				path: parent_path
 			},
@@ -46,7 +51,7 @@ export default async function ({ node, where }) {
 	}
 
 	// Delete target and all their descendants
-	return model.deleteMany({
+	return ctx.deleteMany({
 		where: {
 			path: {
 				startsWith: path

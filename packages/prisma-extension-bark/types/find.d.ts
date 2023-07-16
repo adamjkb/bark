@@ -1,39 +1,59 @@
 import type { XOR } from "./helpers";
-import {
-	PrismaModelFunctionArgs as PMFArgs,
-	PrismaModelProps as PMP,
-	RequirePrismaModelTypeInput as RequirePMTInput
-} from "./prisma";
+import { RequiredKeysInInputNode } from "./prisma";
 
-export type findParentArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName, 'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findUnique'>, 'where'>;
+import type { Prisma } from '@prisma/client'
 
 
-export type findSiblingsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
+// findParent
+export type findParentArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>;
+export type findParentResult<T, A> = Prisma.Result<T, A, 'findUnique'> | null | undefined;
 
-export type findChildrenArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path' | 'numchild'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
-type findTreeParentOfAndWhereArgs<TModelName extends PMP> = XOR<
-	{ node: RequirePMTInput<TModelName, 'depth' | 'path' | 'numchild'> }, Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>>;
+// findSiblings
+export type findSiblingsArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findSiblingsResult<T, A> = Prisma.Result<T, A, 'findMany'> | undefined;
 
-export type findTreeArgs<TModelName extends PMP> = Omit<PMFArgs<TModelName, 'findMany'>, 'where'> & { parent?: findTreeParentOfAndWhereArgs<TModelName> };
 
-export type findDescendantsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path' | 'numchild' | 'id'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
+// findChildren
+export type findChildrenArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findChildrenResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 
-export type findAncestorsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
-export type findLastRootNodeArgs<TModelName extends PMP> = Omit<PMFArgs<TModelName, 'findFirst'>, 'where'>;
+// findTree
+type findTreeParentOfAndWhereArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+>
+export type findTreeArgs<T, A> = Omit<Prisma.Args<T, 'findMany'>, 'where'> & { parent?: findTreeParentOfAndWhereArgs<T,A>}
+export type findTreeResult<T, A> = Prisma.Result<T, A, 'findMany'>;
+
+
+// findDescendants
+export type findDescendantsArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode< T, A,'depth' | 'path' | 'numchild' | 'id'>; },
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+export type findDescendantsResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
+
+
+// findAncestors
+export type findAncestorsArgs<T, A> = XOR<
+	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>},
+	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+
+export type findAncestorsResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
+
+
+// findLastRoot
+export type findLastRootNodeArgs<T, A> = Prisma.Exact<A, Omit<Prisma.Args<T, 'findFirst'>, 'where'>> | void;
+export type findLastRootNodeResult<T, A> = Prisma.Result<T, A, 'findFirst'>;

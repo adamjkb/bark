@@ -19,8 +19,6 @@ import { bark } from 'prisma-extension-bark'
 const xprisma = new PrismaClient().$extends(bark({ modelNames: ['node'] }))
 ```
 
-_Please note that due to an outstanding issue type-safety is flaky. [Contribute to the issue on GitHub](https://github.com/adamjkb/bark/issues/19). [Prisma issue on GitHub](https://github.com/prisma/prisma/issues/20128)._
-
 ## Create
 
 ### `createRoot`
@@ -30,7 +28,7 @@ Creates a root node if one doesn't exist already or adds a sibling to an already
 | Argument  | Required    | Description                                                                                                                       |
 | --------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `data`    | _**Yes\***_ | Object that will be used to create new record in database.                                                                        |
-| `...args` | No          | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create-1) options excluding `data`. |
+| `...args` | No          | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) options excluding `data`. |
 
 <details>
 
@@ -51,8 +49,8 @@ Creates a new child to the defined node in either `where` or `node` arguments. R
 | --------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `node`    | **Yes** unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                                                                               |
 | `where`   | **Yes** unless `node`  | Query to find an existing node to be used as a reference.                                                                                                                                                      |
-| `data`    | _**Yes\***_            | Object that will be used to create new record in database. Same as [`create.data`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create-1) except `path`, `depth`, and `numchild` |
-| `...args` | No                     | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create-1) options excluding `data`.                                                                              |
+| `data`    | _**Yes\***_            | Object that will be used to create new record in database. Same as [`create.data`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) except `path`, `depth`, and `numchild` |
+| `...args` | No                     | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) options excluding `data`.                                                                              |
 
 <details>
 
@@ -78,8 +76,8 @@ Creates a new sibling to the defined node in either `where` or `node` arguments.
 | --------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `node`    | **Yes** unless `where` | An existing node used as a reference where the incoming entry should be created.                                                                                                                               |
 | `where`   | **Yes** unless `node`  | Query to find an existing node to be used as a reference.                                                                                                                                                      |
-| `data`    | _**Yes\***_            | Object that will be used to create new record in database. Same as [`create.data`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create-1) except `path`, `depth`, and `numchild` |
-| `...args` | No                     | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create-1) options excluding `data`.                                                                              |
+| `data`    | _**Yes\***_            | Object that will be used to create new record in database. Same as [`create.data`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) except `path`, `depth`, and `numchild` |
+| `...args` | No                     | Same as [`create`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#create) options excluding `data`.                                                                              |
 
 <details>
 

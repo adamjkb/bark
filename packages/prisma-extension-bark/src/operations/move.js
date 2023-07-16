@@ -2,10 +2,15 @@ import { Prisma } from '@prisma/client'
 import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/operations').moveArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/operations').moveArgs<T, A>} args
+ * @returns {Promise<import('$types/operations').moveResult>}
  */
 export default async function ({ node, where, position, reference }) {
-	const model = Prisma.getExtensionContext(this)
+	const ctx = Prisma.getExtensionContext(this)
 
 	let original_node = node
 	let rn_node = reference.node
@@ -13,7 +18,7 @@ export default async function ({ node, where, position, reference }) {
 	if (node) {
 		original_node = node
 	} else if (where) {
-		const target = await model.findUniqueOrThrow({ where }).catch(err => {
+		const target = await ctx.findUniqueOrThrow({ where }).catch(err => {
 			err.message = 'Argument `where`: ' + err.message
 			throw err
 		})
@@ -25,7 +30,7 @@ export default async function ({ node, where, position, reference }) {
 	if (reference.node) {
 		rn_node = reference.node
 	} else if (reference.where) {
-		const rn_target = await model.findUniqueOrThrow({ where: reference.where }).catch(err => {
+		const rn_target = await ctx.findUniqueOrThrow({ where: reference.where }).catch(err => {
 			err.message = 'Argument `reference.where`: ' + err.message
 			throw err
 		})
@@ -72,7 +77,7 @@ export default async function ({ node, where, position, reference }) {
 				position = 'first-sibling'
 				siblings = null
 			} else {
-				const rn_last_child = await model.findChildren({
+				const rn_last_child = await ctx.findChildren({
 					...get_shared_rn_query_args(),
 					orderBy: {
 						path: 'desc'
@@ -99,13 +104,13 @@ export default async function ({ node, where, position, reference }) {
 		/**
 		 * Query nodes we might use through out this journey
 		 */
-		const rn_last_sibling = await model.findSiblings({
+		const rn_last_sibling = await ctx.findSiblings({
 			...get_shared_rn_query_args(),
 			orderBy: {
 				path: 'desc'
 			}
 		}).then(s => s?.[0])
-		const rn_first_sibling = await model.findSiblings({
+		const rn_first_sibling = await ctx.findSiblings({
 			...get_shared_rn_query_args(),
 			orderBy: {
 				path: 'asc'
@@ -148,7 +153,7 @@ export default async function ({ node, where, position, reference }) {
 			 */
 
 			if (!new_pos) {
-				siblings = await model.findSiblings({
+				siblings = await ctx.findSiblings({
 					node: rn_node,
 					select: {
 						path: true,
@@ -274,14 +279,14 @@ export default async function ({ node, where, position, reference }) {
 				(original_parent_path !== new_parent_path)
 			) {
 				if (original_parent_path) {
-					await model.update({
+					await ctx.update({
 						where: { path: original_parent_path },
 						data: { numchild: { decrement: 1 } }
 					})
 				}
 
 				if (new_parent_path) {
-					await model.update({
+					await ctx.update({
 						where: { path: new_parent_path },
 						data: { numchild: { increment: 1 } }
 					})
@@ -306,7 +311,7 @@ export default async function ({ node, where, position, reference }) {
 		// Issue is that Promise.all-ing a queue will lock SQLite but $transactions won't
 		// As a work-around we can set connection_limit=1
 		// https://github.com/prisma/prisma/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A+Timed+out+during+query+execution%22
-		queue.push(model.update({
+		queue.push(ctx.update({
 			where: { path: old_path },
 			data: {
 				path: new_path,
@@ -314,7 +319,7 @@ export default async function ({ node, where, position, reference }) {
 			}
 		}))
 
-		const moveable_node = await model.findFirstOrThrow({
+		const moveable_node = await ctx.findFirstOrThrow({
 			where: { path: old_path },
 			select: {
 				path: true,
@@ -325,7 +330,7 @@ export default async function ({ node, where, position, reference }) {
 		})
 
 		if (moveable_node.numchild !== 0) {
-			const descendants = await model.findDescendants({ node: moveable_node, select: { id: true, path: true, depth: true } })
+			const descendants = await ctx.findDescendants({ node: moveable_node, select: { id: true, path: true, depth: true } })
 
 
 			for (const descendant of descendants) {
@@ -333,7 +338,7 @@ export default async function ({ node, where, position, reference }) {
 
 				const new_descendant_depth = moveable_node.depth !== new_depth ? descendant.depth + new_depth - moveable_node.depth : null
 
-				queue.push(model.update({
+				queue.push(ctx.update({
 					where: {
 						id: descendant.id
 					},

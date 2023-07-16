@@ -18,3 +18,7 @@ model node {
 
     @@index([path])
 }
+
+model unusedModel {
+	id Int @id @default(autoincrement())
+}
