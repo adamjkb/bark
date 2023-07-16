@@ -50,7 +50,7 @@ export type BarkInitArgs = {
 	 *
 	 * Minimum required model: https://prisma-extension-bark.gitbook.io/docs/model-reference#minimum-required-model
 	 */
-	modelNames: PrismaModelProps[]
+	modelNames: PrismaModelProps[];
 }
 
 type MapInputToBarkMethods<T extends ReadonlyArray<PrismaModelProps>> = {

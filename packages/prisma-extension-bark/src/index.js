@@ -11,19 +11,17 @@ import * as operations from './operations/index.js'
  * @template {import('../types/extension.d.ts').BarkInitArgs} T
  *
  * @param {T} args
- * @returns {import('../types/extension.d.ts').BarkInitReturn<T>}
  */
 export const bark = (args) => Prisma.defineExtension((client) => {
+	const extensionMethods = {
+		...find,
+		...create,
+		...deletes,
+		...operations,
+	}
+
 	return client.$extends({
 		name: 'prisma-extension-bark',
-		model: args.modelNames.reduce((pV, modelName) => ({
-			...pV,
-			[modelName]: {
-				...find,
-				...create,
-				...deletes,
-				...operations
-			}
-		}), {}),
+		model: Object.fromEntries(args.modelNames.map(m => [m, extensionMethods])),
 	})
 })

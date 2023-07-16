@@ -1,4 +1,4 @@
-import type { XOR } from "./helpers";
+import type { RequireKeys, XOR } from "./helpers";
 import {
 	PrismaModelFunctionArgs as PMFArgs,
 	PrismaModelFunctionResult as PMFResult,
@@ -34,14 +34,21 @@ export type findDescendantsArgs<TModelName extends PMP> = XOR<
 		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
 	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
 
-export type findAncestorsArgs<TModelName extends PMP> = XOR<
-		{ node: RequirePMTInput<TModelName,'depth' | 'path'> },
-		Pick<PMFArgs<TModelName, 'findUnique'>, 'where'>
-	> & Omit<PMFArgs<TModelName, 'findMany'>, 'where'>;
+
+export type findAncestorsArgs<T, A> = XOR<
+	{ node: RequireKeys<Prisma.Result<T, A, 'findFirst'>, 'depth' | 'path'>},
+		Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+	> & Omit<Prisma.Args<T, 'findMany'>, 'where'>;
+
+export type findAncestorsResult<T, A> = Promise<Prisma.Result<T, A, 'findMany'> | null>
 
 
 // findLastRoot
+export type findLastRootNodeArgs<T, A> = Prisma.Exact<A, Omit<Prisma.Args<T, 'findFirst'>, 'where'>> | void;
 
-export type findLastRootNodeArgs<TModelName extends PMP> = Partial<Omit<PMFArgs<TModelName, 'findFirst'>, 'where'>>;
+export type findLastRootNodeResult<T, A> = Promise<Prisma.Result<T, A, 'findFirst'>>;
 
-export type findLastRootNodeResult<TModelName extends PMP> = Promise<PMFResult<TModelName, 'findFirst'>>
+
+const x: Prisma.Result<Prisma.node, A, 'findFirst'> = {
+
+}

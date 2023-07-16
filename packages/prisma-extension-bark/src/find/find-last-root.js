@@ -1,13 +1,14 @@
 import { Prisma } from '@prisma/client'
 
 /**
- * @template {import('$types/prisma').PrismaModelProps} A
+ * @template T - Model
+ * @template A - Args
  *
- * @this {import('$types/extension').BarkExtensionContext<A>}
- * @param {import('$types/find').findLastRootNodeArgs<A>} args
- * @returns {import('$types/find').findLastRootNodeResult<A>}
+ * @this {T}
+ * @param {import('$types/find').findLastRootNodeArgs<T, A>} args
+ * @returns {import('$types/find').findLastRootNodeResult<T, A>}
  */
-export default async function ({ ...args } = {}) {
+export default async function (args) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	return ctx.findFirst({
