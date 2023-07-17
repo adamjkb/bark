@@ -35,19 +35,20 @@ importers:
         version: 0.33.0
 
   playground:
-    devDependencies:
+    dependencies:
       '@prisma/client':
         specifier: ^5.0.0
         version: 5.0.0(prisma@5.0.0)
+      prisma-extension-bark:
+        specifier: workspace:^
+        version: link:../packages/prisma-extension-bark
+    devDependencies:
       eslint:
         specifier: ^8.45.0
         version: 8.45.0
       prisma:
         specifier: ^5.0.0
         version: 5.0.0
-      prisma-extension-bark:
-        specifier: workspace:^
-        version: link:../packages/prisma-extension-bark
 
 packages:
 
@@ -596,9 +597,11 @@ packages:
     dependencies:
       '@prisma/engines-version': 4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584
       prisma: 5.0.0
+    dev: false
 
   /@prisma/engines-version@4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584:
     resolution: {integrity: sha512-HHiUF6NixsldsP3JROq07TYBLEjXFKr6PdH8H4gK/XAoTmIplOJBCgrIUMrsRAnEuGyRoRLXKXWUb943+PFoKQ==}
+    dev: false
 
   /@prisma/engines@5.0.0:
     resolution: {integrity: sha512-kyT/8fd0OpWmhAU5YnY7eP31brW1q1YrTGoblWrhQJDiN/1K+Z8S1kylcmtjqx5wsUGcP1HBWutayA/jtyt+sg==}
