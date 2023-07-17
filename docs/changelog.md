@@ -1,0 +1,1 @@
+../packages/prisma-extension-bark/CHANGELOG.md
