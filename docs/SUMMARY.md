@@ -4,5 +4,5 @@
 * [Getting started](getting-started.md)
 * [Client Extension API reference](client-extension-api-reference.md)
 * [Model Reference](model-reference.md)
-* [Changelog](changelog.md)
+* [Changelog](https://github.com/adamjkb/bark/blob/main/packages/prisma-extension-bark/CHANGELOG.md)
 * [Acknowledgement](acknowledgement.md)
