@@ -30,7 +30,7 @@ model node {
     depth    Int
     numchild Int    @default(0)
     
-	// Your fields go here...
+    // Your fields go here...
     name     String
 
     @@index([path])
