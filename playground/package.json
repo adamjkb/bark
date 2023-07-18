@@ -6,11 +6,13 @@
     "scripts": {
         "start": "node --watch ./index.js"
     },
+	"dependencies": {
+		"@prisma/client": "^5.0.0",
+		"prisma-extension-bark": "workspace:^"
+	},
     "devDependencies": {
-        "@prisma/client": "^5.0.0",
         "eslint": "^8.45.0",
-        "prisma": "^5.0.0",
-        "prisma-extension-bark": "workspace:^"
+        "prisma": "^5.0.0"
     },
     "prisma": {
         "seed": "node ./prisma/seed.js"
