@@ -1,15 +1,15 @@
 {
     "name": "playground",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "private": true,
     "type": "module",
     "scripts": {
         "start": "node --watch ./index.js"
     },
-	"dependencies": {
-		"@prisma/client": "^5.0.0",
-		"prisma-extension-bark": "workspace:^"
-	},
+    "dependencies": {
+        "@prisma/client": "^5.0.0",
+        "prisma-extension-bark": "workspace:^"
+    },
     "devDependencies": {
         "eslint": "^8.45.0",
         "prisma": "^5.0.0"
