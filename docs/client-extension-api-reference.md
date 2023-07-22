@@ -10,7 +10,7 @@ Bark doesn't override any of the existing [Prisma model queries](https://www.pri
 
 ## Extend a Prisma Client
 
-To extend a Prisma Client all you have to is to import Bark and call it with the Bark-compatible models passed into the `modelNames` property. 
+To extend a Prisma Client you only have to import Bark and call it with the Bark-compatible models passed into the `modelNames` property. 
 
 ```js
 import { PrismaClient } from '@prisma/client'
