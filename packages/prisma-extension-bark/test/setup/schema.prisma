@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
     provider = "sqlite"
-    url      = "file:./test.db?connection_limit=1"
+    url      = "file:./test.db"
 }
 
 model node {
