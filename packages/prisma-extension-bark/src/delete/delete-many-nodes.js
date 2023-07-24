@@ -71,7 +71,7 @@ export default async function ({ where }) {
 	}
 
 	// Delete paths
-	const deleteCounts = await Promise.all(Array.from(removable_nodes.keys()).map(path => {
+	const deleteCounts = await ctx.__$transaction(Array.from(removable_nodes.keys()).map(path => {
 		return ctx.deleteMany({
 			where: {
 				path: {

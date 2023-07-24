@@ -54,8 +54,7 @@ export default async function ({ node, where, data, ...args }) {
 		const new_step = int2str(1)
 		const new_path = path + new_step
 
-		// FIXME: Suboptimal since transactions are not supported inside model extensions.
-		const [newborn] = await Promise.all([
+		const [newborn] = await ctx.__$transaction([
 			ctx.create({
 				data: {
 					...data,

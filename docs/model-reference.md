@@ -6,19 +6,6 @@ description: >-
 
 # Model Reference
 
-## Database configurations
-
-### SQLite
-
-For some operations Bark uses Promise.all() to batch database writes but in some systems this result in locks using the SQLite database connector. Please consider setting your SQLite to only allow 1 connection at a time by adding the `connection_limit=1` query parameter to your database url.
-
-Example:
-
-```
-url = "file:./my-database.db?connection_limit=1"
-```
-
-
 ## Supported Prisma version
 
 If your Prisma version below `5.0.0` consider upgrade to this version. [Prisma Release Notes.](https://github.com/prisma/prisma/releases/tag/5.0.0)

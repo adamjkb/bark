@@ -7,15 +7,18 @@ import * as operations from './operations/index.js'
 
 /**
  * Initialize Bark as Prisma Extension
- *
- * @type {import('$types/index').withBark}
- */
-export const withBark = (args) => Prisma.defineExtension((client) => {
+*
+* @type {import('$types/index').withBark}
+*/
+// @ts-expect-error
+export const withBark = (args) => Prisma.defineExtension(function (client) {
 	const extensionMethods = {
 		...find,
 		...create,
 		...deletes,
 		...operations,
+		/** Note: internal use only */
+		__$transaction: async (...args)  => client.$transaction(...args)
 	}
 
 	return client.$extends({

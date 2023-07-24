@@ -10,7 +10,7 @@ type BarkInitArgs = {
 	/**
 	 * Name of models that are suitable to be managed by Bark
 	 *
-	 * Minimum required model: https://prisma-extension-bark.gitbook.io/docs/model-reference#minimum-required-model
+	 * Minimum required model: {@link https://prisma-extension-bark.gitbook.io/docs/model-reference#minimum-required-model}
 	 */
 	modelNames: PrismaModelProps[];
 }
@@ -42,6 +42,16 @@ export type BarkOperationsMethods = {
 
 export type BarkMethods = BarkFindMethods & BarkCreateMethods & BarkDeleteMethods & BarkOperationsMethods
 
+/**
+ * Extends Prisma Client with Bark
+ *
+ * Docs: {@link https://prisma-extension-bark.gitbook.io/docs/client-extension-api-reference#extend-a-prisma-client}
+ *
+ * @example
+ * const xprisma = new PrismaClient().$extends(withBark({
+ *  modelNames: ['node']
+ * }))
+ */
 export declare function withBark<I extends BarkInitArgs>(args: I): (client: any) => PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
 	readonly [K in (I['modelNames'] extends ReadonlyArray<infer U> ? U : never)]: BarkMethods
 }, {}, {}> & Types.Extensions.InternalArgs<{}, {}, {}, {}> & Types.Extensions.DefaultArgs>;
