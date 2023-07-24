@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 0.1.1
+
+### Patch Changes
+
+- Improved concurrency handling by relying on [`Prisma.$transactions`](https://www.prisma.io/docs/guides/performance-and-optimization/prisma-client-transactions-guide#transaction-api) ([#54](https://github.com/adamjkb/bark/pull/54))
+
 ## 0.1.0
 
 ### Minor Changes
