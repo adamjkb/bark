@@ -350,7 +350,8 @@ export default async function ({ node, where, position, reference }) {
 			}
 		}
 
-		await Promise.all(queue)
+		// console.log(queue)
+		await ctx.__$transaction(queue)
 	}
 
 }

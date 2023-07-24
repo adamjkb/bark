@@ -41,8 +41,7 @@ export default async function ({ node, where, data, ...args }) {
 	// create next path
 	const new_path = increment_path(last_sibling.path)
 
-	// FIXME: Suboptimal since transactions are not supported inside model extensions.
-	const [newborn] = await Promise.all([
+	const [newborn] = await ctx.__$transaction([
 		ctx.create({
 			data: {
 				...data,
