@@ -1,6 +1,6 @@
 {
     "name": "prisma-extension-bark",
-    "version": "0.1.2",
+    "version": "0.1.1",
     "description": "A materialized path extension for Prisma",
     "license": "MIT",
     "bugs": {
