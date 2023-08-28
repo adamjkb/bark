@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 0.2.0
+
+### Minor Changes
+
+- CJS support ([#63](https://github.com/adamjkb/bark/pull/63))
+
 ## 0.1.1
 
 ### Patch Changes
