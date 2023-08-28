@@ -7,6 +7,7 @@
     },
     "type": "module",
     "scripts": {
+        "build": "pnpm -r build --filter=./packages/*",
         "test": "pnpm test -r --filter=./packages/*",
         "release": "changeset publish",
         "lint": "pnpm -r lint && eslint --cache --cache-location node_modules/.eslintcache 'packages/**/*.js'",

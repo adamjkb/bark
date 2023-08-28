@@ -5,3 +5,4 @@ node_modules
 !.env.example
 /**/test/setup/migrations
 /**/test/setup/test.db
+packages/prisma-extension-bark/dist
