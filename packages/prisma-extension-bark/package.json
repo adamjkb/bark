@@ -4,38 +4,44 @@
     "description": "A materialized path extension for Prisma",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/adamjkb/bark/issues"
+		"url": "https://github.com/adamjkb/bark/issues"
     },
     "homepage": "https://prisma-extension-bark.gitbook.io/",
     "repository": {
-        "type": "git",
+		"type": "git",
         "url": "https://github.com/adamjkb/bark",
         "directory": "packages/prisma-extension-bark"
     },
     "author": {
-        "name": "Adam Jakab",
+		"name": "Adam Jakab",
         "url": "https://adamjkb.com"
     },
     "keywords": [
-        "prisma",
+		"prisma",
         "prisma-client",
         "prisma-extension",
         "materialized-path"
     ],
     "type": "module",
+	"module": "src/index.js",
+	"main": "dist/index.cjs",
     "files": [
         "src",
-        "types"
+        "types",
+        "dist"
     ],
     "types": "./types/index.d.ts",
     "exports": {
         ".": {
             "types": "./types/index.d.ts",
-            "import": "./src/index.js"
+            "import": "./src/index.js",
+            "require": "./dist/index.cjs"
         },
         "./package.json": "./package.json"
     },
     "scripts": {
+		"build": "esbuild ./src/index.js --bundle --format=cjs --outfile=dist/index.cjs --platform=node --external:@prisma/client",
+		"prepublishOnly": "pnpm build",
         "test": "vitest",
         "prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
@@ -45,6 +51,7 @@
         "@prisma/client": ">=5.0.0"
     },
     "devDependencies": {
+        "esbuild": "^0.19.2",
         "eslint": "^8.45.0",
         "prisma": "^5.0.0",
         "typescript": "^5.1.6",
