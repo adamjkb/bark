@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 0.2.1
+
+### Patch Changes
+
+- Fix an issue in move operation where `numchild` fields were not always updated. ([Issue #68](https://github.com/adamjkb/bark/issues/68)) ([#69](https://github.com/adamjkb/bark/pull/69))
+
 ## 0.2.0
 
 ### Minor Changes
