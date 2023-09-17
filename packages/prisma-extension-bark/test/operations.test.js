@@ -174,7 +174,7 @@ describe('Operation: move(), Position: last-child', async () => {
 		expect(result).toMatchObject({ path: '0001000100010006', depth: node.depth, numchild: node.numchild })
 	})
 
-	it.only('last-child — depth move, descendants', async () => {
+	it('last-child — depth move, descendants', async () => {
 		const node = await get_b_node()
 		const reference_node = await get_a_node()
 		const home_node = await get_home_node()
