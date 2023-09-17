@@ -10,6 +10,7 @@ import {
 	get_b_a_node,
 	get_b_node,
 	get_c_node,
+	get_home_node,
 	prisma
 } from './utilities/prisma'
 
@@ -176,9 +177,14 @@ describe('Operation: move(), Position: last-child', async () => {
 	it('last-child — depth move, descendants', async () => {
 		const node = await get_b_node()
 		const reference_node = await get_a_node()
+		const home_node = await get_home_node()
 
 		await prisma.node.move({ node: node, position: 'last-child', reference: { node: reference_node } })
 
+		const result_home_node = await get_home_node()
+		expect(result_home_node).toMatchObject({ depth: home_node.depth, numchild: home_node.numchild - 1 })
+		const result_reference_node = await get_a_node()
+		expect(result_reference_node).toMatchObject({ depth: reference_node.depth, numchild: reference_node.numchild + 1 })
 		const result = await get_b_node()
 		expect(result).toMatchObject({ path: '0001000100010006', depth: node.depth + 1, numchild: node.numchild })
 		const result_child = await get_b_a_node()

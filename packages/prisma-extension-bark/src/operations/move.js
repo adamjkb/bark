@@ -58,6 +58,7 @@ export default async function ({ node, where, position, reference }) {
 		 * Variables
 		 */
 
+		let new_path
 		let new_depth = rn_node.depth
 		let new_pos = null
 		let siblings = []
@@ -141,7 +142,7 @@ export default async function ({ node, where, position, reference }) {
 			position === 'last-sibling' ||
 			(position === 'right' && rn_node.id === rn_last_sibling.id)) {
 			// Easy mode!
-			const new_path = increment_path(rn_last_sibling.path)
+			new_path = increment_path(rn_last_sibling.path)
 			await update_node_and_descendants({
 				old_path: original_node.path,
 				new_path,
@@ -188,7 +189,7 @@ export default async function ({ node, where, position, reference }) {
 				}
 			}
 
-			const new_path = path_from_depth({ path: rn_node.path, depth: new_depth - 1 }) + int2str(new_pos)
+			new_path = path_from_depth({ path: rn_node.path, depth: new_depth - 1 }) + int2str(new_pos)
 
 			// If the move is amongst siblings and is to the left and there
 			// are siblings to the right of its new position then to be on
@@ -216,17 +217,19 @@ export default async function ({ node, where, position, reference }) {
 			//(i.e.if we've got holes, allow them to compress)
 			let move_siblings = []
 			let prior_path = new_path
-			for (const node of siblings) {
-				// If the path of the node is already greater than the path
-				// of the previous node it doesn't need shifting
-				if (node.path > prior_path) {
-					continue
+			if (siblings?.length > 0) {
+				for (const node of siblings) {
+					// If the path of the node is already greater than the path
+					// of the previous node it doesn't need shifting
+					if (node.path > prior_path) {
+						continue
+					}
+					// It does need shifting, so add to the list
+					move_siblings.push(node)
+					// Calculate the path that it would be moved to, as that's
+					// the next "priorpath"
+					prior_path = increment_path(node.path)
 				}
-				// It does need shifting, so add to the list
-				move_siblings.push(node)
-				// Calculate the path that it would be moved to, as that's
-				// the next "priorpath"
-				prior_path = increment_path(node.path)
 			}
 			// Order of operation matters because we want to compress them
 			move_siblings.reverse()
@@ -270,27 +273,28 @@ export default async function ({ node, where, position, reference }) {
 			}
 
 
-			// Updating parent numchilds when original_node is changing depth
-			const original_parent_path = path_from_depth({ path: original_node.path, depth: original_node.depth - 1 })
-			const new_parent_path = path_from_depth({ path: new_path, depth: new_depth - 1 })
-			if (
-				(!original_parent_path && new_parent_path) ||
-				(original_parent_path && !new_parent_path) ||
-				(original_parent_path !== new_parent_path)
-			) {
-				if (original_parent_path) {
-					await ctx.update({
-						where: { path: original_parent_path },
-						data: { numchild: { decrement: 1 } }
-					})
-				}
+		}
+		// Updating parent numchilds when original_node is changing depth
+		const original_parent_path = path_from_depth({ path: original_node.path, depth: original_node.depth - 1 })
+		const new_parent_path = path_from_depth({ path: new_path, depth: new_depth - 1 })
 
-				if (new_parent_path) {
-					await ctx.update({
-						where: { path: new_parent_path },
-						data: { numchild: { increment: 1 } }
-					})
-				}
+		if (
+			(!original_parent_path && new_parent_path) ||
+			(original_parent_path && !new_parent_path) ||
+			(original_parent_path !== new_parent_path)
+		) {
+			if (original_parent_path) {
+				await ctx.update({
+					where: { path: original_parent_path },
+					data: { numchild: { decrement: 1 } }
+				})
+			}
+
+			if (new_parent_path) {
+				await ctx.update({
+					where: { path: new_parent_path },
+					data: { numchild: { increment: 1 } }
+				})
 			}
 		}
 	}
@@ -307,10 +311,6 @@ export default async function ({ node, where, position, reference }) {
 		/** @type {Promise<import('@prisma/client').Prisma.PrismaPromise<any>> | any[]}*/
 		const queue = []
 
-		// TODO: Ideally this would make use of transactions
-		// Issue is that Promise.all-ing a queue will lock SQLite but $transactions won't
-		// As a work-around we can set connection_limit=1
-		// https://github.com/prisma/prisma/issues?q=is%3Aissue+is%3Aopen+label%3A%22topic%3A+Timed+out+during+query+execution%22
 		queue.push(ctx.update({
 			where: { path: old_path },
 			data: {
