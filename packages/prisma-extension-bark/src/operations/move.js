@@ -217,17 +217,19 @@ export default async function ({ node, where, position, reference }) {
 			//(i.e.if we've got holes, allow them to compress)
 			let move_siblings = []
 			let prior_path = new_path
-			for (const node of siblings) {
-				// If the path of the node is already greater than the path
-				// of the previous node it doesn't need shifting
-				if (node.path > prior_path) {
-					continue
+			if (siblings?.length > 0) {
+				for (const node of siblings) {
+					// If the path of the node is already greater than the path
+					// of the previous node it doesn't need shifting
+					if (node.path > prior_path) {
+						continue
+					}
+					// It does need shifting, so add to the list
+					move_siblings.push(node)
+					// Calculate the path that it would be moved to, as that's
+					// the next "priorpath"
+					prior_path = increment_path(node.path)
 				}
-				// It does need shifting, so add to the list
-				move_siblings.push(node)
-				// Calculate the path that it would be moved to, as that's
-				// the next "priorpath"
-				prior_path = increment_path(node.path)
 			}
 			// Order of operation matters because we want to compress them
 			move_siblings.reverse()
