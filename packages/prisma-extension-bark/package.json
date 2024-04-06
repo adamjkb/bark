@@ -1,6 +1,6 @@
 {
     "name": "prisma-extension-bark",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "A materialized path extension for Prisma",
     "license": "MIT",
     "bugs": {
@@ -51,7 +51,7 @@
         "@prisma/client": ">=5.0.0"
     },
     "devDependencies": {
-        "esbuild": "^0.19.2",
+        "esbuild": "^0.20.0",
         "eslint": "^8.45.0",
         "prisma": "^5.0.0",
         "typescript": "^5.1.6",
