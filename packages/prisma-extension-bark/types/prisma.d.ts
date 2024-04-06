@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client"
-import { RequireKeys } from "./helpers";
+import { RequireKeys } from "./helpers.d.ts";
 
 /**
  * Model methods available in Prisma. (e.g. `prisma.node` or `prisma.user`)

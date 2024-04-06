@@ -1,6 +1,6 @@
-import { XOR } from "./helpers";
+import { XOR } from "./helpers.d.ts";
 import type { Prisma } from '@prisma/client'
-import { RequiredKeysInInputNode } from "./prisma";
+import { RequiredKeysInInputNode } from "./prisma.d.ts";
 
 
 // deleteNode
