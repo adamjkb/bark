@@ -1,4 +1,4 @@
-import type { XOR } from "./helpers";
+import type { XOR } from "./helpers.d.ts";
 import {
 	PrismaModelFunctionArgs as PMFArgs,
 	PrismaModelProps as PMP,

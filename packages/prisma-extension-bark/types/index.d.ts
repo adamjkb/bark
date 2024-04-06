@@ -1,10 +1,10 @@
-import PrismaDefault, { type Prisma } from "@prisma/client/scripts/default-index";
-import type { Types } from "@prisma/client/runtime/library";
-import { PrismaModelProps } from "./prisma";
-import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult, findTreeArgs, findTreeResult } from "./find";
-import { createChildArgs, createRootArgs, createSiblingArgs, createSiblingResult } from "./create";
-import { deleteManyNodesArgs, deleteManyNodesResult, deleteNodeArgs, deleteNodeResult } from "./delete";
-import { moveArgs, moveResult } from "./operations";
+import PrismaDefault, { type Prisma } from "@prisma/client/scripts/default-index.d.ts";
+import type { Types } from "@prisma/client/runtime/library.d.ts";
+import { PrismaModelProps } from "./prisma.d.ts";
+import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult, findTreeArgs, findTreeResult } from "./find.d.ts";
+import { createChildArgs, createRootArgs, createSiblingArgs, createSiblingResult } from "./create.d.ts";
+import { deleteManyNodesArgs, deleteManyNodesResult, deleteNodeArgs, deleteNodeResult } from "./delete.d.ts";
+import { moveArgs, moveResult } from "./operations.d.ts";
 
 type BarkInitArgs = {
 	/**

@@ -1,5 +1,5 @@
-import type { XOR } from "./helpers";
-import { RequiredKeysInInputNode } from "./prisma";
+import type { XOR } from "./helpers.d.ts";
+import { RequiredKeysInInputNode } from "./prisma.d.ts";
 
 import type { Prisma } from '@prisma/client'
 
