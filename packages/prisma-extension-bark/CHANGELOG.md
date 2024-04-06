@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 0.2.2
+
+### Patch Changes
+
+- Fix typescript import that prevented extension methods to be exposed. ([Issue #78](https://github.com/adamjkb/bark/issues/78)) ([#79](https://github.com/adamjkb/bark/pull/79))
+
 ## 0.2.1
 
 ### Patch Changes
