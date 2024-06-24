@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client/extension'
 
 import * as find from './find/index.js'
 import * as create from './create/index.js'
