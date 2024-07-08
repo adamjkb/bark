@@ -1,6 +1,6 @@
 {
     "name": "prisma-extension-bark",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "A materialized path extension for Prisma",
     "license": "MIT",
     "bugs": {
@@ -55,7 +55,7 @@
         "eslint": "^8.45.0",
         "prisma": "^5.0.0",
         "typescript": "^5.1.6",
-        "vitest": "^0.34.0"
+        "vitest": "^2.0.0"
     },
     "prisma": {
         "seed": "node ./test/utilities/seed.js"
