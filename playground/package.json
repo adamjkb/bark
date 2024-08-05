@@ -11,7 +11,7 @@
         "prisma-extension-bark": "workspace:^"
     },
     "devDependencies": {
-        "eslint": "^8.45.0",
+        "eslint": "^9.8.0",
         "prisma": "^5.0.0"
     },
     "prisma": {
