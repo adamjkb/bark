@@ -9,8 +9,8 @@
     "scripts": {
         "test": "pnpm test -r --filter=./packages/*",
         "release": "changeset publish",
-        "lint": "pnpm -r lint && eslint --cache --cache-location node_modules/.eslintcache 'packages/**/*.js'",
-        "lint:fix": "eslint --ignore-path .gitignore --fix --cache --cache-location node_modules/.eslintcache 'packages/**/*.js'",
+        "lint": "pnpm -r lint",
+        "lint:fix": "pnpm -r lint:fix",
         "changeset:version": "changeset version && pnpm -r generate:version && git add --all",
         "changeset:publish": "changeset publish"
     },
