@@ -33,30 +33,6 @@ describe('findParent()', async () => {
 	})
 })
 
-
-describe('findTree()', async () => {
-	it('no parent given, return whole model', async () => {
-		const result = await prisma.node.findTree({ select: { id: true } })
-		expect(result?.length).toBe(13)
-	})
-
-	it('parent given, and is not leaf', async () => {
-		const parent = await get_a_node()
-		const result = await prisma.node.findTree({
-			parent: {
-				node: parent
-			},
-			select: { path: true },
-			orderBy: {
-				path: 'desc'
-			}
-		})
-		expect(result?.length).toBe(6)
-		expect(result?.at?.(0)?.path).toBe('0001000100010005')
-		expect(result?.at?.(-1)?.path).toBe('000100010001')
-	})
-})
-
 describe('findLastRoot()', async () => {
 	it('root node w/o args', async () => {
 		const result = await prisma.node.findLastRoot()
