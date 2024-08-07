@@ -22,7 +22,7 @@ export default async function ({ node, orderBy = default_order_by, where, ...arg
 
 	// Check if all requirements are available
 	if (has_nullish(path, depth, numchild)) {
-		const target = await ctx.findUniqueOrThrow({
+		const target = await ctx.findUnique({
 			where: node,
 			select: {
 				path: true,
@@ -34,6 +34,8 @@ export default async function ({ node, orderBy = default_order_by, where, ...arg
 			path = target.path
 			depth = target.depth
 			numchild = target.numchild
+		} else {
+			return null
 		}
 	}
 

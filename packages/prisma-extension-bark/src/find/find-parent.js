@@ -18,15 +18,20 @@ export default async function ({ node, where, ...args }) {
 	let depth = node?.depth
 
 	if (has_nullish(path, depth)) {
-		const target = await ctx.findUniqueOrThrow({
+		const target = await ctx.findUnique({
 			where: node,
 			select: {
 				path: true,
 				depth: true
 			}
 		})
-		path = target.path
-		depth = target.depth
+
+		if (target) {
+			path = target.path
+			depth = target.depth
+		} else {
+			return null
+		}
 	}
 	if (depth && path) {
 		// depth indicates no parent
