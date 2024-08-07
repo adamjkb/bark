@@ -28,24 +28,6 @@ export type findChildrenArgs<T, A> = XOR<
 export type findChildrenResult<T, A> = Prisma.Result<T, A, 'findMany'> | null;
 
 
-// findTree
-/**
- * @deprecated
- */
-type findTreeParentOfAndWhereArgs<T, A> = XOR<
-	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path' | 'numchild'>; },
-	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
->
-/**
- * @deprecated
- */
-export type findTreeArgs<T, A> = Omit<Prisma.Args<T, 'findMany'>, 'where'> & { parent?: findTreeParentOfAndWhereArgs<T,A>}
-/**
- * @deprecated
- */
-export type findTreeResult<T, A> = Prisma.Result<T, A, 'findMany'>;
-
-
 // findDescendants
 export type findDescendantsArgs<T, A> = XOR<
 	{ node: RequiredKeysInInputNode< T, A,'depth' | 'path' | 'numchild' | 'id'>; },
