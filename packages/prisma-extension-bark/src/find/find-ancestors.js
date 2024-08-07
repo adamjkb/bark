@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
+import { has_nullish, merge_where_args } from 'src/utils.js'
 
 /**
  * @template T - Model
@@ -13,16 +14,13 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.depth
 
-	// Get required arguments from instance
-	if (node) {
-		path = node.path
-		depth = node.depth
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({ where })
+	 // Check if all requirements are available
+	 if (has_nullish(path, depth)) {
+		const target = await ctx.findUniqueOrThrow({ where: node })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -50,11 +48,11 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 
 
 	return ctx.findMany({
-		where: {
+		where: merge_where_args({
 			path: {
 				in: ancestors_paths
-			}
-		},
+			},
+		}, where),
 		orderBy,
 		...args
 	})

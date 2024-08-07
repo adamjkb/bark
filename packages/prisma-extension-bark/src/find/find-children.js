@@ -1,31 +1,28 @@
 import { Prisma } from '@prisma/client'
 import { default_order_by, max_segment, min_segment } from '../consts.js'
+import { has_nullish, merge_where_args } from 'src/utils.js'
 
 /**
  * @template T - Model
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/find').findChildrenArgs<T, A>} args
+ * @param {import('$types/find').findChildrenArgs<T, A>} opts
  * @returns {Promise<import('$types/find').findChildrenResult<T, A>>}
  */
-export default async function ({ node, where, orderBy = default_order_by, ...args }) {
+export default async function ({ node, orderBy = default_order_by, where, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.depth
 	/** @type {number} */
-	let numchild
+	let numchild = node?.numchild
 
-	// Get required arguments from instance
-	if (node) {
-		path = node.path
-		depth = node.depth
-		numchild = node.numchild
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({ where })
+	// Check if all requirements are available
+	if (has_nullish(path, depth, numchild)) {
+		const target = await ctx.findUniqueOrThrow({ where: node })
 		if (target) {
 			path = target.path
 			depth = target.depth
@@ -44,13 +41,13 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 
 
 	return ctx.findMany({
-		where: {
+		where: merge_where_args({
 			depth: depth + 1,
 			path: {
 				gt: gt_path,
 				lte: lte_path,
-			}
-		},
+			},
+		}, where),
 		orderBy,
 		...args
 	})

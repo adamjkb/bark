@@ -53,3 +53,20 @@ export const increment_path = (path) => {
  * @returns {number}
  */
 export const last_position_in_path = ({path}) => str2int(path.slice(-STEP_LENGTH))
+
+
+/**
+ * Check for nullish value
+ * @param  {...unknown} args
+ * @returns {boolean}
+ */
+export const has_nullish = (...args) => {
+	return args.some(a => a ?? true)
+}
+
+export const merge_where_args = (internal, external) => {
+	return {
+		...internal,
+		...(external && { AND: [external] })
+	}
+}

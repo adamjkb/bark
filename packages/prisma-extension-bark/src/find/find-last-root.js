@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client'
+import { merge_where_args } from 'src/utils'
 
 /**
  * @template T - Model
@@ -12,10 +13,10 @@ export default async function (args) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	return ctx.findFirst({
-		...args,
-		where: {
+		where: merge_where_args({
 			depth: 1
-		},
+		}, args?.where),
+		...args,
 		orderBy: {
 			path: 'desc'
 		}
