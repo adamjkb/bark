@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { int2str } from '../utils.js'
+import { has_nullish, int2str } from '../utils.js'
 
 /**
  * @template T - Model
@@ -9,23 +9,26 @@ import { int2str } from '../utils.js'
  * @param {import('$types/create').createChildArgs<T, A>} args
  * @returns {Promise<import('$types/create').createChildResult<T, A>>}
  */
-export default async function ({ node, where, data, ...args }) {
+export default async function ({ node, data, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.depth
 	/** @type {number} */
-	let numchild
+	let numchild = node?.numchild
 
 	// Get required arguments from instance
-	if (node) {
-		path = node.path
-		depth = node.depth
-		numchild = node.numchild
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({ where })
+	if (has_nullish(path, depth, numchild)) {
+		const target = await ctx.findUniqueOrThrow({
+			where: node,
+			select: {
+				path: true,
+				depth: true,
+				numchild: true
+			}
+		})
 		if (target) {
 			path = target.path
 			depth = target.depth
