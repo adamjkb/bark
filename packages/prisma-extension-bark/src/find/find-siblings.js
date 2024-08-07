@@ -20,7 +20,13 @@ export default async function ({ node, where, orderBy = default_order_by, ...arg
 
 	// Check if all requirements are available
 	if (has_nullish(path, depth)) {
-		const target = await ctx.findUniqueOrThrow({ where: node })
+		const target = await ctx.findUniqueOrThrow({
+			where: node,
+			select: {
+				path: true,
+				depth: true
+			}
+		})
 		if (target) {
 			path = target.path
 			depth = target.depth
