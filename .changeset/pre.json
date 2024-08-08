@@ -5,5 +5,13 @@
     "prisma-extension-bark": "0.2.2",
     "playground": "0.0.6"
   },
-  "changesets": []
+  "changesets": [
+    "cold-wombats-divide",
+    "few-lamps-swim",
+    "little-swans-provide",
+    "rotten-kiwis-exist",
+    "selfish-wasps-obey",
+    "shaggy-tomatoes-wonder",
+    "wise-seas-draw"
+  ]
 }

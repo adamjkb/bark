@@ -1,5 +1,27 @@
 # prisma-extension-bark
 
+## 1.0.0-next.0
+
+### Major Changes
+
+- Migrate find methods to use `node` arguments to query instead of `where` ([#91](https://github.com/adamjkb/bark/pull/91))
+
+- Migrate `deleteNode` to use `node` arguments to query instead of `where` ([#91](https://github.com/adamjkb/bark/pull/91))
+
+- Remove redundant `findTree` method ([#91](https://github.com/adamjkb/bark/pull/91))
+
+- Migrate `move` to use `node` and `referenceNode` arguments ([#91](https://github.com/adamjkb/bark/pull/91))
+
+### Minor Changes
+
+- Return null if specified node doesn't return any result instead of throwing an error. ([#91](https://github.com/adamjkb/bark/pull/91))
+
+### Patch Changes
+
+- Select relevant columns whenever node is querying database ([#91](https://github.com/adamjkb/bark/pull/91))
+
+- Migrate `createChild` and `createSibling` to use `node` to find reference node. ([#91](https://github.com/adamjkb/bark/pull/91))
+
 ## 0.2.2
 
 ### Patch Changes

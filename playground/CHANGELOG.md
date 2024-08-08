@@ -1,5 +1,12 @@
 # playground
 
+## 0.0.7-next.0
+
+### Patch Changes
+
+- Updated dependencies [[`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93), [`1a4dab653c5ce826b7e1460882f0e4b18d3bed93`](https://github.com/adamjkb/bark/commit/1a4dab653c5ce826b7e1460882f0e4b18d3bed93)]:
+  - prisma-extension-bark@1.0.0-next.0
+
 ## 0.0.6
 
 ### Patch Changes
