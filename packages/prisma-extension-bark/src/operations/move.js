@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
+import { has_nullish, increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
  * @template T - Model
@@ -9,17 +9,28 @@ import { increment_path, int2str, last_position_in_path, path_from_depth } from 
  * @param {import('$types/operations').moveArgs<T, A>} args
  * @returns {Promise<import('$types/operations').moveResult>}
  */
-export default async function ({ node, where, position, reference }) {
+export default async function ({ node, _where, position, referenceNode }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	let original_node = node
-	let rn_node = reference.node
+	let rn_node = referenceNode
 
-	if (node) {
-		original_node = node
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({ where }).catch(err => {
-			err.message = 'Argument `where`: ' + err.message
+	if (has_nullish(
+		original_node?.id,
+		original_node?.path,
+		original_node?.depth,
+		original_node?.numchild
+	)) {
+		const target = await ctx.findUniqueOrThrow({
+			where: node,
+			select: {
+				id: true,
+				path: true,
+				depth: true,
+				numchild: true
+			}
+		 }).catch(err => {
+			err.message = 'Argument `node`: ' + err.message
 			throw err
 		})
 		if (target) {
@@ -27,10 +38,21 @@ export default async function ({ node, where, position, reference }) {
 		}
 	}
 
-	if (reference.node) {
-		rn_node = reference.node
-	} else if (reference.where) {
-		const rn_target = await ctx.findUniqueOrThrow({ where: reference.where }).catch(err => {
+	if (has_nullish(
+		rn_node?.id,
+		rn_node?.path,
+		rn_node?.depth,
+		rn_node?.numchild
+	)) {
+		const rn_target = await ctx.findUniqueOrThrow({
+			where: referenceNode,
+			select: {
+				id: true,
+				path: true,
+				depth: true,
+				numchild: true,
+			}
+		}).catch(err => {
 			err.message = 'Argument `reference.where`: ' + err.message
 			throw err
 		})
@@ -57,7 +79,6 @@ export default async function ({ node, where, position, reference }) {
 		/**
 		 * Variables
 		 */
-
 		let new_path
 		let new_depth = rn_node.depth
 		let new_pos = null
