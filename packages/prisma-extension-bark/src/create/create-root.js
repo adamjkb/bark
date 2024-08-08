@@ -14,7 +14,7 @@ export default async function ({ data, ...args }) {
 
 	const last_root = await ctx.findLastRoot({ select: {
 		path: true
-	} })
+	}})
 
 	let new_path = null
 	if (last_root) {

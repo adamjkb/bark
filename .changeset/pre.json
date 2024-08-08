@@ -1,0 +1,9 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "prisma-extension-bark": "0.2.2",
+    "playground": "0.0.6"
+  },
+  "changesets": []
+}

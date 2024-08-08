@@ -18,7 +18,7 @@ describe('deleteNode()', async () => {
 	it('delete root node', async () => {
 		const node = await get_root_node()
 
-		const result = await prisma.node.deleteNode({ where: { path: node.path } })
+		const result = await prisma.node.deleteNode({ node: { id: node.id  } })
 		expect(result?.count).toBe(13)
 
 		// check if only root left

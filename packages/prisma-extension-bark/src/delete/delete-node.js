@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { path_from_depth } from '../utils.js'
+import { has_nullish, path_from_depth } from '../utils.js'
 
 /**
  * @template T - Model
@@ -9,29 +9,24 @@ import { path_from_depth } from '../utils.js'
  * @param {import('$types/delete').deleteNodeArgs<T, A>} args
  * @returns {Promise<import('$types/delete').deleteNodeResult<T, A>>}
  */
-export default async function ({ node, where }) {
+export default async function ({ node }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.depth
 
-	if (node) {
-		path = node.path
-		depth = node.depth
-	} else if (where) {
+	if (has_nullish(path, depth)) {
 		const target = await ctx.findUniqueOrThrow({
-			where,
+			where: node,
 			select: {
 				path: true,
 				depth: true
 			}
 		})
-		if (target) {
-			path = target.path
-			depth = target.depth
-		}
+		path = target.path
+		depth = target.depth
 	}
 
 

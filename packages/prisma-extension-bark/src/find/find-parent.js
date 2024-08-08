@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client'
-import { path_from_depth } from '../utils.js'
+import { has_nullish, merge_where_args, path_from_depth } from '../utils.js'
 
 /**
  * @template T - Model
@@ -13,23 +13,25 @@ export default async function ({ node, where, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.depth
 
-	if (node) {
-		path = node.path
-		depth = node.depth
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({
-			where,
+	if (has_nullish(path, depth)) {
+		const target = await ctx.findUnique({
+			where: node,
 			select: {
 				path: true,
 				depth: true
 			}
 		})
-		path = target.path
-		depth = target.depth
+
+		if (target) {
+			path = target.path
+			depth = target.depth
+		} else {
+			return null
+		}
 	}
 	if (depth && path) {
 		// depth indicates no parent
@@ -39,9 +41,9 @@ export default async function ({ node, where, ...args }) {
 
 		const parent_path = path_from_depth({ path, depth: depth - 1 })
 		return ctx.findUnique({
-			where: {
+			where: merge_where_args({
 				path: parent_path
-			},
+			}, where),
 			...args
 		})
 	}
