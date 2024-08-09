@@ -1,14 +1,14 @@
 import { Prisma } from '@prisma/client'
 import { default_order_by } from '../consts.js'
-import { has_nullish, merge_where_args } from 'src/utils.js'
+import { has_nullish, merge_where_args } from '../utils.js'
 
 /**
  * @template T - Model
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/find').findDescendantsArgs<T, A>} args
- * @returns {Promise<import('$types/find').findDescendantsResult<T, A>>}
+ * @param {import('$types/find.d.ts').findDescendantsArgs<T, A>} args
+ * @returns {Promise<import('$types/find.d.ts').findDescendantsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)

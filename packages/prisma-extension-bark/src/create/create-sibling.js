@@ -6,8 +6,8 @@ import { has_nullish, increment_path, path_from_depth } from '../utils.js'
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/create.js').createSiblingArgs<T, A>} args
- * @returns {Promise<import('$types/create.js').createChildResult<T, A>>}
+ * @param {import('$types/create.d.ts').createSiblingArgs<T, A>} args
+ * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
 export default async function ({ node, data, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)

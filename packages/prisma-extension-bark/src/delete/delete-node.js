@@ -6,8 +6,8 @@ import { has_nullish, path_from_depth } from '../utils.js'
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/delete').deleteNodeArgs<T, A>} args
- * @returns {Promise<import('$types/delete').deleteNodeResult<T, A>>}
+ * @param {import('$types/delete.d.ts').deleteNodeArgs<T, A>} args
+ * @returns {Promise<import('$types/delete.d.ts').deleteNodeResult<T, A>>}
  */
 export default async function ({ node }) {
 	const ctx = Prisma.getExtensionContext(this)
