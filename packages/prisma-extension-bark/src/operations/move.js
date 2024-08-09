@@ -6,10 +6,10 @@ import { has_nullish, increment_path, int2str, last_position_in_path, path_from_
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/operations').moveArgs<T, A>} args
- * @returns {Promise<import('$types/operations').moveResult>}
+ * @param {import('$types/operations.d.ts').moveArgs<T, A>} args
+ * @returns {Promise<import('$types/operations.d.ts').moveResult>}
  */
-export default async function ({ node, _where, position, referenceNode }) {
+export default async function ({ node, position, referenceNode }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	let original_node = node

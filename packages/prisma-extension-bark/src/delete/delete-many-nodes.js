@@ -7,8 +7,8 @@ import { STEP_LENGTH } from '../consts.js'
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/delete').deleteManyNodesArgs<T, A>} args
- * @returns {Promise<import('$types/delete').deleteManyNodesResult<T, A>>}
+ * @param {import('$types/delete.d.ts').deleteManyNodesArgs<T, A>} args
+ * @returns {Promise<import('$types/delete.d.ts').deleteManyNodesResult<T, A>>}
  */
 export default async function ({ where }) {
 	const ctx = Prisma.getExtensionContext(this)

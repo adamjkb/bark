@@ -7,8 +7,8 @@ import { has_nullish, merge_where_args, path_from_depth } from '../utils.js'
  * @template A - Args
  *
  * @this {T}
- * @param {import('$types/find').findSiblingsArgs<T, A>} args
- * @returns {Promise<import('$types/find').findSiblingsResult<T, A>>}
+ * @param {import('$types/find.d.ts').findSiblingsArgs<T, A>} args
+ * @returns {Promise<import('$types/find.d.ts').findSiblingsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
