@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 1.0.0-next.1
+
+### Patch Changes
+
+- Fix internal utils import paths ([#93](https://github.com/adamjkb/bark/pull/93))
+
 ## 1.0.0-next.0
 
 ### Major Changes

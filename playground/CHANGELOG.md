@@ -1,5 +1,12 @@
 # playground
 
+## 0.0.7-next.1
+
+### Patch Changes
+
+- Updated dependencies [[`302424d5e935bb7cf8217f7e1f014f354bfcb01f`](https://github.com/adamjkb/bark/commit/302424d5e935bb7cf8217f7e1f014f354bfcb01f)]:
+  - prisma-extension-bark@1.0.0-next.1
+
 ## 0.0.7-next.0
 
 ### Patch Changes
