@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client/extension'
 import { increment_path, int2str } from '../utils.js'
 
 /**

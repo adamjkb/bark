@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client/extension'
 import { has_nullish, increment_path, path_from_depth } from '../utils.js'
 
 /**
