@@ -1,5 +1,11 @@
 # prisma-extension-bark
 
+## 1.0.0-next.2
+
+### Patch Changes
+
+- Update prisma client exports ([#88](https://github.com/adamjkb/bark/pull/88))
+
 ## 1.0.0-next.1
 
 ### Patch Changes
