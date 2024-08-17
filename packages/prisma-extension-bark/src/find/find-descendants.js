@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client/extension'
 import { default_order_by } from '../consts.js'
 import { has_nullish, merge_where_args } from '../utils.js'
 
