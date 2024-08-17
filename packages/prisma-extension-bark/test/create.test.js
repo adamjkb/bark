@@ -36,7 +36,7 @@ describe('createChild()', async () => {
 	it('had kids before', async () => {
 		const node = await get_a_node()
 
-		const result = await prisma.node.createChild({ where: { id: node.id }, select: { path: true, numchild: true, depth: true } })
+		const result = await prisma.node.createChild({ node: { id: node.id }, select: { path: true, numchild: true, depth: true } })
 
 		// New born child
 		expect(result).toStrictEqual({ depth: node.depth + 1, numchild: 0, path: '0001000100010006' })
@@ -57,6 +57,19 @@ describe('createSibling()', async () => {
 
 		// New born child
 		expect(result).toStrictEqual({ depth: node.depth, numchild: 0, path: '0001000100010006' })
+		// Updated parent
+		const parent_node_after = await get_a_node()
+		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1 })
+	})
+
+	it('w/ node query', async () => {
+		const node = await get_a_a_node()
+		const parent_node_before = await get_a_node()
+
+		const result = await prisma.node.createSibling({ node: { id: node.id } })
+
+		// New born child
+		expect(result.path).toBe('0001000100010006')
 		// Updated parent
 		const parent_node_after = await get_a_node()
 		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1 })

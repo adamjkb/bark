@@ -1,7 +1,7 @@
 import PrismaDefault, { type Prisma } from "@prisma/client/scripts/default-index.d.ts";
 import type { Types } from "@prisma/client/runtime/library.d.ts";
 import { PrismaModelProps } from "./prisma.d.ts";
-import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult, findTreeArgs, findTreeResult } from "./find.d.ts";
+import { findAncestorsArgs, findChildrenArgs, findChildrenResult, findDescendantsArgs, findDescendantsResult, findLastRootNodeArgs, findLastRootNodeResult, findParentArgs, findParentResult, findSiblingsArgs, findSiblingsResult } from "./find.d.ts";
 import { createChildArgs, createRootArgs, createSiblingArgs, createSiblingResult } from "./create.d.ts";
 import { deleteManyNodesArgs, deleteManyNodesResult, deleteNodeArgs, deleteNodeResult } from "./delete.d.ts";
 import { moveArgs, moveResult } from "./operations.d.ts";
@@ -19,7 +19,6 @@ export type BarkFindMethods = {
 	findLastRoot<T, A>(this: T, args: findLastRootNodeArgs<T, A>): Prisma.PrismaPromise<findLastRootNodeResult<T, A>>;
 	findAncestors<T, A>(this: T, args: findAncestorsArgs<T, A>): Prisma.PrismaPromise<findAncestorsResult<T, A>>;
 	findDescendants<T, A>(this: T, args: findDescendantsArgs<T, A>): Prisma.PrismaPromise<findDescendantsResult<T, A>>;
-	findTree<T, A>(this: T, args: findTreeArgs<T, A>): Prisma.PrismaPromise<findTreeResult<T, A>>;
 	findChildren<T, A>(this: T, args: findChildrenArgs<T, A>): Prisma.PrismaPromise<findChildrenResult<T, A>>;
 	findSiblings<T, A>(this: T, args: findSiblingsArgs<T, A>): Prisma.PrismaPromise<findSiblingsResult<T, A>>;
 	findParent<T, A>(this: T, args: findParentArgs<T, A>): Prisma.PrismaPromise<findParentResult<T, A>>;

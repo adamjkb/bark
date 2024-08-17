@@ -2,18 +2,18 @@
   "include": ["**/*.ts", "**/*.js"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-	"baseUrl": "./",
+	"baseUrl": ".",
 	"paths": {
 		"$types/*": [
-			"types/*"
+			"./types/*"
 		]
 	},
 	"noEmit": true,
     "lib": ["ESNext"],
     "isolatedModules": true,
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
+    "esModuleInterop": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "resolveJsonModule": true,
     "target": "ESNext",
     "strict": true,
@@ -22,6 +22,6 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
   }
 }

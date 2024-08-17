@@ -97,31 +97,6 @@ const newSibling = await xprisma.node.createSibling({
 
 ## Find
 
-### `findTree`
-
-Returns all nodes in tree, including the parent if provided. By default the tree is ordered by `path` in ascending order.
-
-| Argument       | Required | Description                                                                                                                         |
-| -------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `parent.node`  | No       | An existing node used as a reference where the incoming entry should be created.                                                    |
-| `parent.where` | No       | Query to find an existing node to be used as a reference.                                                                           |
-| `orderBy`      | No       | Lets you order the returned list by any property. Defaults to `{ path: 'asc' }`                                                     |
-| `...args`      | No       | Same as [`findMany`](https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#findmany) options excluding `where` |
-
-<details>
-
-<summary>Example</summary>
-
-```js
-const tree = await xprisma.node.findTree({
-	parent: { where: { path: '00010001' } },
-	select: { path: true }
-})
-// [{ path: '00010001' }, { path: '000100010001' }, ...]
-```
-
-</details>
-
 ### `findAncestors`
 
 Returns all ancestors, from the root node to the parent, of the defined node in either `where` or `node` arguments. If the `findAncestors` called on a root node it will return `null`. By default the tree is ordered by `path` in ascending order.

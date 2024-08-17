@@ -1,4 +1,4 @@
-import { XOR } from "./helpers.d.ts";
+import { Rename, XOR } from "./helpers.d.ts";
 import type { Prisma } from '@prisma/client'
 import { RequiredKeysInInputNode } from "./prisma.d.ts";
 
@@ -6,7 +6,7 @@ import { RequiredKeysInInputNode } from "./prisma.d.ts";
 // deleteNode
 export type deleteNodeArgs<T, A> = XOR<
 	{ node: RequiredKeysInInputNode<T, A, 'depth' | 'path'>; },
-	Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>
+	Rename<Pick<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>, 'where', 'node'>
 > & Omit<Prisma.Args<T, 'findUniqueOrThrow'>, 'where'>;
 export type deleteNodeResult<T, A> = Prisma.Result<T, A, 'deleteMany'>;
 

@@ -6,3 +6,5 @@ export type ObjectFromList<T extends ReadonlyArray<string>, P extends any> = {
 };
 
 export type RequireKeys<T, K> = Partial<T> & Required<Pick<T, K>>;
+
+export type Rename<T, K extends keyof T, N extends string> = Pick<T, Exclude<keyof T, K>> & { [P in N]: T[K] }

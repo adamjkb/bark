@@ -2,7 +2,12 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
 	test: {
-		threads: false,
+		pool: 'threads',
+		poolOptions: {
+			threads: {
+				singleThread: true
+			}
+		},
 		globalSetup: [
 			'./test/setup/db-setup.js'
 		]

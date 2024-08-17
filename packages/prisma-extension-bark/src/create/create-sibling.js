@@ -1,23 +1,28 @@
 import { Prisma } from '@prisma/client'
-import { increment_path, path_from_depth } from '../utils.js'
+import { has_nullish, increment_path, path_from_depth } from '../utils.js'
 
 /**
- * @param {import('$types/create.js').createSiblingArgs} args
+ * @template T - Model
+ * @template A - Args
+ *
+ * @this {T}
+ * @param {import('$types/create.d.ts').createSiblingArgs<T, A>} args
+ * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
-export default async function ({ node, where, data, ...args }) {
+export default async function ({ node, data, ...args }) {
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path
+	let path = node?.path
 	/** @type {number} */
-	let depth
+	let depth = node?.path
 
 	// Get required arguments from instance
-	if (node) {
-		path = node.path
-		depth = node.depth
-	} else if (where) {
-		const target = await ctx.findUniqueOrThrow({ where })
+	if (has_nullish(path, depth)) {
+		const target = await ctx.findUniqueOrThrow({
+			where: node,
+			select: { path: true, depth: true }
+		})
 		if (target) {
 			path = target.path
 			depth = target.depth
