@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client/extension'
-import { has_nullish, int2str } from '../utils.js'
+import { has_nullish, has_retain_columns, int2str } from "../utils.js";
 
 /**
  * @template T - Model
@@ -9,15 +9,15 @@ import { has_nullish, int2str } from '../utils.js'
  * @param {import('$types/create.d.ts').createChildArgs<T, A>} args
  * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
-export default async function ({ node, data, ...args }) {
-	const ctx = Prisma.getExtensionContext(this)
+export default async function ({ node, data, retain, ...args }) {
+	const ctx = Prisma.getExtensionContext(this);
 
 	/** @type {string} */
-	let path = node?.path
+	let path = node?.path;
 	/** @type {number} */
-	let depth = node?.depth
+	let depth = node?.depth;
 	/** @type {number} */
-	let numchild = node?.numchild
+	let numchild = node?.numchild;
 
 	// Get required arguments from instance
 	if (has_nullish(path, depth, numchild)) {
@@ -26,36 +26,58 @@ export default async function ({ node, data, ...args }) {
 			select: {
 				path: true,
 				depth: true,
-				numchild: true
-			}
-		})
+				numchild: true,
+			},
+		});
 		if (target) {
-			path = target.path
-			depth = target.depth
-			numchild = target.numchild
+			path = target.path;
+			depth = target.depth;
+			numchild = target.numchild;
 		}
 	}
 
 	// if already has kids
 	if (numchild !== 0) {
-		const child = await ctx.findChildren({
-			node: {path, depth, numchild},
-			select: {
-				path: true,
-				depth: true
-			},
-			take: 1
-		}).then(([c]) => c)
+		const child = await ctx
+			.findChildren({
+				node: { path, depth, numchild },
+				select: {
+					path: true,
+					depth: true,
+				},
+				take: 1,
+			})
+			.then(([c]) => c);
 
 		return ctx.createSibling({
 			node: child,
+			retain,
 			data,
-			...args
-		})
+			...args,
+		});
 	} else {
 		// node hasn't had any kid, so adding first one
-		const new_step = int2str(1)
-		const new_path = path + new_step
+		const new_step = int2str(1);
+		const new_path = path + new_step;
+
+		let update_data = {
+			numchild: {
+				increment: 1,
+			},
+		};
+
+		// Check for fields to retain
+		if (has_retain_columns(retain)) {
+			const old_data = await ctx.findUnique({
+				where: {
+					path: path,
+				},
+				select: retain,
+			});
+
+			if (old_data !== null)
+				update_data = { ...update_data, ...old_data };
+		}
 
 		const [newborn] = await ctx.__$transaction([
 			ctx.create({
@@ -63,23 +85,19 @@ export default async function ({ node, data, ...args }) {
 					...data,
 					path: new_path,
 					depth: depth + 1,
-					numchild: 0
+					numchild: 0,
 				},
-				...args
+				...args,
 			}),
 			// update parent numchild
 			ctx.update({
 				where: {
-					path: path
+					path: path,
 				},
-				data: {
-					numchild: {
-						increment: 1
-					}
-				}
-			})
-		])
+				data: update_data,
+			}),
+		]);
 
-		return newborn
+		return newborn;
 	}
 }

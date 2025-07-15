@@ -1,5 +1,10 @@
 import { Prisma } from '@prisma/client/extension'
-import { has_nullish, increment_path, path_from_depth } from '../utils.js'
+import {
+	has_nullish,
+	has_retain_columns,
+	increment_path,
+	path_from_depth,
+} from "../utils.js";
 
 /**
  * @template T - Model
@@ -9,42 +14,62 @@ import { has_nullish, increment_path, path_from_depth } from '../utils.js'
  * @param {import('$types/create.d.ts').createSiblingArgs<T, A>} args
  * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
-export default async function ({ node, data, ...args }) {
-	const ctx = Prisma.getExtensionContext(this)
+export default async function ({ node, data, retain, ...args }) {
+	const ctx = Prisma.getExtensionContext(this);
 
 	/** @type {string} */
-	let path = node?.path
+	let path = node?.path;
 	/** @type {number} */
-	let depth = node?.path
+	let depth = node?.path;
 
 	// Get required arguments from instance
 	if (has_nullish(path, depth)) {
 		const target = await ctx.findUniqueOrThrow({
 			where: node,
-			select: { path: true, depth: true }
-		})
+			select: { path: true, depth: true },
+		});
 		if (target) {
-			path = target.path
-			depth = target.depth
+			path = target.path;
+			depth = target.depth;
 		}
 	}
 
-	const last_sibling = await ctx.findSiblings({
-		node: { path, depth },
-		select: {
-			path: true,
-			depth: true
-		},
-		orderBy: {
-			path: 'desc'
-		},
-		take: 1
-	}).then(([s]) => s)
+	const last_sibling = await ctx
+		.findSiblings({
+			node: { path, depth },
+			select: {
+				path: true,
+				depth: true,
+			},
+			orderBy: {
+				path: "desc",
+			},
+			take: 1,
+		})
+		.then(([s]) => s);
 
-	const parent_path = path_from_depth({ path, depth: depth - 1 })
+	const parent_path = path_from_depth({ path, depth: depth - 1 });
 
 	// create next path
-	const new_path = increment_path(last_sibling.path)
+	const new_path = increment_path(last_sibling.path);
+
+	let update_data = {
+		numchild: {
+			increment: 1,
+		},
+	};
+
+	if (has_retain_columns(retain)) {
+		// get parent's old data
+		const old_data = await ctx.findFirst({
+			where: {
+				path: parent_path,
+			},
+			select: retain,
+		});
+
+		if (old_data !== null) update_data = { ...update_data, ...old_data };
+	}
 
 	const [newborn] = await ctx.__$transaction([
 		ctx.create({
@@ -52,22 +77,18 @@ export default async function ({ node, data, ...args }) {
 				...data,
 				path: new_path,
 				depth: last_sibling.depth,
-				numchild: 0
+				numchild: 0,
 			},
-			...args
+			...args,
 		}),
 		// update parent numchild
 		ctx.update({
 			where: {
-				path: parent_path
+				path: parent_path,
 			},
-			data: {
-				numchild: {
-					increment: 1
-				}
-			}
-		})
-	])
+			data: update_data,
+		}),
+	]);
 
-	return newborn
+	return newborn;
 }
