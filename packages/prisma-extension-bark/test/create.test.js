@@ -21,6 +21,17 @@ describe('createRoot()', async () => {
 })
 
 describe('createChild()', async () => {
+  it('retains field data', async () => {
+    const node = await get_a_node()
+   
+    await prisma.node.createChild({ node: { id: node.id }, retain: { updatedAt: true} })
+
+    const new_node = await get_a_node();
+    
+    // updatedAt value does not change
+    expect(new_node).toStrictEqual({...node, numchild: node.numchild + 1, updatedAt: node.updatedAt})
+  })
+  
 	it('first born', async () => {
 		const node = await get_a_a_node()
 
@@ -30,7 +41,7 @@ describe('createChild()', async () => {
 		expect(result).toStrictEqual({ depth: node.depth + 1, numchild: 0, path: '00010001000100010001' })
 		// New parent
 		const new_node = await get_a_a_node()
-		expect(new_node).toStrictEqual({...node, numchild: node.numchild + 1 })
+		expect(new_node).toStrictEqual({...node, numchild: node.numchild + 1, updatedAt: new_node.updatedAt })
 	})
 
 	it('had kids before', async () => {
@@ -42,8 +53,8 @@ describe('createChild()', async () => {
 		expect(result).toStrictEqual({ depth: node.depth + 1, numchild: 0, path: '0001000100010006' })
 		// Parent
 		const new_node = await get_a_node()
-		expect(new_node).toStrictEqual({ ...node, numchild: node.numchild + 1 })
-	})
+		expect(new_node).toStrictEqual({ ...node, numchild: node.numchild + 1, updatedAt: new_node.updatedAt })
+  })
 
 	afterEach(seedOrResetDB)
 })
@@ -59,7 +70,7 @@ describe('createSibling()', async () => {
 		expect(result).toStrictEqual({ depth: node.depth, numchild: 0, path: '0001000100010006' })
 		// Updated parent
 		const parent_node_after = await get_a_node()
-		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1 })
+		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_after.updatedAt })
 	})
 
 	it('w/ node query', async () => {
@@ -72,8 +83,19 @@ describe('createSibling()', async () => {
 		expect(result.path).toBe('0001000100010006')
 		// Updated parent
 		const parent_node_after = await get_a_node()
-		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1 })
-	})
+		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_after.updatedAt })
+  })
+  
+  it('retains parent field data', async () => {
+    const node = await get_a_a_node()
+    const parent_node_before = await get_a_node();
+    
+    await prisma.node.createSibling({ node: { id: node.id }, retain: { updatedAt: true } })
+    const parent_node_after = await get_a_node();
+
+    // updatedAt value does not change
+    expect(parent_node_after).toStrictEqual({...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_before.updatedAt})
+  })
 
 	afterEach(seedOrResetDB)
 })
