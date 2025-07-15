@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client/extension'
-import { has_nullish, has_retain_columns, int2str } from "../utils.js";
+import { has_nullish, has_retain_columns, int2str } from '../utils.js'
 
 /**
  * @template T - Model
@@ -10,14 +10,14 @@ import { has_nullish, has_retain_columns, int2str } from "../utils.js";
  * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
 export default async function ({ node, data, retain, ...args }) {
-	const ctx = Prisma.getExtensionContext(this);
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path = node?.path;
+	let path = node?.path
 	/** @type {number} */
-	let depth = node?.depth;
+	let depth = node?.depth
 	/** @type {number} */
-	let numchild = node?.numchild;
+	let numchild = node?.numchild
 
 	// Get required arguments from instance
 	if (has_nullish(path, depth, numchild)) {
@@ -28,11 +28,11 @@ export default async function ({ node, data, retain, ...args }) {
 				depth: true,
 				numchild: true,
 			},
-		});
+		})
 		if (target) {
-			path = target.path;
-			depth = target.depth;
-			numchild = target.numchild;
+			path = target.path
+			depth = target.depth
+			numchild = target.numchild
 		}
 	}
 
@@ -47,24 +47,24 @@ export default async function ({ node, data, retain, ...args }) {
 				},
 				take: 1,
 			})
-			.then(([c]) => c);
+			.then(([c]) => c)
 
 		return ctx.createSibling({
 			node: child,
 			retain,
 			data,
 			...args,
-		});
+		})
 	} else {
 		// node hasn't had any kid, so adding first one
-		const new_step = int2str(1);
-		const new_path = path + new_step;
+		const new_step = int2str(1)
+		const new_path = path + new_step
 
 		let update_data = {
 			numchild: {
 				increment: 1,
 			},
-		};
+		}
 
 		// Check for fields to retain
 		if (has_retain_columns(retain)) {
@@ -73,10 +73,10 @@ export default async function ({ node, data, retain, ...args }) {
 					path: path,
 				},
 				select: retain,
-			});
+			})
 
 			if (old_data !== null)
-				update_data = { ...update_data, ...old_data };
+				update_data = { ...update_data, ...old_data }
 		}
 
 		const [newborn] = await ctx.__$transaction([
@@ -96,8 +96,8 @@ export default async function ({ node, data, retain, ...args }) {
 				},
 				data: update_data,
 			}),
-		]);
+		])
 
-		return newborn;
+		return newborn
 	}
 }

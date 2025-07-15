@@ -4,7 +4,7 @@ import {
 	has_retain_columns,
 	increment_path,
 	path_from_depth,
-} from "../utils.js";
+} from '../utils.js'
 
 /**
  * @template T - Model
@@ -15,22 +15,22 @@ import {
  * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
 export default async function ({ node, data, retain, ...args }) {
-	const ctx = Prisma.getExtensionContext(this);
+	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */
-	let path = node?.path;
+	let path = node?.path
 	/** @type {number} */
-	let depth = node?.path;
+	let depth = node?.path
 
 	// Get required arguments from instance
 	if (has_nullish(path, depth)) {
 		const target = await ctx.findUniqueOrThrow({
 			where: node,
 			select: { path: true, depth: true },
-		});
+		})
 		if (target) {
-			path = target.path;
-			depth = target.depth;
+			path = target.path
+			depth = target.depth
 		}
 	}
 
@@ -42,22 +42,22 @@ export default async function ({ node, data, retain, ...args }) {
 				depth: true,
 			},
 			orderBy: {
-				path: "desc",
+				path: 'desc',
 			},
 			take: 1,
 		})
-		.then(([s]) => s);
+		.then(([s]) => s)
 
-	const parent_path = path_from_depth({ path, depth: depth - 1 });
+	const parent_path = path_from_depth({ path, depth: depth - 1 })
 
 	// create next path
-	const new_path = increment_path(last_sibling.path);
+	const new_path = increment_path(last_sibling.path)
 
 	let update_data = {
 		numchild: {
 			increment: 1,
 		},
-	};
+	}
 
 	if (has_retain_columns(retain)) {
 		// get parent's old data
@@ -66,9 +66,9 @@ export default async function ({ node, data, retain, ...args }) {
 				path: parent_path,
 			},
 			select: retain,
-		});
+		})
 
-		if (old_data !== null) update_data = { ...update_data, ...old_data };
+		if (old_data !== null) update_data = { ...update_data, ...old_data }
 	}
 
 	const [newborn] = await ctx.__$transaction([
@@ -88,7 +88,7 @@ export default async function ({ node, data, retain, ...args }) {
 			},
 			data: update_data,
 		}),
-	]);
+	])
 
-	return newborn;
+	return newborn
 }

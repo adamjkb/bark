@@ -70,7 +70,7 @@ export const has_nullish = (...args) => {
  * @returns {boolean}
  */
 export const has_retain_columns = (retain) => {
-  return retain && typeof retain === 'object' && !Array.isArray(retain) && Object.keys(retain).length !== 0
+	return retain && typeof retain === 'object' && !Array.isArray(retain) && Object.keys(retain).length !== 0
 }
 
 export const merge_where_args = (internal, external) => {

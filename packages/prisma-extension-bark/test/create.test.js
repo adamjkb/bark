@@ -21,16 +21,16 @@ describe('createRoot()', async () => {
 })
 
 describe('createChild()', async () => {
-  it('retains field data', async () => {
-    const node = await get_a_node()
+	it('retains field data', async () => {
+		const node = await get_a_node()
    
-    await prisma.node.createChild({ node: { id: node.id }, retain: { updatedAt: true} })
+		await prisma.node.createChild({ node: { id: node.id }, retain: { updatedAt: true} })
 
-    const new_node = await get_a_node();
+		const new_node = await get_a_node()
     
-    // updatedAt value does not change
-    expect(new_node).toStrictEqual({...node, numchild: node.numchild + 1, updatedAt: node.updatedAt})
-  })
+		// updatedAt value does not change
+		expect(new_node).toStrictEqual({...node, numchild: node.numchild + 1, updatedAt: node.updatedAt})
+	})
   
 	it('first born', async () => {
 		const node = await get_a_a_node()
@@ -54,7 +54,7 @@ describe('createChild()', async () => {
 		// Parent
 		const new_node = await get_a_node()
 		expect(new_node).toStrictEqual({ ...node, numchild: node.numchild + 1, updatedAt: new_node.updatedAt })
-  })
+	})
 
 	afterEach(seedOrResetDB)
 })
@@ -84,18 +84,18 @@ describe('createSibling()', async () => {
 		// Updated parent
 		const parent_node_after = await get_a_node()
 		expect(parent_node_after).toStrictEqual({ ...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_after.updatedAt })
-  })
+	})
   
-  it('retains parent field data', async () => {
-    const node = await get_a_a_node()
-    const parent_node_before = await get_a_node();
+	it('retains parent field data', async () => {
+		const node = await get_a_a_node()
+		const parent_node_before = await get_a_node()
     
-    await prisma.node.createSibling({ node: { id: node.id }, retain: { updatedAt: true } })
-    const parent_node_after = await get_a_node();
+		await prisma.node.createSibling({ node: { id: node.id }, retain: { updatedAt: true } })
+		const parent_node_after = await get_a_node()
 
-    // updatedAt value does not change
-    expect(parent_node_after).toStrictEqual({...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_before.updatedAt})
-  })
+		// updatedAt value does not change
+		expect(parent_node_after).toStrictEqual({...parent_node_before, numchild: parent_node_before.numchild + 1, updatedAt: parent_node_before.updatedAt})
+	})
 
 	afterEach(seedOrResetDB)
 })
