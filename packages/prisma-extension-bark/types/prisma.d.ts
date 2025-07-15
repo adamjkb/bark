@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client"
-import { RequireKeys } from "./helpers.d.ts";
+import { RequireKeys, RetainKeys } from "./helpers.d.ts";
 
 /**
  * Model methods available in Prisma. (e.g. `prisma.node` or `prisma.user`)
@@ -35,3 +35,5 @@ export type RequirePrismaModelTypeInput<TModelName extends PrismaModelProps, RKe
 export type PrismaModelBuiltinFunctionKeys<TModelName extends PrismaModelProps> = keyof PrismaModelTypeMap<TModelName>[TModelName]['operations']
 
 export type RequiredKeysInInputNode<T, A, K> = RequireKeys<Prisma.Result<T, A, 'findFirst'>, K>
+
+export type RetainableKeys<T, K extends keyof T> =  RetainKeys<Omit<T, K>> 
