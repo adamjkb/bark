@@ -41,6 +41,7 @@
     },
     "scripts": {
         "build": "esbuild ./src/index.js --bundle --format=cjs --outfile=dist/index.cjs --platform=node --external:@prisma/client",
+        "postinstall": "npm run build",
         "prepublishOnly": "pnpm build",
         "test": "vitest",
         "prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
@@ -50,11 +51,13 @@
     "peerDependencies": {
         "@prisma/client": ">=5.0.0"
     },
+    "dependencies": {
+        "esbuild": "^0.20.0"
+    },
     "devDependencies": {
         "@eslint/compat": "^1.1.1",
         "@eslint/js": "^9.8.0",
         "@types/node": "^22.1.0",
-        "esbuild": "^0.20.0",
         "eslint": "^9.8.0",
         "globals": "^15.9.0",
         "prisma": "^5.0.0",

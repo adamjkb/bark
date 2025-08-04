@@ -17,6 +17,14 @@ npm i -D prisma
 npx prisma init
 ```
 
+#### Installing from GitHub
+
+You can also install directly from GitHub before the changes are published to npm:
+
+```bash
+npm i github:lpan/bark#lpan/custom-prisma-path-take-2 --workspace=packages/prisma-extension-bark
+```
+
 ### 2. Implement the required field on your model
 ```prisma
 // prisma/schema.prisma
