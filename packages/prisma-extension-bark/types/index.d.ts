@@ -53,8 +53,8 @@ export type BarkMethods<PrismaPromise = any> = BarkFindMethods<PrismaPromise> & 
  * })(Prisma))
  */
 export declare function withBark<I extends BarkInitArgs>(args: I): <P extends {
-	defineExtension: Function;
-	PrismaPromise: any;
+	defineExtension: typeof PrismaDefault.Prisma.defineExtension;
+	PrismaPromise: typeof PrismaDefault.Prisma.PrismaPromise;
 }>(Prisma: P) => (client: any) => PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
 	readonly [K in (I['modelNames'] extends ReadonlyArray<infer U> ? U : never)]: BarkMethods<P['PrismaPromise']>
 }, {}, {}> & Types.Extensions.InternalArgs<{}, {}, {}, {}> & Types.Extensions.DefaultArgs>;
