@@ -13,6 +13,13 @@ type BarkInitArgs = {
 	 * Minimum required model: {@link https://prisma-extension-bark.gitbook.io/docs/model-reference#minimum-required-model}
 	 */
 	modelNames: PrismaModelProps[];
+	/**
+	 * Optional custom path to the Prisma client
+	 * 
+	 * @default '@prisma/client/extension'
+	 * @example '../generated/prisma-client/extension'
+	 */
+	prismaClientPath?: string;
 }
 
 export type BarkFindMethods = {
@@ -50,7 +57,14 @@ export type BarkMethods = BarkFindMethods & BarkCreateMethods & BarkDeleteMethod
  * const xprisma = new PrismaClient().$extends(withBark({
  *  modelNames: ['node']
  * }))
+ * 
+ * @example
+ * // With custom Prisma client path
+ * const xprisma = new PrismaClient().$extends(withBark({
+ *  modelNames: ['node'],
+ *  prismaClientPath: '../generated/prisma-client/extension'
+ * }))
  */
-export declare function withBark<I extends BarkInitArgs>(args: I): (client: any) => PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
+export declare function withBark<I extends BarkInitArgs>(args: I): (client: any) => Promise<PrismaDefault.PrismaClientExtends<Types.Extensions.InternalArgs<{}, {
 	readonly [K in (I['modelNames'] extends ReadonlyArray<infer U> ? U : never)]: BarkMethods
-}, {}, {}> & Types.Extensions.InternalArgs<{}, {}, {}, {}> & Types.Extensions.DefaultArgs>;
+}, {}, {}> & Types.Extensions.InternalArgs<{}, {}, {}, {}> & Types.Extensions.DefaultArgs>>;
