@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { getPrisma } from '../get-prisma.js'
 import { default_order_by, max_segment, min_segment } from '../consts.js'
 import { has_nullish, merge_where_args, path_from_depth } from '../utils.js'
 
@@ -11,6 +11,7 @@ import { has_nullish, merge_where_args, path_from_depth } from '../utils.js'
  * @returns {Promise<import('$types/find.d.ts').findSiblingsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
+	const Prisma = await getPrisma(this)
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */

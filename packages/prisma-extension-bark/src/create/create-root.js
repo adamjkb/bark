@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { getPrisma } from '../get-prisma.js'
 import { increment_path, int2str } from '../utils.js'
 
 /**
@@ -10,6 +10,7 @@ import { increment_path, int2str } from '../utils.js'
  * @returns {Promise<import('$types/create.d.ts').createRootResult<T, A>>}
  */
 export default async function ({ data, ...args }) {
+	const Prisma = await getPrisma(this)
 	const ctx = Prisma.getExtensionContext(this)
 
 	const last_root = await ctx.findLastRoot({ select: {

@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { getPrisma } from '../get-prisma.js'
 import { has_nullish, increment_path, path_from_depth } from '../utils.js'
 
 /**
@@ -10,6 +10,7 @@ import { has_nullish, increment_path, path_from_depth } from '../utils.js'
  * @returns {Promise<import('$types/create.d.ts').createChildResult<T, A>>}
  */
 export default async function ({ node, data, ...args }) {
+	const Prisma = await getPrisma(this)
 	const ctx = Prisma.getExtensionContext(this)
 
 	/** @type {string} */

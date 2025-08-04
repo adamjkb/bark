@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client/extension'
+import { getPrisma } from '../get-prisma.js'
 import { has_nullish, increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
@@ -10,6 +10,7 @@ import { has_nullish, increment_path, int2str, last_position_in_path, path_from_
  * @returns {Promise<import('$types/operations.d.ts').moveResult>}
  */
 export default async function ({ node, position, referenceNode }) {
+	const Prisma = await getPrisma(this)
 	const ctx = Prisma.getExtensionContext(this)
 
 	let original_node = node
