@@ -4,12 +4,12 @@
     "description": "A materialized path extension for Prisma",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/adamjkb/bark/issues"
+        "url": "https://github.com/lpan/bark/issues"
     },
     "homepage": "https://prisma-extension-bark.gitbook.io/",
     "repository": {
         "type": "git",
-        "url": "https://github.com/adamjkb/bark",
+        "url": "https://github.com/lpan/bark",
         "directory": "packages/prisma-extension-bark"
     },
     "author": {
@@ -41,6 +41,7 @@
     },
     "scripts": {
         "build": "esbuild ./src/index.js --bundle --format=cjs --outfile=dist/index.cjs --platform=node --external:@prisma/client",
+        "prepare": "pnpm build",
         "prepublishOnly": "pnpm build",
         "test": "vitest",
         "prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
