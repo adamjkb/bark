@@ -43,11 +43,27 @@ npx prisma migrate dev
 ## 4. Extend Prisma Client with Bark
 ```js
 // index.js
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { withBark } from 'prisma-extension-bark'
 
-const xprisma = new PrismaClient().$extends(withBark({ modelNames: ['node'] }))
+const xprisma = new PrismaClient().$extends(
+  withBark({ modelNames: ['node'] })(Prisma)
+)
 
 const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root' } })
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
+```
+
+### Using Custom Prisma Output Paths
+
+If you're using Prisma with a custom output path (common in monorepo setups), you need to pass the Prisma namespace from your generated client:
+
+```js
+// With custom output path
+import { PrismaClient, Prisma } from '../generated/client'
+import { withBark } from 'prisma-extension-bark'
+
+const xprisma = new PrismaClient().$extends(
+  withBark({ modelNames: ['node'] })(Prisma)
+)
 ```

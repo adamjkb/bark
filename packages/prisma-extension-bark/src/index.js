@@ -1,5 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
-
 import * as find from './find/index.js'
 import * as create from './create/index.js'
 import * as deletes from './delete/index.js'
@@ -7,10 +5,10 @@ import * as operations from './operations/index.js'
 
 /**
  * Initialize Bark as Prisma Extension
-*
-* @type {import('$types/index.d.ts').withBark}
-*/
-export const withBark = (args) => Prisma.defineExtension(function (client) {
+ *
+ * @type {import('$types/index.d.ts').withBark}
+ */
+export const withBark = (args) => (Prisma) => Prisma.defineExtension(function (client) {
 	const extensionMethods = {
 		...find,
 		...create,

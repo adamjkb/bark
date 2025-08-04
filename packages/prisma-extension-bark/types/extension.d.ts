@@ -7,5 +7,5 @@ import { BarkMethods } from ".";
  * the `getExtensionContext` method exposes other ones too + "fields"
  * @deprecated
  */
-export type BarkExtensionContext<T> = BarkMethods & { name?: string | undefined; }
+export type BarkExtensionContext<T> = BarkMethods<any> & { name?: string | undefined; }
 

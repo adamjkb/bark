@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 import { withBark } from '../../src/index.js'
 
-export const prisma = new PrismaClient().$extends(withBark({modelNames: ['node']}))
+export const prisma = new PrismaClient().$extends(
+  withBark({modelNames: ['node']})(Prisma)
+)
 
 export const get_root_node = async () => prisma.node.findUniqueOrThrow({where: { id: 1 } })
 export const get_home_node = async () => prisma.node.findUniqueOrThrow({ where: { id: 2 } })
