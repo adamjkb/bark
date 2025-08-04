@@ -19,10 +19,33 @@ npx prisma init
 
 #### Installing from GitHub
 
-You can also install directly from GitHub before the changes are published to npm:
+To install directly from GitHub before the changes are published to npm:
 
+**For pnpm users:**
 ```bash
-npm i github:lpan/bark#lpan/custom-prisma-path-take-2 --workspace=packages/prisma-extension-bark
+# Install from the monorepo subdirectory
+pnpm add "github:lpan/bark#path:packages/prisma-extension-bark&lpan/custom-prisma-path-take-2"
+
+# Or use pnpm link for local development
+git clone -b lpan/custom-prisma-path-take-2 https://github.com/lpan/bark.git
+cd bark/packages/prisma-extension-bark
+pnpm install
+pnpm link --global
+
+# Then in your project:
+pnpm link --global prisma-extension-bark
+```
+
+**For npm/yarn users (use local linking):**
+```bash
+# Clone and link locally
+git clone -b lpan/custom-prisma-path-take-2 https://github.com/lpan/bark.git
+cd bark/packages/prisma-extension-bark
+npm install
+npm link
+
+# Then in your project:
+npm link prisma-extension-bark
 ```
 
 ### 2. Implement the required field on your model
