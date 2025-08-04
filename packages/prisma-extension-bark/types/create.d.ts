@@ -1,4 +1,4 @@
-import type { Rename, XOR } from "./helpers.d.ts";
+import type { Rename, XOR } from "./helpers";
 import {
 	PrismaModelFunctionArgs as PMFArgs,
 	PrismaModelProps as PMP,

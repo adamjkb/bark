@@ -35,7 +35,8 @@
         ".": {
             "types": "./types/index.d.ts",
             "import": "./src/index.js",
-            "require": "./dist/index.cjs"
+            "require": "./dist/index.cjs",
+            "default": "./src/index.js"
         },
         "./package.json": "./package.json"
     },
