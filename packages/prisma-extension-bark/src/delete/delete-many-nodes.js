@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
 import { path_from_depth } from '../utils.js'
 import { STEP_LENGTH } from '../consts.js'
 
@@ -11,7 +10,7 @@ import { STEP_LENGTH } from '../consts.js'
  * @returns {Promise<import('$types/delete.d.ts').deleteManyNodesResult<T, A>>}
  */
 export default async function ({ where }) {
-	const ctx = Prisma.getExtensionContext(this)
+	const ctx = this
 
 	const targets = await ctx.findMany({
 		where,

@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
 import { merge_where_args } from '../utils.js'
 
 
@@ -11,7 +10,7 @@ import { merge_where_args } from '../utils.js'
  * @returns {Promise<import('$types/find.d.ts').findLastRootNodeResult<T, A>>}
  */
 export default async function (args) {
-	const ctx = Prisma.getExtensionContext(this)
+	const ctx = this
 
 	return ctx.findFirst({
 		where: merge_where_args({

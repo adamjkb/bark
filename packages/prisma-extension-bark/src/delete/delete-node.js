@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
 import { has_nullish, path_from_depth } from '../utils.js'
 
 /**
@@ -10,7 +9,7 @@ import { has_nullish, path_from_depth } from '../utils.js'
  * @returns {Promise<import('$types/delete.d.ts').deleteNodeResult<T, A>>}
  */
 export default async function ({ node }) {
-	const ctx = Prisma.getExtensionContext(this)
+	const ctx = this
 
 	/** @type {string} */
 	let path = node?.path
