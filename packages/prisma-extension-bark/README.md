@@ -46,8 +46,33 @@ npx prisma migrate dev
 import { PrismaClient } from '@prisma/client'
 import { withBark } from 'prisma-extension-bark'
 
-const xprisma = new PrismaClient().$extends(withBark({ modelNames: ['node'] }))
+const xprisma = new PrismaClient().$extends(await withBark({ modelNames: ['node'] })())
 
 const myNewRootNode = await xprisma.node.createRoot({ data: { name: 'My new root' } })
 // { id: 1, path: '0001', depth: 1, numchild: 0, name: 'My new root' }
+```
+
+### Using Custom Prisma Client Path
+
+If you've configured a custom output path for your Prisma Client in `schema.prisma`:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma-client"
+}
+```
+
+You need to specify the path when initializing Bark:
+
+```js
+import { PrismaClient } from '../generated/prisma-client'
+import { withBark } from 'prisma-extension-bark'
+
+const xprisma = new PrismaClient().$extends(
+  await withBark({ 
+    modelNames: ['node'],
+    prismaClientPath: '../generated/prisma-client/extension'
+  })()
+)
 ```
