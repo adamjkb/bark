@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
 import { default_order_by } from '../consts.js'
 import { has_nullish, merge_where_args } from '../utils.js'
 
@@ -11,7 +10,7 @@ import { has_nullish, merge_where_args } from '../utils.js'
  * @returns {Promise<import('$types/find.d.ts').findDescendantsResult<T, A>>}
  */
 export default async function ({ node, where, orderBy = default_order_by, ...args }) {
-	const ctx = Prisma.getExtensionContext(this)
+	const ctx = this
 
 	/** @type {string} */
 	let path = node?.path

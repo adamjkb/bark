@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client/extension'
 import { has_nullish, increment_path, int2str, last_position_in_path, path_from_depth } from '../utils.js'
 
 /**
@@ -10,7 +9,7 @@ import { has_nullish, increment_path, int2str, last_position_in_path, path_from_
  * @returns {Promise<import('$types/operations.d.ts').moveResult>}
  */
 export default async function ({ node, position, referenceNode }) {
-	const ctx = Prisma.getExtensionContext(this)
+	const ctx = this
 
 	let original_node = node
 	let rn_node = referenceNode
@@ -329,7 +328,6 @@ export default async function ({ node, position, referenceNode }) {
 	 * @param {number} opts.new_depth
 	 */
 	async function update_node_and_descendants({ old_path, new_path, new_depth }) {
-		/** @type {Promise<import('@prisma/client/extension').Prisma.PrismaPromise<any>> | any[]}*/
 		const queue = []
 
 		queue.push(ctx.update({

@@ -41,8 +41,11 @@
     },
     "scripts": {
         "build": "esbuild ./src/index.js --bundle --format=cjs --outfile=dist/index.cjs --platform=node --external:@prisma/client",
+        "postinstall": "npm run build",
         "prepublishOnly": "pnpm build",
         "test": "vitest",
+        "test:ts": "tsc --noEmit -p test/tsconfig.json && vitest run test/typescript-integration.test.ts",
+        "test:all": "npm run test:ts && npm test",
         "prisma:generate": "pnpx prisma generate --schema=./test/setup/schema.prisma",
         "lint:fix": "eslint . --fix",
         "lint": "eslint ."
