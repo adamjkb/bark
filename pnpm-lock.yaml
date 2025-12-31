@@ -37,8 +37,8 @@ importers:
         specifier: ^9.8.0
         version: 9.8.0
       globals:
-        specifier: ^15.9.0
-        version: 15.9.0
+        specifier: ^16.0.0
+        version: 16.5.0
       prisma:
         specifier: ^5.0.0
         version: 5.17.0
@@ -915,8 +915,8 @@ packages:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
     engines: {node: '>=18'}
 
-  globals@15.9.0:
-    resolution: {integrity: sha512-SmSKyLLKFbSr6rptvP8izbyxJL4ILwqO9Jg23UA0sDlGlu58V59D1//I3vlc0KJphVdUR7vMjHIplYnzBxorQA==}
+  globals@16.5.0:
+    resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
     engines: {node: '>=18'}
 
   globby@11.1.0:
@@ -1852,7 +1852,7 @@ snapshots:
       fastq: 1.17.1
 
   '@prisma/client@5.17.0(prisma@5.17.0)':
-    dependencies:
+    optionalDependencies:
       prisma: 5.17.0
 
   '@prisma/debug@5.17.0': {}
@@ -2327,7 +2327,7 @@ snapshots:
 
   globals@14.0.0: {}
 
-  globals@15.9.0: {}
+  globals@16.5.0: {}
 
   globby@11.1.0:
     dependencies:
@@ -2717,17 +2717,16 @@ snapshots:
 
   vite@5.3.5(@types/node@22.1.0):
     dependencies:
-      '@types/node': 22.1.0
       esbuild: 0.21.5
       postcss: 8.4.40
       rollup: 4.20.0
     optionalDependencies:
+      '@types/node': 22.1.0
       fsevents: 2.3.3
 
   vitest@2.0.5(@types/node@22.1.0):
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@types/node': 22.1.0
       '@vitest/expect': 2.0.5
       '@vitest/pretty-format': 2.0.5
       '@vitest/runner': 2.0.5
@@ -2746,6 +2745,8 @@ snapshots:
       vite: 5.3.5(@types/node@22.1.0)
       vite-node: 2.0.5(@types/node@22.1.0)
       why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@types/node': 22.1.0
     transitivePeerDependencies:
       - less
       - lightningcss
